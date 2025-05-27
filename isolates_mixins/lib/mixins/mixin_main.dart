@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:isolates_mixins/mixins/left_drawer_menu.dart';
 
-class CustomWidget extends StatelessWidget {
+class CustomWidget extends StatelessWidget with DrawerMixin {
   const CustomWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: Drawer(),
+      endDrawer: Drawer(
+        // backgroundColor: Theme.of(context).primaryColor.withAlpha(40),
+        child: drawerWidget(context),
+      ),
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
         title: Text('Mixin Example'),
@@ -25,6 +29,10 @@ class CustomWidget extends StatelessWidget {
           ),
         ],
         backgroundColor: Theme.of(context).primaryColor.withAlpha(40),
+      ),
+      body: Column(children: [
+          
+        ],
       ),
     );
   }
