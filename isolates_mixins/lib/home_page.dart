@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isolates_mixins/common_files/route_navigation.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -18,7 +19,12 @@ class _MyHomePageState extends State<MyHomePage> {
           spacing: 20.0,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: () {}, child: Text('Mixins')),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RouteNavigation.mixinPage);
+              },
+              child: Text('Mixins'),
+            ),
             ElevatedButton(onPressed: () {}, child: Text('Isolates')),
           ],
         ),
