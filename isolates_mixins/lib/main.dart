@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isolates_mixins/common_files/route_navigation.dart';
+import 'package:isolates_mixins/mixins/mixin_main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 43, 114, 164),
         ),
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: RouteNavigation.homepage,
-      onGenerateRoute: RouteNavigation.generateRoute,
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // onGenerateRoute: RouteNavigation.generateRoute,
+      home: CustomWidget(),
     );
   }
 }
