@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:isolates_mixins/mixins/left_drawer_menu.dart';
 
 class CustomWidget extends StatelessWidget with DrawerMixin {
-  const CustomWidget({super.key});
+  CustomWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,20 @@ class CustomWidget extends StatelessWidget with DrawerMixin {
         ],
         backgroundColor: Theme.of(context).primaryColor.withAlpha(40),
       ),
-      body: Column(children: [
-          
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Open the right drawer to \n see different widgets'),
+            IconButton(
+              icon: Icon(Icons.arrow_right_alt_outlined),
+              onPressed: () {
+                // Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

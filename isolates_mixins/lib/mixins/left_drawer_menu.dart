@@ -22,7 +22,18 @@ mixin DrawerMixin {
         ),
 
         ListTile(
-          title: textIconButton(icon: Icons.onetwothree, text: 'Hero Widget'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textIconButton(icon: Icons.onetwothree, text: 'Hero Widget'),
+              IconButton(
+                onPressed: () {
+                  // use river pod to handle state management here..
+                },
+                icon: Icon(Icons.arrow_drop_down),
+              ),
+            ],
+          ),
           subtitle: Container(
             height: MediaQuery.of(context).size.height * 0.18,
             padding: const EdgeInsets.only(left: 25, top: 15),
@@ -68,10 +79,6 @@ mixin DrawerMixin {
             //     ),
             //   ],
             // ),
-          ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_downward),
           ),
         ),
         ListTile(
