@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 mixin DrawerMixin {
+  List<String> subtitles = ['Sliders', 'Pagination', 'Hero Widget'];
+  List<IconData> iconsList = [
+    Icons.slideshow_sharp,
+    Icons.pages_outlined,
+    Icons.animation_outlined,
+  ];
   Widget drawerWidget(BuildContext context) {
     return ListView(
       children: [
@@ -17,23 +23,55 @@ mixin DrawerMixin {
 
         ListTile(
           title: textIconButton(icon: Icons.onetwothree, text: 'Hero Widget'),
-          subtitle: Padding(
+          subtitle: Container(
+            height: MediaQuery.of(context).size.height * 0.18,
             padding: const EdgeInsets.only(left: 25, top: 15),
-            child: Column(
-              spacing: 10,
-              children: [
-                textIconButton(
-                  icon: Icons.slideshow_rounded,
-                  text: 'Slider',
+            child: ListView.separated(
+              itemBuilder: (BuildContext context, int index) {
+                return textIconButton(
+                  icon: iconsList[index],
+                  text: subtitles[index],
+                  iconColor: Colors.blueAccent,
                   iconSize: 15,
-                ),
-                textIconButton(
-                  icon: Icons.pages_outlined,
-                  text: 'Pagination',
-                  iconSize: 15,
-                ),
-              ],
+                  textStyle: TextStyle(color: Colors.blueGrey),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 10);
+              },
+              itemCount: 3,
             ),
+
+            // Column(
+            //   spacing: 10,
+            //   children: [
+            //     textIconButton(
+            //       icon: Icons.slideshow_rounded,
+            //       text: 'Slider',
+            //       iconSize: 15,
+            //       iconColor: Colors.blueAccent,
+            //       textStyle: TextStyle(color: Colors.blueAccent),
+            //     ),
+            //     textIconButton(
+            //       icon: Icons.help_rounded,
+            //       text: 'Hero',
+            //       iconSize: 15,
+            //       iconColor: Colors.blueAccent,
+            //       textStyle: TextStyle(color: Colors.blueAccent),
+            //     ),
+            //     textIconButton(
+            //       icon: Icons.pages_outlined,
+            //       text: 'Pagination',
+            //       iconSize: 15,
+            //       iconColor: Colors.blueAccent,
+            //       textStyle: TextStyle(color: Colors.blueAccent),
+            //     ),
+            //   ],
+            // ),
+          ),
+          trailing: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.arrow_downward),
           ),
         ),
         ListTile(
@@ -94,12 +132,13 @@ Widget textIconButton({
   required String text,
   TextStyle? textStyle,
   double? iconSize,
+  Color? iconColor,
 }) {
   return InkWell(
     onTap: iconBtnPress,
     child: Row(
       children: [
-        Icon(icon, size: iconSize),
+        Icon(icon, size: iconSize, color: iconColor),
         SizedBox(width: 8),
         Text(text, style: textStyle),
       ],
