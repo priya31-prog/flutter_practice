@@ -1,99 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isolates_mixins/state_management/state_provider.dart';
+// import 'providers.dart';
 
 mixin DrawerMixin {
-  List<String> subtitles = ['Sliders', 'Pagination', 'Hero Widget'];
-  List<IconData> iconsList = [
-    Icons.slideshow_sharp,
-    Icons.pages_outlined,
-    Icons.animation_outlined,
-  ];
-  Widget drawerWidget(BuildContext context) {
-    return ListView(
-      children: [
-        DrawerHeader(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withAlpha(40),
-          ),
-          child: textIconButton(
-            icon: Icons.menu,
-            text: 'Menu Bar',
-            iconBtnPress: () => Navigator.pop(context),
-          ),
-        ),
+  Widget drawerWidget({
+    required BuildContext context,
+    required WidgetRef ref,
+    required List<String> titles,
+    List<String>? subtitles,
+    List<IconData>? iconsList,
+  }) {
+    final isExpandable = ref.watch(expandProvider);
 
-        ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              textIconButton(icon: Icons.onetwothree, text: 'Hero Widget'),
-              IconButton(
-                onPressed: () {
-                  // use river pod to handle state management here..
-                },
-                icon: Icon(Icons.arrow_drop_down),
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor.withAlpha(40),
               ),
-            ],
-          ),
-          subtitle: Container(
-            height: MediaQuery.of(context).size.height * 0.18,
-            padding: const EdgeInsets.only(left: 25, top: 15),
-            child: ListView.separated(
-              itemBuilder: (BuildContext context, int index) {
-                return textIconButton(
-                  icon: iconsList[index],
-                  text: subtitles[index],
-                  iconColor: Colors.blueAccent,
-                  iconSize: 15,
-                  textStyle: TextStyle(color: Colors.blueGrey),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 10);
-              },
-              itemCount: 3,
+              child: textIconButton(
+                icon: Icons.menu,
+                text: 'Menu Bar',
+                iconBtnPress: () => Navigator.pop(context),
+              ),
             ),
 
-            // Column(
-            //   spacing: 10,
-            //   children: [
-            //     textIconButton(
-            //       icon: Icons.slideshow_rounded,
-            //       text: 'Slider',
-            //       iconSize: 15,
-            //       iconColor: Colors.blueAccent,
-            //       textStyle: TextStyle(color: Colors.blueAccent),
-            //     ),
-            //     textIconButton(
-            //       icon: Icons.help_rounded,
-            //       text: 'Hero',
-            //       iconSize: 15,
-            //       iconColor: Colors.blueAccent,
-            //       textStyle: TextStyle(color: Colors.blueAccent),
-            //     ),
-            //     textIconButton(
-            //       icon: Icons.pages_outlined,
-            //       text: 'Pagination',
-            //       iconSize: 15,
-            //       iconColor: Colors.blueAccent,
-            //       textStyle: TextStyle(color: Colors.blueAccent),
-            //     ),
-            //   ],
-            // ),
-          ),
-        ),
-        ListTile(
-          title: textIconButton(icon: Icons.onetwothree, text: 'Grid View'),
-        ),
-        ListTile(
-          title: textIconButton(
-            icon: Icons.onetwothree,
-            text: 'Layout builder',
-          ),
-        ),
-        ListTile(
-          title: textIconButton(icon: Icons.onetwothree, text: 'Animations'),
-        ),
-      ],
+            ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  textIconButton(icon: Icons.onetwothree, text: titles[0]),
+                  IconButton(
+                    onPressed: () {
+                      // use river pod to handle state management here..
+                      ref.read(expandProvider.notifier).state = !isExpandable;
+                    },
+                    icon:
+                        isExpandable
+                            ? Icon(Icons.arrow_drop_up)
+                            : Icon(Icons.arrow_drop_down),
+                  ),
+                ],
+              ),
+              subtitle:
+                  isExpandable && iconsList != null
+                      ? Container(
+                        height: MediaQuery.of(context).size.height * 0.18,
+                        padding: const EdgeInsets.only(left: 25, top: 15),
+                        child: ListView.separated(
+                          itemBuilder: (BuildContext context, int index) {
+                            return textIconButton(
+                              icon: iconsList[index],
+                              text: subtitles![index],
+                              iconColor: Colors.blueAccent,
+                              iconSize: 15,
+                              textStyle: TextStyle(color: Colors.blueGrey),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 10);
+                          },
+                          itemCount: 3,
+                        ),
+                      )
+                      : SizedBox.shrink(),
+            ),
+            ListTile(
+              title: textIconButton(icon: Icons.onetwothree, text: titles[1]),
+            ),
+            ListTile(
+              title: textIconButton(icon: Icons.onetwothree, text: titles[2]),
+            ),
+            ListTile(
+              title: textIconButton(icon: Icons.onetwothree, text: titles[3]),
+            ),
+          ],
+        );
+      },
     );
 
     // Column(
