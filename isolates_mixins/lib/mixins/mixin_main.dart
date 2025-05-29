@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/mixins/left_drawer_menu.dart';
 
-class CustomWidget extends StatelessWidget with DrawerMixin {
+// ignore: must_be_immutable
+class CustomWidget extends ConsumerWidget with DrawerMixin {
   CustomWidget({super.key});
 
+  List<String> subtitles = ['Sliders', 'Pagination', 'Hero Widget'];
+  List<IconData> iconsList = [
+    Icons.slideshow_sharp,
+    Icons.pages_outlined,
+    Icons.animation_outlined,
+  ];
+  List<String> titles = [
+    'Hero Widget',
+    'Grid View',
+    'Layout Builder',
+    'Animations',
+  ];
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       endDrawer: Drawer(
         // backgroundColor: Theme.of(context).primaryColor.withAlpha(40),
-        child: drawerWidget(context),
+        child: drawerWidget(
+          context: context,
+          ref: ref,
+          titles: titles,
+          subtitles: subtitles,
+          iconsList: iconsList,
+        ),
       ),
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
