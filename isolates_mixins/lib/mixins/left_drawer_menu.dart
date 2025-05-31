@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isolates_mixins/common_files/route_navigation.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 // import 'providers.dart';
 
@@ -55,6 +56,12 @@ mixin DrawerMixin {
                             return textIconButton(
                               icon: iconsList[index],
                               text: subtitles![index],
+                              iconBtnPress: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNavigation.sliders,
+                                );
+                              },
                               iconColor: Colors.blueAccent,
                               iconSize: 15,
                               textStyle: TextStyle(color: Colors.blueGrey),
