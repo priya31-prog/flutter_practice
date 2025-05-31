@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/common_files/route_navigation.dart';
 import 'package:isolates_mixins/mixins/hero%20widget/sliders.dart';
-import 'package:isolates_mixins/mixins/mixin_main.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
