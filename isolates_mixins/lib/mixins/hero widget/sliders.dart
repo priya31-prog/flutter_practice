@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 
 // class SlidersClass extends StatefulWidget {
@@ -45,7 +46,7 @@ class SlidersClass extends ConsumerWidget {
                   Expanded(
                     child: Slider(
                       value: weight,
-                      divisions: 20,
+                      divisions: 40,
                       onChanged: (value) {
                         ref.read(weightProvider.notifier).state = value;
                       },
@@ -76,21 +77,24 @@ class SlidersClass extends ConsumerWidget {
                       ),
 
                       onChanged: (value) async {
-                        err = updateInputValue(value, false);
+                        err = CommonUtils.updateInputValue(value, false);
 
                         if (err == '') {
                           ref
                               .read(weightProvider.notifier)
-                              .state = double.parse(weightController.text);
-                          if (height > 1 && weight > 1) {
-                            var val = await getBMI(
-                              weight / ((height / 100) * (height / 100)),
+                              .state = double.parse(value);
+                          if (int.parse(value) > 1 && height > 1) {
+                            var val = await CommonUtils.getBMI(
+                              height: height,
+                              weight: double.parse(value),
                             );
                             ref.read(finalBMI.notifier).state = val;
                           }
-                        }
 
-                        // weightController.text.toDouble();
+                          if (value.isEmpty) {
+                            ref.read(weightProvider.notifier).state = 1.0;
+                          }
+                        }
                       },
                     ),
                   ),
@@ -117,11 +121,8 @@ class SlidersClass extends ConsumerWidget {
                   Expanded(
                     child: Slider(
                       value: height.toDouble(),
-                      divisions: 20,
+                      divisions: 40,
                       onChanged: (value) {
-                        // setState(() {
-                        //   age = value.toInt();
-                        // });
                         ref.read(bmiHeight.notifier).state = value;
                       },
                       min: 1,
@@ -144,16 +145,15 @@ class SlidersClass extends ConsumerWidget {
                         errorText: err == '' ? null : err,
                       ),
                       onChanged: (value) async {
-                        err = updateInputValue(value, true);
+                        err = CommonUtils.updateInputValue(value, true);
                         if (err == '') {
                           ref.read(bmiHeight.notifier).state = double.parse(
                             value,
                           );
                           if (int.parse(value) > 1 && weight > 1) {
-                            var val = await getBMI(
-                              weight /
-                                  ((int.parse(value) / 100) *
-                                      (int.parse(value) / 100)),
+                            var val = await CommonUtils.getBMI(
+                              height: double.parse(value),
+                              weight: weight,
                             );
                             ref.read(finalBMI.notifier).state = val;
                           }

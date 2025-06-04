@@ -11,7 +11,14 @@ class CommonUtils {
     }
   }
 
-  Future<String> getBMI(double bmi) async {
+  static Future<String> getBMI({
+    // double? bmi = 0.0,
+    // bool isBmiValueNeeded = false,
+    double height = 1.0,
+    double weight = 1.0,
+  }) async {
+    var bmi = getBmiValue(height: height, weight: weight);
+
     if (bmi >= 16 && bmi <= 18.5) {
       return 'under weight';
     } else if (bmi > 18.5 && bmi <= 25) {
@@ -23,5 +30,9 @@ class CommonUtils {
     } else {
       return '';
     }
+  }
+
+  static double getBmiValue({required double height, required double weight}) {
+    return (weight / ((height / 100) * (height / 100)));
   }
 }
