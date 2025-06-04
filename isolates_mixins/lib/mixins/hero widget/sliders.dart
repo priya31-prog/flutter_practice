@@ -4,13 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 
-// class SlidersClass extends StatefulWidget {
-//   const SlidersClass({super.key});
-
-//   @override
-//   State<SlidersClass> createState() => _SlidersClassState();
-// }
-
 // ignore: must_be_immutable
 class SlidersClass extends ConsumerWidget {
   SlidersClass({super.key});
@@ -46,9 +39,16 @@ class SlidersClass extends ConsumerWidget {
                   Expanded(
                     child: Slider(
                       value: weight,
-                      divisions: 40,
-                      onChanged: (value) {
+                      // divisions: 5,
+                      onChanged: (value) async {
                         ref.read(weightProvider.notifier).state = value;
+                        if (value > 1 && height > 1) {
+                          var val = await CommonUtils.getBMI(
+                            height: height,
+                            weight: value,
+                          );
+                          ref.read(finalBMI.notifier).state = val;
+                        }
                       },
                       min: 1,
                       max: 150,
@@ -106,8 +106,10 @@ class SlidersClass extends ConsumerWidget {
                   children: [
                     TextSpan(text: 'Your weight : '),
                     TextSpan(
-                      text: weight.toString(),
-                      style: TextStyle(color: Colors.deepPurple),
+                      text: weight.toStringAsFixed(2),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -121,9 +123,16 @@ class SlidersClass extends ConsumerWidget {
                   Expanded(
                     child: Slider(
                       value: height.toDouble(),
-                      divisions: 40,
-                      onChanged: (value) {
+                      // divisions: 5,
+                      onChanged: (value) async {
                         ref.read(bmiHeight.notifier).state = value;
+                        if (value > 1 && weight > 1) {
+                          var val = await CommonUtils.getBMI(
+                            height: value,
+                            weight: weight,
+                          );
+                          ref.read(finalBMI.notifier).state = val;
+                        }
                       },
                       min: 1,
                       max: 250,
@@ -172,8 +181,10 @@ class SlidersClass extends ConsumerWidget {
                   children: [
                     TextSpan(text: 'Your height : '),
                     TextSpan(
-                      text: height.toString(),
-                      style: TextStyle(color: Colors.deepPurple),
+                      text: height.toStringAsFixed(2),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -189,17 +200,21 @@ class SlidersClass extends ConsumerWidget {
                     TextSpan(
                       text:
                           height > 1.0 && weight > 1.0
-                              ? (weight / (height / 100 * height / 100))
-                                  .toStringAsFixed(2)
+                              ? CommonUtils.getBmiValue(
+                                height: height,
+                                weight: weight,
+                              ).toStringAsFixed(2)
                               : '0.0',
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
               ),
 
               Text(
-                bmiResult != '' ? 'You are  ${bmiResult}' : 'hae',
+                bmiResult != '' ? 'You are  $bmiResult' : '',
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ],

@@ -2,7 +2,6 @@ class CommonUtils {
   static String updateInputValue(String value, bool height) {
     String errorText = '';
 
-    // Validate the input range between 1 and 150
     double parsedValue = double.tryParse(value) ?? 0;
     if (parsedValue < 1 || height ? parsedValue > 250 : parsedValue > 150) {
       return errorText = 'Value must be between 1 and 250';
@@ -12,8 +11,6 @@ class CommonUtils {
   }
 
   static Future<String> getBMI({
-    // double? bmi = 0.0,
-    // bool isBmiValueNeeded = false,
     double height = 1.0,
     double weight = 1.0,
   }) async {
