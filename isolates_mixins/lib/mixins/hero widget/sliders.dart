@@ -31,7 +31,7 @@ class SlidersClass extends ConsumerWidget {
     // Notify listeners (Consumer will rebuild)
   }
 
-  String getBMI(double bmi) {
+  Future<String> getBMI(double bmi) async {
     if (bmi >= 16 && bmi <= 18.5) {
       return 'under weight';
     } else if (bmi > 18.5 && bmi <= 25) {
@@ -39,7 +39,7 @@ class SlidersClass extends ConsumerWidget {
     } else if (bmi > 25 && bmi <= 35) {
       return 'over weight';
     } else if (bmi > 35) {
-      return 'obsity';
+      return 'obsese';
     } else {
       return '';
     }
@@ -55,6 +55,7 @@ class SlidersClass extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double height = ref.watch(bmiHeight);
     double weight = ref.watch(weightProvider);
+    String bmiResult = ref.watch(finalBMI);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -107,13 +108,19 @@ class SlidersClass extends ConsumerWidget {
                         label: Text('kg'),
                       ),
 
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         err = updateInputValue(value, false);
 
                         if (err == '') {
                           ref
                               .read(weightProvider.notifier)
                               .state = double.parse(weightController.text);
+                          if (height > 1 && weight > 1) {
+                            var val = await getBMI(
+                              weight / ((height / 100) * (height / 100)),
+                            );
+                            ref.read(finalBMI.notifier).state = val;
+                          }
                         }
 
                         // weightController.text.toDouble();
@@ -169,13 +176,23 @@ class SlidersClass extends ConsumerWidget {
                         border: OutlineInputBorder(gapPadding: 2),
                         errorText: err == '' ? null : err,
                       ),
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         err = updateInputValue(value, true);
                         if (err == '') {
                           ref.read(bmiHeight.notifier).state = double.parse(
                             heightController.text,
                           );
+                          if (height > 1 && weight > 1) {
+                            var val = await getBMI(
+                              weight / ((height / 100) * (height / 100)),
+                            );
+                            ref.read(finalBMI.notifier).state = val;
 
+                            print('your bmi result is $val');
+                            print(
+                              'your bmi is ${weight / ((height / 100) * (height / 100))}',
+                            );
+                          }
                           if (value.isEmpty) {
                             ref.read(bmiHeight.notifier).state = 1.0;
                           }
@@ -219,9 +236,7 @@ class SlidersClass extends ConsumerWidget {
               ),
 
               Text(
-                getBMI((weight / (height / 100 * height / 100))) == ''
-                    ? 'You are  ${getBMI((weight / (height / 100 * height / 100)))}'
-                    : '',
+                bmiResult != '' ? 'You are  ${bmiResult}' : 'hae',
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ],
