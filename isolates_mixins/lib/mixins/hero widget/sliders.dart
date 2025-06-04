@@ -12,45 +12,12 @@ import 'package:isolates_mixins/state_management/state_provider.dart';
 
 // ignore: must_be_immutable
 class SlidersClass extends ConsumerWidget {
-  String _inputValue = '';
-  String _errorText = '';
-
-  String get inputValue => _inputValue;
-  String get errorText => _errorText;
-  String updateInputValue(String value, bool height) {
-    _inputValue = value;
-
-    // Validate the input range between 1 and 150
-    double parsedValue = double.tryParse(value) ?? 0;
-    if (parsedValue < 1 || height ? parsedValue > 250 : parsedValue > 150) {
-      return _errorText = 'Value must be between 1 and 250';
-    } else {
-      return _errorText = '';
-    }
-
-    // Notify listeners (Consumer will rebuild)
-  }
-
-  Future<String> getBMI(double bmi) async {
-    if (bmi >= 16 && bmi <= 18.5) {
-      return 'under weight';
-    } else if (bmi > 18.5 && bmi <= 25) {
-      return 'normal';
-    } else if (bmi > 25 && bmi <= 35) {
-      return 'over weight';
-    } else if (bmi > 35) {
-      return 'obsese';
-    } else {
-      return '';
-    }
-  }
+  SlidersClass({super.key});
 
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   String err = '';
 
-  SlidersClass({super.key});
-  // int age = 10;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double height = ref.watch(bmiHeight);
@@ -180,24 +147,20 @@ class SlidersClass extends ConsumerWidget {
                         err = updateInputValue(value, true);
                         if (err == '') {
                           ref.read(bmiHeight.notifier).state = double.parse(
-                            heightController.text,
+                            value,
                           );
-                          if (height > 1 && weight > 1) {
+                          if (int.parse(value) > 1 && weight > 1) {
                             var val = await getBMI(
-                              weight / ((height / 100) * (height / 100)),
+                              weight /
+                                  ((int.parse(value) / 100) *
+                                      (int.parse(value) / 100)),
                             );
                             ref.read(finalBMI.notifier).state = val;
-
-                            print('your bmi result is $val');
-                            print(
-                              'your bmi is ${weight / ((height / 100) * (height / 100))}',
-                            );
                           }
                           if (value.isEmpty) {
                             ref.read(bmiHeight.notifier).state = 1.0;
                           }
                         }
-                        // weightController.text.toDouble();
                       },
                     ),
                   ),
