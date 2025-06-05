@@ -50,7 +50,7 @@ class CommonUtils {
       case AppConstants.heroWiget:
         // Navigator.pushNamed(context, routeName)
         log('You are inside hero nav');
-        Navigator.pushNamed(context, RouteNavigation.mixinPage);
+        Navigator.pushNamed(context, RouteNavigation.heroWidget);
       case AppConstants.sliders:
         Navigator.pushNamed(context, RouteNavigation.sliders);
       case AppConstants.pagination:
