@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
 import 'package:isolates_mixins/mixins/left_drawer_menu.dart';
 
 // ignore: must_be_immutable
 class CustomWidget extends ConsumerWidget with DrawerMixin {
   CustomWidget({super.key});
 
-  List<String> subtitles = ['Sliders', 'Pagination', 'Hero Widget'];
+  List<String> subtitles = [
+    AppConstants.sliders,
+    AppConstants.pagination,
+    AppConstants.heroWiget,
+  ];
   List<IconData> iconsList = [
     Icons.slideshow_sharp,
     Icons.pages_outlined,
     Icons.animation_outlined,
   ];
   List<String> titles = [
-    'Hero Widget',
-    'Grid View',
-    'Layout Builder',
-    'Animations',
+    AppConstants.heroWiget,
+    AppConstants.gridView,
+    AppConstants.layoutBuilder,
+    AppConstants.animations,
   ];
 
   @override

@@ -1,3 +1,10 @@
+// import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
+
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:isolates_mixins/common_files/route_navigation.dart';
+
 class CommonUtils {
   static String updateInputValue(String value, bool height) {
     String errorText = '';
@@ -34,4 +41,34 @@ class CommonUtils {
   }
 
   static void clearText() {}
+
+  static void heroWigetNav({
+    required String page,
+    required BuildContext context,
+  }) {
+    switch (page) {
+      case AppConstants.heroWiget:
+        // Navigator.pushNamed(context, routeName)
+        log('You are inside hero nav');
+        Navigator.pushNamed(context, RouteNavigation.mixinPage);
+      case AppConstants.sliders:
+        Navigator.pushNamed(context, RouteNavigation.sliders);
+      case AppConstants.pagination:
+        log('You are inside pagination');
+        Navigator.pushNamed(context, RouteNavigation.mixinPage);
+
+      default:
+        log('default message..');
+        Navigator.pushNamed(context, RouteNavigation.homepage);
+    }
+  }
+}
+
+class AppConstants {
+  static const String heroWiget = 'Hero Widget';
+  static const String gridView = 'Grid View';
+  static const String layoutBuilder = 'Layout Builder';
+  static const String animations = 'Animations';
+  static const String sliders = 'Sliders';
+  static const String pagination = 'Pagination';
 }

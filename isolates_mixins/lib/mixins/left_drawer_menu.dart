@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/common_files/route_navigation.dart';
+import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 // import 'providers.dart';
 
@@ -57,9 +58,9 @@ mixin DrawerMixin {
                               icon: iconsList[index],
                               text: subtitles![index],
                               iconBtnPress: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteNavigation.sliders,
+                                CommonUtils.heroWigetNav(
+                                  context: context,
+                                  page: subtitles[index],
                                 );
                               },
                               iconColor: Colors.blueAccent,
