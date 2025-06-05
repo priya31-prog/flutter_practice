@@ -32,4 +32,6 @@ class CommonUtils {
   static double getBmiValue({required double height, required double weight}) {
     return (weight / ((height / 100) * (height / 100)));
   }
+
+  static void clearText() {}
 }

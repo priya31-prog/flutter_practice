@@ -4,16 +4,44 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 
-// ignore: must_be_immutable
-class SlidersClass extends ConsumerWidget {
-  SlidersClass({super.key});
+class SlidersClass extends ConsumerStatefulWidget {
+  const SlidersClass({super.key});
 
-  TextEditingController weightController = TextEditingController();
-  TextEditingController heightController = TextEditingController();
+  @override
+  ConsumerState<SlidersClass> createState() => _SlidersClass();
+}
+
+class _SlidersClass extends ConsumerState<SlidersClass> {
+  // _SlidersClass({super.key});
+
+  // TextEditingController weightController = TextEditingController();
+  // TextEditingController heightController = TextEditingController();
+
+  late TextEditingController weightController;
+  late TextEditingController heightController;
   String err = '';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    weightController = TextEditingController();
+    heightController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    weightController.dispose();
+    heightController.dispose();
+    super.dispose();
+  }
+
+  void clear() {
+    weightController.clear();
+    heightController.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     double height = ref.watch(bmiHeight);
     double weight = ref.watch(weightProvider);
     String bmiResult = ref.watch(finalBMI);
@@ -61,13 +89,16 @@ class SlidersClass extends ConsumerWidget {
                     width: 70,
                     child: TextField(
                       controller: weightController,
+                      onEditingComplete: () {
+                        clear();
+                      },
 
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
                       ),
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,2}$'),
+                        FilteringTextInputFormatter.deny(
+                          RegExp(r'^0$'),
                         ), // Only numbers and a decimal point
                       ],
                       decoration: InputDecoration(
@@ -80,9 +111,9 @@ class SlidersClass extends ConsumerWidget {
                         err = CommonUtils.updateInputValue(value, false);
 
                         if (err == '') {
-                          ref
-                              .read(weightProvider.notifier)
-                              .state = double.parse(value);
+                          ref.read(weightProvider.notifier).state =
+                              value.isEmpty ? 1.0 : double.parse(value);
+
                           if (int.parse(value) > 1 && height > 1) {
                             var val = await CommonUtils.getBMI(
                               height: height,
@@ -145,20 +176,26 @@ class SlidersClass extends ConsumerWidget {
                     width: 70,
                     child: TextField(
                       controller: heightController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'^0$')),
+                      ],
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
                       ),
+                      onEditingComplete: () {
+                        clear();
+                      },
                       decoration: InputDecoration(
                         label: Text('cm'),
                         border: OutlineInputBorder(gapPadding: 2),
                         errorText: err == '' ? null : err,
                       ),
                       onChanged: (value) async {
+                        // heightController.text = value;
                         err = CommonUtils.updateInputValue(value, true);
                         if (err == '') {
-                          ref.read(bmiHeight.notifier).state = double.parse(
-                            value,
-                          );
+                          ref.read(bmiHeight.notifier).state =
+                              value.isEmpty ? 1.0 : double.parse(value);
                           if (int.parse(value) > 1 && weight > 1) {
                             var val = await CommonUtils.getBMI(
                               height: double.parse(value),
