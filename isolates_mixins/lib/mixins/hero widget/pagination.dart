@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:isolates_mixins/API/users_api.dart';
+import 'package:isolates_mixins/API/users_model.dart';
 
 class Pagination extends StatefulWidget {
   const Pagination({super.key});
@@ -9,7 +13,8 @@ class Pagination extends StatefulWidget {
 
 class _PaginationState extends State<Pagination> {
   final ScrollController _controller = ScrollController();
-  List<String> itemList = [];
+  List<UsersModel> userData = [];
+  List<UsersModel> itemList = [];
   int page = 1;
   bool isLoading = false;
   final int itemsPerPage = 25;
@@ -17,6 +22,7 @@ class _PaginationState extends State<Pagination> {
   @override
   void initState() {
     super.initState();
+
     _fetchData();
 
     _controller.addListener(() {
@@ -32,17 +38,36 @@ class _PaginationState extends State<Pagination> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(Duration(seconds: 3));
-    List<String> newData = List.generate(
-      itemsPerPage,
-      (index) => '${index + page * itemsPerPage}',
-    );
+    log('is loading ...${isLoading}');
 
-    setState(() {
-      page++;
-      itemList.addAll(newData);
-      isLoading = false;
+    await Future.delayed(Duration(seconds: 3));
+
+    UserApi().fetchUsers().then((value) {
+      // userData = value;
+      itemList = List.generate(
+        itemsPerPage,
+        (index) => value[index + page * itemsPerPage],
+      );
+      setState(() {
+        userData.addAll(itemList);
+        page++;
+        isLoading = false;
+      });
+      log('user data----${itemList[0].firstName}');
+      log('is loading ...${isLoading}');
     });
+
+    // List<String> newData = List.generate(
+    //   itemsPerPage,
+    //   (index) => '${index + page * itemsPerPage}',
+    // );
+
+    // setState(() {
+    //   page++;
+    //   // itemList.addAll(newData);
+    //   // userData;
+    //   isLoading = false;
+    // });
   }
 
   @override
@@ -66,12 +91,23 @@ class _PaginationState extends State<Pagination> {
   Widget _buildList(BuildContext context) {
     return ListView.builder(
       controller: _controller,
-      itemCount: itemList.length,
+      itemCount: userData.length,
       itemBuilder: (context, index) {
-        if (index < itemList.length) {
+        // return ListTile(title: Text('item 56'));
+        if (index < userData.length - 1 && userData.isNotEmpty) {
           return ListTile(
-            leading: Icon(Icons.data_object_outlined),
-            title: Text('Item $index'),
+            leading: Icon(Icons.people_alt_rounded),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${userData[index].firstName} ${userData[index].lastName}',
+                ),
+                Text(
+                  '${userData[index].companyId} - ${userData[index].countryCode}',
+                ),
+              ],
+            ),
           );
         } else {
           return isLoading == true
