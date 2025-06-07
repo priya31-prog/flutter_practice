@@ -55,7 +55,7 @@ class CommonUtils {
         Navigator.pushNamed(context, RouteNavigation.sliders);
       case AppConstants.pagination:
         log('You are inside pagination');
-        Navigator.pushNamed(context, RouteNavigation.mixinPage);
+        Navigator.pushNamed(context, RouteNavigation.pagination);
 
       default:
         log('default message..');
