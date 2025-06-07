@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isolates_mixins/mixins/hero%20widget/common_functions.dart';
+import 'package:isolates_mixins/common_files/common_functions.dart';
 import 'package:isolates_mixins/state_management/state_provider.dart';
 
 class SlidersClass extends ConsumerStatefulWidget {
