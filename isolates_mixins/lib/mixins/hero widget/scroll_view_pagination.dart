@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:isolates_mixins/API/users_api.dart';
 import 'package:isolates_mixins/API/users_model.dart';
 
-class Pagination extends StatefulWidget {
-  const Pagination({super.key});
+class ScrollViewPagination extends StatefulWidget {
+  const ScrollViewPagination({super.key});
 
   @override
-  State<Pagination> createState() => _PaginationState();
+  State<ScrollViewPagination> createState() => _ScrollViewPaginationState();
 }
 
-class _PaginationState extends State<Pagination> {
+class _ScrollViewPaginationState extends State<ScrollViewPagination> {
   final ScrollController _controller = ScrollController();
   List<UsersModel> userData = [];
   List<UsersModel> itemList = [];
@@ -56,18 +56,6 @@ class _PaginationState extends State<Pagination> {
       log('user data----${itemList[0].firstName}');
       log('is loading ...${isLoading}');
     });
-
-    // List<String> newData = List.generate(
-    //   itemsPerPage,
-    //   (index) => '${index + page * itemsPerPage}',
-    // );
-
-    // setState(() {
-    //   page++;
-    //   // itemList.addAll(newData);
-    //   // userData;
-    //   isLoading = false;
-    // });
   }
 
   @override
@@ -80,7 +68,10 @@ class _PaginationState extends State<Pagination> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pagination', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'ScrollViewPagination',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),

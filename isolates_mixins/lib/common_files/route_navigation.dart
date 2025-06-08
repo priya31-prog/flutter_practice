@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isolates_mixins/home_page.dart';
 import 'package:isolates_mixins/mixins/hero%20widget/hero_wiget_screen.dart';
-import 'package:isolates_mixins/mixins/hero%20widget/pagination.dart';
+import 'package:isolates_mixins/mixins/hero%20widget/scroll_view_pagination.dart';
 import 'package:isolates_mixins/mixins/hero%20widget/sliders.dart';
 import 'package:isolates_mixins/mixins/mixin_main.dart';
 
@@ -22,7 +22,7 @@ class RouteNavigation {
       case heroWidget:
         return MaterialPageRoute(builder: (_) => HeroWigetScreen());
       case pagination:
-        return MaterialPageRoute(builder: (_) => Pagination());
+        return MaterialPageRoute(builder: (_) => ScrollViewPagination());
       default:
         return MaterialPageRoute(builder: (_) => MyHomePage());
     }
