@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/common_files/route_navigation.dart';
-import 'package:isolates_mixins/mixins/hero%20widget/hero_wiget_screen.dart';
-import 'package:isolates_mixins/mixins/hero%20widget/scroll_view_pagination.dart';
-import 'package:isolates_mixins/mixins/hero%20widget/sliders.dart';
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -24,8 +21,8 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: RouteNavigation.homepage,
-      // onGenerateRoute: RouteNavigation.generateRoute,
-      home: ScrollViewPagination(),
+      onGenerateRoute: RouteNavigation.generateRoute,
+      // home: ScrollViewPagination(),
     );
   }
 }

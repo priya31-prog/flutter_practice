@@ -14,3 +14,5 @@ final scrollPages = StateProvider<int>((ref) => 1);
 final scrollItemsPerPage = StateProvider<int>((ref) => 25);
 final userData = StateProvider<List<UsersModel>>((ref) => []);
 final singlePageItem = StateProvider<List<UsersModel>>((ref) => []);
+
+// numbered pagination
