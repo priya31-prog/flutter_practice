@@ -14,3 +14,15 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## what does this project do?
+
+Welcome page - description about the products
+list the items in 2\*20
+add pagination -> numbered pagination / can be load more
+describe the product with image, amount and name
+on click of the product -> products detailed description + fav(animation) + add to cart
+
+add to cart -> product details and no of items , buy now
+
+product list -> filtering and sorting
