@@ -1,60 +1,66 @@
+// import 'dart:developer';
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/API/users_api.dart';
-import 'package:isolates_mixins/API/users_model.dart';
+// import 'package:isolates_mixins/API/users_model.dart';
+import 'package:isolates_mixins/state_management/state_provider.dart';
 
-class ScrollViewPagination extends StatefulWidget {
+class ScrollViewPagination extends ConsumerStatefulWidget {
   const ScrollViewPagination({super.key});
 
   @override
-  State<ScrollViewPagination> createState() => _ScrollViewPaginationState();
+  ConsumerState<ScrollViewPagination> createState() =>
+      _ScrollViewPaginationState();
 }
 
-class _ScrollViewPaginationState extends State<ScrollViewPagination> {
+class _ScrollViewPaginationState extends ConsumerState<ScrollViewPagination> {
   final ScrollController _controller = ScrollController();
-  List<UsersModel> userData = [];
-  List<UsersModel> itemList = [];
-  int page = 1;
-  bool isLoading = false;
-  final int itemsPerPage = 25;
+  // List<UsersModel> userData = [];
+  // List<UsersModel> itemList = [];
+  // int page = 1;
+  // // bool isLoading = false;
+  // final int itemsPerPage = 25;
 
   @override
   void initState() {
     super.initState();
 
-    _fetchData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchData(); //to avoid unnecessary rebuilds
+    });
 
     _controller.addListener(() {
       if (_controller.position.pixels >=
               _controller.position.maxScrollExtent - 100 &&
-          !isLoading) {
+          !ref.read(loadingNextScroll)) {
         _fetchData();
       }
     });
   }
 
   void _fetchData() async {
-    setState(() {
-      isLoading = true;
-    });
-    log('is loading ...${isLoading}');
+    ref.read(loadingNextScroll.notifier).state = true;
+    log('logging is loading ${ref.watch(loadingNextScroll)}');
 
     await Future.delayed(Duration(seconds: 3));
 
     UserApi().fetchUsers().then((value) {
       // userData = value;
-      itemList = List.generate(
-        itemsPerPage,
-        (index) => value[index + page * itemsPerPage],
+      ref.read(singlePageItem.notifier).state = List.generate(
+        ref.watch(scrollItemsPerPage),
+        (index) =>
+            value[index +
+                ref.watch(scrollPages) * ref.watch(scrollItemsPerPage)],
       );
-      setState(() {
-        userData.addAll(itemList);
-        page++;
-        isLoading = false;
-      });
-      log('user data----${itemList[0].firstName}');
-      log('is loading ...${isLoading}');
+      ref.read(loadingNextScroll.notifier).state = false;
+
+      ref.read(userData.notifier).state.addAll(ref.watch(singlePageItem));
+      ref.read(scrollPages.notifier).state++;
+
+      log('logging users userdate ${userData}');
     });
   }
 
@@ -66,6 +72,7 @@ class _ScrollViewPaginationState extends State<ScrollViewPagination> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = ref.watch(loadingNextScroll);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -75,28 +82,25 @@ class _ScrollViewPaginationState extends State<ScrollViewPagination> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: _buildList(context),
+      body: _buildList(context, isLoading: isLoading),
     );
   }
 
-  Widget _buildList(BuildContext context) {
+  Widget _buildList(BuildContext context, {required bool isLoading}) {
+    final users = ref.watch(userData);
     return ListView.builder(
       controller: _controller,
-      itemCount: userData.length,
+      itemCount: users.length,
       itemBuilder: (context, index) {
         // return ListTile(title: Text('item 56'));
-        if (index < userData.length - 1 && userData.isNotEmpty) {
+        if (index < users.length - 1 && users.isNotEmpty) {
           return ListTile(
             leading: Icon(Icons.people_alt_rounded),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${userData[index].firstName} ${userData[index].lastName}',
-                ),
-                Text(
-                  '${userData[index].companyId} - ${userData[index].countryCode}',
-                ),
+                Text('${users[index].firstName} ${users[index].lastName}'),
+                Text('${users[index].companyId} - ${users[index].countryCode}'),
               ],
             ),
           );
