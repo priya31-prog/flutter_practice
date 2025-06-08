@@ -1,7 +1,3 @@
-// import 'dart:developer';
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isolates_mixins/API/users_api.dart';
@@ -18,11 +14,6 @@ class ScrollViewPagination extends ConsumerStatefulWidget {
 
 class _ScrollViewPaginationState extends ConsumerState<ScrollViewPagination> {
   final ScrollController _controller = ScrollController();
-  // List<UsersModel> userData = [];
-  // List<UsersModel> itemList = [];
-  // int page = 1;
-  // // bool isLoading = false;
-  // final int itemsPerPage = 25;
 
   @override
   void initState() {
@@ -43,7 +34,7 @@ class _ScrollViewPaginationState extends ConsumerState<ScrollViewPagination> {
 
   void _fetchData() async {
     ref.read(loadingNextScroll.notifier).state = true;
-    log('logging is loading ${ref.watch(loadingNextScroll)}');
+    // log('logging is loading ${ref.watch(loadingNextScroll)}');
 
     await Future.delayed(Duration(seconds: 3));
 
@@ -60,7 +51,7 @@ class _ScrollViewPaginationState extends ConsumerState<ScrollViewPagination> {
       ref.read(userData.notifier).state.addAll(ref.watch(singlePageItem));
       ref.read(scrollPages.notifier).state++;
 
-      log('logging users userdate ${userData}');
+      // log('logging users userdate ${userData}');
     });
   }
 
