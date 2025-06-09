@@ -1,56 +1,38 @@
+import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    extensions: <ThemeExtension<dynamic>>[
+      const GradientTheme(
+        primaryGradient: LinearGradient(
+          colors: [Colors.tealAccent, Colors.cyan],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+    ],
+  );
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'E-World',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Electronic Gadgets for you'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+      title: 'ElectroCart',
+      debugShowCheckedModeBanner: false,
+      // themeMode: ThemeMode.dark,
+      theme: darkTheme,
+      onGenerateRoute: RouteNavigations.onGenerateRoute,
+      home: const SplashScreen(),
     );
   }
 }
