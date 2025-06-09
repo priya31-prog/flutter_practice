@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +12,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<SplashScreen> {
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  void _fetchData() {
+    GadgetsApi().fetchApiResponse().then((final value) {
+      if (value.status.toLowerCase() == 'success') {
+        setState(() {
+          isLoading = false;
+        });
+
+        log('printing set state ${isLoading}');
+      }
+    });
+  }
+
   bool isLoading = true;
   @override
   Widget build(BuildContext context) {
