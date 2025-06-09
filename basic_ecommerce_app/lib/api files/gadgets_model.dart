@@ -3,7 +3,7 @@ import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 class GadgetsModel {
   final String status;
   final String message;
-  final Products products;
+  final List<Products> products;
 
   GadgetsModel({
     required this.status,
@@ -15,11 +15,18 @@ class GadgetsModel {
     return GadgetsModel(
       status: json['status'],
       message: json['message'],
-      products: json['products'],
+      products:
+          (json['products'] as List<dynamic>)
+              .map((e) => Products.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'status': status, 'message': message, 'products': products};
+    return {
+      'status': status,
+      'message': message,
+      'products': products.map((e) => e.toJson()).toList(),
+    };
   }
 }
