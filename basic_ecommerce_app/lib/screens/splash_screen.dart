@@ -2,6 +2,7 @@
 
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,10 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
   void _fetchData() {
     GadgetsApi().fetchApiResponse().then((final value) {
       if (value.status.toLowerCase() == 'success') {
-        ref.read(isDataLoaded.notifier).state = false;
+        Future.delayed(Duration(seconds: 3), () {
+          ref.read(isDataLoaded.notifier).state = false;
+          Navigator.pushNamed(context, RouteNavigations.onBoardingScreen);
+        });
 
         // log('printing set state ${isLoading}');
       }

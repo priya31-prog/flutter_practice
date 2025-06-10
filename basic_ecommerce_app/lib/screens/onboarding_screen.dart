@@ -1,4 +1,5 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -42,7 +43,12 @@ class OnboardingScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouteNavigations.loginPage,
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.cyan,
                         foregroundColor: Colors.black,
@@ -66,7 +72,9 @@ class OnboardingScreen extends StatelessWidget {
                   color: const Color.fromARGB(255, 150, 148, 148),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                //on click of skip navigate to welcome page which loads all the gadgets
+              },
             ),
           ],
         ),
