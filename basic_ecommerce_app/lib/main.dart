@@ -1,5 +1,6 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
 import 'package:basic_ecommerce_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       // themeMode: ThemeMode.dark,
       theme: darkTheme,
       onGenerateRoute: RouteNavigations.onGenerateRoute,
-      home: const SplashScreen(),
+      home: OnboardingScreen(),
     );
   }
 }
