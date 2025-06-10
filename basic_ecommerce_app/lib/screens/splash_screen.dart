@@ -1,37 +1,42 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _MyHomePageState();
+  ConsumerState<SplashScreen> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<SplashScreen> {
+class _MyHomePageState extends ConsumerState<SplashScreen> {
+  @override
   void initState() {
     super.initState();
-    _fetchData();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchData();
+    });
   }
 
   void _fetchData() {
     GadgetsApi().fetchApiResponse().then((final value) {
       if (value.status.toLowerCase() == 'success') {
-        setState(() {
-          isLoading = false;
-        });
+        ref.read(isDataLoaded.notifier).state = false;
 
-        log('printing set state ${isLoading}');
+        // log('printing set state ${isLoading}');
       }
     });
   }
 
-  bool isLoading = true;
+  // bool isLoading = true;
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(isDataLoaded);
     return Scaffold(
       body: Center(
         child: Column(
