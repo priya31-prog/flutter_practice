@@ -1,4 +1,3 @@
-import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
