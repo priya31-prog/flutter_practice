@@ -12,6 +12,20 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,11 +60,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Text('Login or Sign Up', style: TextStyle(fontSize: 30)),
             TextField(
               controller: _emailController,
+              focusNode: emailFocusNode,
               onSubmitted: (value) {
                 ref.read(email.notifier).state = value;
-                if (getAllCredDone(mail: mail, phone: mobile)) {
+                if (getAllCredDone(mail: value, phone: mobile)) {
                   ref.read(isCredEntered.notifier).state = true;
+                } else {
+                  ref.read(isCredEntered.notifier).state = false;
                 }
+                FocusScope.of(context).requestFocus(passwordFocusNode);
               },
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -67,12 +85,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
             TextField(
               controller: _passwordController,
+              focusNode: passwordFocusNode,
               onSubmitted: (value) {
                 // print('inside pass');
                 ref.read(phone.notifier).state = value;
-                if (getAllCredDone(mail: mail, phone: mobile)) {
+                if (getAllCredDone(mail: mail, phone: value)) {
                   ref.read(isCredEntered.notifier).state = true;
+                } else {
+                  ref.read(isCredEntered.notifier).state = false;
                 }
+                // passwordFocusNode.nextFocus();
               },
               decoration: InputDecoration(
                 hintText: 'Password',
