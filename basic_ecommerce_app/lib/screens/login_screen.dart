@@ -1,13 +1,15 @@
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   @override
@@ -20,6 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mail = ref.watch(email);
+    final mobile = ref.watch(phone);
+    final isEditingCompleted = ref.watch(isCredEntered);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -41,6 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
             Text('Login or Sign Up', style: TextStyle(fontSize: 30)),
             TextField(
               controller: _emailController,
+              onSubmitted: (value) {
+                ref.read(email.notifier).state = value;
+                if (getAllCredDone(mail: mail, phone: mobile)) {
+                  ref.read(isCredEntered.notifier).state = true;
+                }
+              },
               decoration: InputDecoration(
                 hintText: 'Email',
                 fillColor: Theme.of(
@@ -56,6 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
             TextField(
               controller: _passwordController,
+              onSubmitted: (value) {
+                // print('inside pass');
+                ref.read(phone.notifier).state = value;
+                if (getAllCredDone(mail: mail, phone: mobile)) {
+                  ref.read(isCredEntered.notifier).state = true;
+                }
+              },
               decoration: InputDecoration(
                 hintText: 'Password',
                 fillColor: Theme.of(
@@ -77,9 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onTap: () {},
             ),
+
+            isEditingCompleted
+                ? ElevatedButton(onPressed: () {}, child: Text('Submit'))
+                : SizedBox.shrink(),
           ],
         ),
       ),
+
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Row(
@@ -96,4 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+bool getAllCredDone({String? mail, String? phone}) {
+  if (mail == '' || phone == '') {
+    return false;
+  }
+  return true;
 }
