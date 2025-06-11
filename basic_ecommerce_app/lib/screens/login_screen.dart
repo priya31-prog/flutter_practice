@@ -126,7 +126,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
 
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
