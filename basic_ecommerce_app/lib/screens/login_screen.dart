@@ -1,3 +1,4 @@
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -133,7 +134,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           children: [
             Text("Don't have an account? "),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, RouteNavigations.signUpScreen);
+              },
               child: Text('Sign Up', style: TextStyle(color: Colors.cyan)),
             ),
           ],

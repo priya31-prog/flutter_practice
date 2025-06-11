@@ -1,3 +1,4 @@
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -154,7 +155,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             Text("Already have an account ?"),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
               child: Text('Sign Up', style: TextStyle(color: Colors.cyan)),
             ),
           ],
