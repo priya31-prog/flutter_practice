@@ -1,105 +1,224 @@
-import 'package:basic_ecommerce_app/screens/promo_card.dart';
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class HomeScreen extends StatefulWidget {
+import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/screens/promo_card.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
+
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final _searchController;
+  late List<Products> products;
+  List<String> brand = [];
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+    });
+  }
+
+  void _loadData() {
+    var totalGadget = ref.watch(gadgetsList);
+
+    Future.delayed(Duration(seconds: 3), () {
+      ref.read(brandsList.notifier).state =
+          totalGadget.products.map((ele) => ele.brand).toSet().toList();
+
+      ref.read(productsList.notifier).state = totalGadget.products;
+    });
+
+    log('category -- $brand');
   }
 
   @override
   Widget build(BuildContext context) {
+    brand = ref.watch(brandsList);
+    products = ref.watch(productsList);
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(21.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        prefixIcon: Icon(
-                          Icons.search_outlined,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.secondary.withAlpha(200),
-                        ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(21.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search',
+                          prefixIcon: Icon(
+                            Icons.search_outlined,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondary.withAlpha(200),
+                          ),
 
-                        hintStyle: TextStyle(
-                          color: Theme.of(
+                          hintStyle: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondary.withAlpha(200),
+                          ),
+                          fillColor: Theme.of(
                             context,
-                          ).colorScheme.secondary.withAlpha(200),
-                        ),
-                        fillColor: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(50),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
+                          ).colorScheme.secondary.withAlpha(50),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
+                    SizedBox(width: 10),
 
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withAlpha(50),
-                    ),
-                    child: Icon(Icons.person_2_outlined),
-                  ),
-                ],
-              ),
-
-              Row(
-                children: [PromoCard(title: 'Summer Tech Sale upto 30% off')],
-              ),
-
-              SizedBox(
-                height: 45,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 13,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      margin: const EdgeInsets.only(right: 10),
-                      alignment: Alignment.center,
+                    Container(
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
                         color: Theme.of(
                           context,
                         ).colorScheme.secondary.withAlpha(50),
-                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text('Data $index'), // You can vary the text here
+                      child: Icon(Icons.person_2_outlined),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [PromoCard(title: 'Summer Tech Sale upto 30% off')],
+                ),
+
+                brand.isNotEmpty
+                    ? SizedBox(
+                      height: 45,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: brand.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            margin: const EdgeInsets.only(right: 10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.secondary.withAlpha(50),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              brand[index],
+                            ), // You can vary the text here
+                          );
+                        },
+                      ),
+                    )
+                    : SizedBox(
+                      height: 50,
+                      child: Shimmer.fromColors(
+                        baseColor: const Color.fromARGB(255, 48, 46, 46),
+                        highlightColor: const Color.fromARGB(
+                          255,
+                          143,
+                          142,
+                          142,
+                        ),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 8,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: 100,
+                              height: 40,
+                              margin: const EdgeInsets.only(right: 12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.secondary.withAlpha(50),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                SizedBox(height: 30),
+
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    mainAxisExtent: 230,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.only(
+                        top: 22,
+                        right: 12,
+                        left: 12,
+                        bottom: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(30),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        spacing: 2,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: SizedBox(
+                              height: 90,
+                              child: Image.network(products[index].imageUrl),
+                            ),
+                          ),
+
+                          SizedBox(height: 5),
+                          Text(
+                            products[index].model,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            '\$${products[index].price}',
+                            style: TextStyle(
+                              color: Colors.cyanAccent,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
