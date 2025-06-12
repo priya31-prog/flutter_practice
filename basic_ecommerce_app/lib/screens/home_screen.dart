@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         fillColor: Theme.of(
                           context,
-                        ).colorScheme.secondary.withAlpha(30),
+                        ).colorScheme.secondary.withAlpha(50),
                         filled: true,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -64,14 +64,41 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(12),
                       color: Theme.of(
                         context,
-                      ).colorScheme.secondary.withAlpha(30),
+                      ).colorScheme.secondary.withAlpha(50),
                     ),
                     child: Icon(Icons.person_2_outlined),
                   ),
                 ],
               ),
 
-              PromoCard(title: 'Summer Tech Sale upto 30% off'),
+              Row(
+                children: [PromoCard(title: 'Summer Tech Sale upto 30% off')],
+              ),
+
+              SizedBox(
+                height: 45,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 13,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      margin: const EdgeInsets.only(right: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(50),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text('Data $index'), // You can vary the text here
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
