@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -127,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),

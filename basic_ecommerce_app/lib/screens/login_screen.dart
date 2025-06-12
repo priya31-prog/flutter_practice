@@ -76,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   hintText: 'Email',
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -102,7 +102,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   hintText: 'Password',
                   fillColor: Theme.of(
                     context,
-                  ).colorScheme.secondary.withAlpha(30),
+                  ).colorScheme.secondary.withAlpha(50),
                   filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
