@@ -77,6 +77,10 @@ class OnboardingScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   //on click of skip navigate to welcome page which loads all the gadgets
+                  Navigator.popAndPushNamed(
+                    context,
+                    RouteNavigations.homeScreenSkip,
+                  );
                 },
               ),
             ],

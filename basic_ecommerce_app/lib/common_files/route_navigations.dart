@@ -1,3 +1,4 @@
+import 'package:basic_ecommerce_app/screens/home_screen.dart';
 import 'package:basic_ecommerce_app/screens/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
 import 'package:basic_ecommerce_app/screens/sign_up_screen.dart';
@@ -9,8 +10,11 @@ class RouteNavigations {
   static const String onBoardingScreen = '/onboarding';
   static const String loginPage = '/onboarding/login';
   static const String signUpScreen = '/onboarding/login/signup';
+  static const String homeScreenWithoutSkip =
+      '/onboarding/login/signup/homeScreen';
 
   static const String loginPageWithoutOnboard = '/login';
+  static const String homeScreenSkip = '/onboarding/homeScreenSkip';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -22,6 +26,10 @@ class RouteNavigations {
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case signUpScreen:
         return MaterialPageRoute(builder: (_) => SignUpScreen());
+      case homeScreenSkip:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
+      case homeScreenWithoutSkip:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       default:
         return MaterialPageRoute(builder: (_) => SplashScreen());
     }
