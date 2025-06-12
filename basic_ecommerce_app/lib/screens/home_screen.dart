@@ -20,58 +20,60 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(21.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      prefixIcon: Icon(
-                        Icons.search_outlined,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(200),
-                      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(21.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        prefixIcon: Icon(
+                          Icons.search_outlined,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondary.withAlpha(200),
+                        ),
 
-                      hintStyle: TextStyle(
-                        color: Theme.of(
+                        hintStyle: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondary.withAlpha(200),
+                        ),
+                        fillColor: Theme.of(
                           context,
-                        ).colorScheme.secondary.withAlpha(200),
-                      ),
-                      fillColor: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withAlpha(30),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
+                        ).colorScheme.secondary.withAlpha(30),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10),
+                  SizedBox(width: 10),
 
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(30),
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(30),
+                    ),
+                    child: Icon(Icons.person_2_outlined),
                   ),
-                  child: Icon(Icons.person_2_outlined),
-                ),
-              ],
-            ),
+                ],
+              ),
 
-            PromoCard(title: 'Summer Tech Sale upto 30% off'),
-          ],
+              PromoCard(title: 'Summer Tech Sale upto 30% off'),
+            ],
+          ),
         ),
       ),
     );
