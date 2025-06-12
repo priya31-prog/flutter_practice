@@ -1,5 +1,7 @@
 // import 'dart:developer';
 
+// import 'dart:developer';
+
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
@@ -27,12 +29,16 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
   void _fetchData() {
     GadgetsApi().fetchApiResponse().then((final value) {
       if (value.status.toLowerCase() == 'success') {
+        ref.read(gadgetsList.notifier).state = value;
         Future.delayed(Duration(seconds: 3), () {
           ref.read(isDataLoaded.notifier).state = false;
           Navigator.pushNamed(context, RouteNavigations.onBoardingScreen);
         });
 
         // log('printing set state ${isLoading}');
+
+        // var datas = ref.watch(gadgetsList);
+        // log('ref watch data ${datas.status}');
       }
     });
   }
