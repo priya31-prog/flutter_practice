@@ -74,9 +74,11 @@ class Products {
       shippingInfo: json['shippingInformation'] ?? '',
       availabiltySts: json['availabilityStatus'] ?? '',
       reviews:
-          (json['reviews'] as List<dynamic>)
-              .map((e) => Reviews.fromJson(e))
-              .toList(),
+          json['reviews'] != null
+              ? (json['reviews'] as List<dynamic>)
+                  .map((e) => Reviews.fromJson(e))
+                  .toList()
+              : null,
       returnPolicy: json['returnPolicy'] ?? '',
       minimumOrderQuantity: json['minimumOrderQuantity'] ?? 0,
       meta: MetaData.fromJson(json['meta']),
