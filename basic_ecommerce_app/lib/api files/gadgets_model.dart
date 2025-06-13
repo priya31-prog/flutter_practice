@@ -1,20 +1,14 @@
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 
 class GadgetsModel {
-  final String status;
-  final String message;
+  // final String status;
+  // final String message;
   final List<Products> products;
 
-  GadgetsModel({
-    required this.status,
-    required this.message,
-    required this.products,
-  });
+  GadgetsModel({required this.products});
 
   factory GadgetsModel.fromJson(Map<String, dynamic> json) {
     return GadgetsModel(
-      status: json['status'],
-      message: json['message'],
       products:
           (json['products'] as List<dynamic>)
               .map((e) => Products.fromJson(e as Map<String, dynamic>))
@@ -23,10 +17,6 @@ class GadgetsModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'message': message,
-      'products': products.map((e) => e.toJson()).toList(),
-    };
+    return {'products': products.map((e) => e.toJson()).toList()};
   }
 }

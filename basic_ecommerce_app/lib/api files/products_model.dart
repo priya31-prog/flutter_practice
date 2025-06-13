@@ -1,3 +1,7 @@
+import 'package:basic_ecommerce_app/api%20files/dimensions.dart';
+import 'package:basic_ecommerce_app/api%20files/meta_data.dart';
+import 'package:basic_ecommerce_app/api%20files/reviews.dart';
+
 class Products {
   final int id;
   final String title;
@@ -6,7 +10,7 @@ class Products {
   final double price;
   final double discountPercent;
   final double rating;
-  final double stock;
+  final int stock;
   final List<String> tags;
   final String sku;
   final int weight;
@@ -57,23 +61,26 @@ class Products {
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       category: json['category'] ?? '',
-      price: json['price'] ?? 0.0,
-      discountPercent: json['discountPercentage'] ?? 0.0,
-      rating: json['rating'] ?? 0.0,
-      stock: json['stock'] ?? 0.0,
-      tags: json['tags'],
+      price: (json['price'] as num).toDouble(),
+      discountPercent: (json['discountPercentage'] as num).toDouble(),
+      rating: (json['rating'] as num).toDouble(),
+      stock: json['stock'],
+      tags: List<String>.from(json['tags']),
       brand: json['brand'] ?? '',
       sku: json['sku'] ?? '',
-      weight: json['weight'] ?? 0,
-      dimension: json['dimensions'],
+      weight: json['weight'],
+      dimension: Dimensions.fromJson(json['dimensions']),
       warrentyInfo: json['warrantyInformation'] ?? '',
       shippingInfo: json['shippingInformation'] ?? '',
       availabiltySts: json['availabilityStatus'] ?? '',
-      reviews: json['reviews'],
+      reviews:
+          (json['reviews'] as List<dynamic>)
+              .map((e) => Reviews.fromJson(e))
+              .toList(),
       returnPolicy: json['returnPolicy'] ?? '',
       minimumOrderQuantity: json['minimumOrderQuantity'] ?? 0,
-      meta: json['meta'],
-      images: json['images'],
+      meta: MetaData.fromJson(json['meta']),
+      images: List<String>.from(json['images']),
       thumbnail: json['thumbnail'],
     );
   }
@@ -92,98 +99,16 @@ class Products {
       'tags': tags,
       'sku': sku,
       'weight': weight,
-      'dimensions': dimension,
+      'dimensions': dimension.toJson(),
       'warrantyInformation': warrentyInfo,
       'shippingInformation': shippingInfo,
       'availabilityStatus': availabiltySts,
-      'reviews': reviews,
+      'reviews': reviews!.map((e) => e.toJson()).toList(),
       'returnPolicy': returnPolicy,
       'minimumOrderQuantity': minimumOrderQuantity,
-      'meta': meta,
+      'meta': meta.toJson(),
       'images': images,
       'thumbnail': thumbnail,
-    };
-  }
-}
-
-class Dimensions {
-  final double? width;
-  final double? height;
-  final double? depth;
-  Dimensions({this.depth, this.height, this.width});
-
-  factory Dimensions.fromJson(Map<String, dynamic> json) {
-    return Dimensions(
-      depth: json['depth'] ?? 0.0,
-      height: json['height'] ?? 0.0,
-      width: json['width'] ?? 0.0,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'depth': depth, 'height': height, 'width': width};
-  }
-}
-
-class Reviews {
-  final int? rating;
-  final String? comment;
-  final String? date;
-  final String? reviewerName;
-  final String? reviewerMail;
-
-  Reviews({
-    this.comment,
-    this.date,
-    this.rating,
-    this.reviewerMail,
-    this.reviewerName,
-  });
-
-  factory Reviews.fromJson(Map<String, dynamic> json) {
-    return Reviews(
-      comment: json['comment'] ?? 0,
-      date: json['date'] ?? '',
-      rating: json['rating'] ?? '',
-      reviewerMail: json['reviewerEmail'] ?? '',
-      reviewerName: json['reviewerName'] ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'comment': comment,
-      'date': date,
-      'rating': rating,
-      'reviewerEmail': reviewerMail,
-      'reviewerName': reviewerName,
-    };
-  }
-}
-
-class MetaData {
-  final String? createdAt;
-  final String? updatedAt;
-  final String? barCode;
-  final String? qrCode;
-
-  MetaData({this.createdAt, this.barCode, this.qrCode, this.updatedAt});
-
-  factory MetaData.fromJson(Map<String, dynamic> json) {
-    return MetaData(
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-      barCode: json['barcode'] ?? '',
-      qrCode: json['qrCode'] ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-      'barcode': barCode,
-      'qrCode': qrCode,
     };
   }
 }
