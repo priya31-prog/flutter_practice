@@ -169,15 +169,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    mainAxisExtent: 230,
+                    mainAxisExtent: 300,
                   ),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     return Container(
                       padding: EdgeInsets.only(
-                        top: 22,
-                        right: 12,
-                        left: 12,
+                        // top: 22,
+                        // right: 12,
+                        // left: 12,
                         bottom: 6,
                       ),
                       decoration: BoxDecoration(
@@ -190,26 +190,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         spacing: 2,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
-                            child: SizedBox(
-                              height: 90,
-                              child: Image.network(products[index].imageUrl),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+
+                            child: Image.network(
+                              products[index].imageUrl,
+                              fit: BoxFit.cover,
+                              height: 180,
+
+                              loadingBuilder: (
+                                context,
+                                child,
+                                loadingProgress,
+                              ) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(Icons.error);
+                              },
                             ),
                           ),
 
                           SizedBox(height: 5),
-                          Text(
-                            products[index].model,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 12,
+                              right: 12,
+                              left: 12,
+                              // bottom: 5,
+                            ),
+                            child: Text(
+                              products[index].model,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                          Text(
-                            '\$${products[index].price}',
-                            style: TextStyle(
-                              color: Colors.cyanAccent,
-                              fontSize: 18,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              // top: 12,
+                              right: 12,
+                              left: 12,
+                              bottom: 5,
+                            ),
+
+                            child: Text(
+                              '\$${products[index].price}',
+                              style: TextStyle(
+                                color: Colors.cyanAccent,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ],
