@@ -1,7 +1,7 @@
 class Reviews {
   final int? rating;
   final String? comment;
-  final String? date;
+  final DateTime? date;
   final String? reviewerName;
   final String? reviewerMail;
 
@@ -13,10 +13,11 @@ class Reviews {
     this.reviewerName,
   });
 
-  factory Reviews.fromJson(Map<String, dynamic> json) {
+  factory Reviews.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Reviews();
     return Reviews(
-      comment: json['comment'] ?? 0,
-      date: json['date'] ?? '',
+      comment: json['comment'],
+      date: json['date'] != null ? DateTime.parse(json['date']) : null,
       rating: json['rating'] ?? '',
       reviewerMail: json['reviewerEmail'] ?? '',
       reviewerName: json['reviewerName'] ?? '',
@@ -26,7 +27,7 @@ class Reviews {
   Map<String, dynamic> toJson() {
     return {
       'comment': comment,
-      'date': date,
+      'date': date?.toIso8601String(),
       'rating': rating,
       'reviewerEmail': reviewerMail,
       'reviewerName': reviewerName,
