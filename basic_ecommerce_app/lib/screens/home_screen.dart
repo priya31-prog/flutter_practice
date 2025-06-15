@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/screens/promo_card.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -194,7 +195,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             borderRadius: BorderRadius.circular(12),
 
                             child: Image.network(
-                              products[index].imageUrl,
+                              products[index].thumbnail,
                               fit: BoxFit.cover,
                               height: 180,
 
@@ -209,11 +210,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 );
                               },
                               errorBuilder: (context, error, stackTrace) {
+                                log('error msg --$error');
                                 return Icon(Icons.error);
                               },
                             ),
                           ),
 
+                          //   child: CachedNetworkImage(
+                          //     imageUrl: products[index].imageUrl,
+                          //   ),
+                          // ),
                           SizedBox(height: 5),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -223,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               // bottom: 5,
                             ),
                             child: Text(
-                              products[index].model,
+                              products[index].category,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
