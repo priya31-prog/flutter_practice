@@ -4,9 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final isDataLoaded = StateProvider<bool>((ref) => true);
 
-final gadgetsList = StateProvider<GadgetsModel>(
-  (ref) => GadgetsModel(status: 'error', message: '', products: []),
-);
+final gadgetsList = StateProvider<List<GadgetsModel>>((ref) => []);
 
 final brandsList = StateProvider<List<String>>((ref) => []);
 final productsList = StateProvider<List<Products>>((ref) => []);
