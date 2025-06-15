@@ -1,3 +1,4 @@
+import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/screens/home_screen.dart';
 import 'package:basic_ecommerce_app/screens/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
@@ -36,9 +37,19 @@ class RouteNavigations {
       case homeScreenWithoutSkip:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case productDetailPage:
-        return MaterialPageRoute(builder: (_) => ProductDetailScreen());
+        return MaterialPageRoute(
+          builder:
+              (_) => ProductDetailScreen(
+                productDetails: settings.arguments as Products,
+              ),
+        );
       case productDetailPageSkip:
-        return MaterialPageRoute(builder: (_) => ProductDetailScreen());
+        return MaterialPageRoute(
+          builder:
+              (_) => ProductDetailScreen(
+                productDetails: settings.arguments as Products,
+              ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => SplashScreen());
     }

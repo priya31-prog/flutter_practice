@@ -185,6 +185,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Navigator.pushNamed(
                           context,
                           RouteNavigations.productDetailPageSkip,
+                          arguments: products[index],
                         );
                       },
                       child: Container(
@@ -210,7 +211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                                 child: Image.network(
                                   products[index].thumbnail,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                   height: 150,
 
                                   loadingBuilder: (
