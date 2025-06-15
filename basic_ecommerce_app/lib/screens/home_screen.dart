@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/screens/promo_card.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -145,15 +146,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           scrollDirection: Axis.horizontal,
                           itemCount: 8,
                           itemBuilder: (context, index) {
-                            return Container(
-                              width: 100,
-                              height: 40,
-                              margin: const EdgeInsets.only(right: 12),
-                              decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.secondary.withAlpha(50),
-                                borderRadius: BorderRadius.circular(12),
+                            return InkWell(
+                              onTap: () {},
+
+                              child: Container(
+                                width: 100,
+                                height: 40,
+                                margin: const EdgeInsets.only(right: 12),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary.withAlpha(50),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
                             );
                           },
@@ -170,89 +175,100 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    mainAxisExtent: 300,
+                    mainAxisExtent: 280,
                   ),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.only(
-                        // top: 22,
-                        // right: 12,
-                        // left: 12,
-                        bottom: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
+                    return InkWell(
+                      onTap: () {
+                        print('printing inside on tap function..');
+                        Navigator.pushNamed(
                           context,
-                        ).colorScheme.secondary.withAlpha(30),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        spacing: 2,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                          RouteNavigations.productDetailPageSkip,
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 22,
+                          // right: 12,
+                          // left: 12,
+                          bottom: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondary.withAlpha(30),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          spacing: 2,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
 
-                            child: Image.network(
-                              products[index].thumbnail,
-                              fit: BoxFit.cover,
-                              height: 180,
+                                child: Image.network(
+                                  products[index].thumbnail,
+                                  fit: BoxFit.cover,
+                                  height: 150,
 
-                              loadingBuilder: (
-                                context,
-                                child,
-                                loadingProgress,
-                              ) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                log('error msg --$error');
-                                return Icon(Icons.error);
-                              },
-                            ),
-                          ),
-
-                          //   child: CachedNetworkImage(
-                          //     imageUrl: products[index].imageUrl,
-                          //   ),
-                          // ),
-                          SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 12,
-                              right: 12,
-                              left: 12,
-                              // bottom: 5,
-                            ),
-                            child: Text(
-                              products[index].category,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                                  loadingBuilder: (
+                                    context,
+                                    child,
+                                    loadingProgress,
+                                  ) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    log('error msg --$error');
+                                    return Icon(Icons.error);
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              // top: 12,
-                              right: 12,
-                              left: 12,
-                              bottom: 5,
-                            ),
 
-                            child: Text(
-                              '\$${products[index].price}',
-                              style: TextStyle(
-                                color: Colors.cyanAccent,
-                                fontSize: 18,
+                            //   child: CachedNetworkImage(
+                            //     imageUrl: products[index].imageUrl,
+                            //   ),
+                            // ),
+                            SizedBox(height: 5),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                                right: 12,
+                                left: 12,
+                                // bottom: 5,
+                              ),
+                              child: Text(
+                                products[index].title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                // top: 12,
+                                right: 12,
+                                left: 12,
+                                bottom: 5,
+                              ),
+
+                              child: Text(
+                                '\$${products[index].price}',
+                                style: TextStyle(
+                                  color: Colors.cyanAccent,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
