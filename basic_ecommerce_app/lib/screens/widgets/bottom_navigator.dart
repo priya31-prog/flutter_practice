@@ -1,6 +1,7 @@
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 
-Widget bottomNavigator() {
+Widget bottomNavigator({required BuildContext context}) {
   return SizedBox(
     height: 60,
     child: Row(
@@ -45,7 +46,12 @@ Widget bottomNavigator() {
               padding: EdgeInsets.all(3),
               child: IconButton(
                 alignment: Alignment.center,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteNavigations.addToCartPageSkip,
+                  );
+                },
                 icon: Row(
                   spacing: 5,
                   mainAxisAlignment: MainAxisAlignment.center,

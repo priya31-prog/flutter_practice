@@ -1,4 +1,5 @@
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
 import 'package:basic_ecommerce_app/screens/home_screen.dart';
 import 'package:basic_ecommerce_app/screens/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
@@ -16,11 +17,15 @@ class RouteNavigations {
       '/onboarding/login/signup/homeScreen';
   static const String productDetailPage =
       '/onboarding/login/signup/homeScreen/productPage';
+  static const String addToCartPage =
+      '/onboarding/login/signup/homeScreen/productPage/addToCartPage';
 
   static const String loginPageWithoutOnboard = '/login';
   static const String homeScreenSkip = '/onboarding/homeScreenSkip';
   static const String productDetailPageSkip =
       '/onboarding/login/signup/homeScreen/productPageSkip';
+  static const String addToCartPageSkip =
+      '/onboarding/login/signup/homeScreen/productPageSkip/addToCartPageSkip';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -36,6 +41,10 @@ class RouteNavigations {
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case homeScreenWithoutSkip:
         return MaterialPageRoute(builder: (_) => HomeScreen());
+      case addToCartPage:
+        return MaterialPageRoute(builder: (_) => AddToCart());
+      case addToCartPageSkip:
+        return MaterialPageRoute(builder: (_) => AddToCart());
       case productDetailPage:
         return MaterialPageRoute(
           builder:

@@ -279,7 +279,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
       bottomNavigationBar:
           widget.productDetails.availabiltySts == 'In Stock'
-              ? bottomNavigator()
+              ? bottomNavigator(context: context)
               : SizedBox.shrink(),
     );
   }
