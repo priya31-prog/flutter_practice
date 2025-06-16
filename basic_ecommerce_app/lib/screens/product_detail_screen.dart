@@ -22,7 +22,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          CommonUtils.firstLetterCaps(name: widget.productDetails.category),
+          CommonUtils.firstLetterCaps(name: widget.productDetails.title),
         ),
         leading: InkWell(
           child: Icon(
@@ -37,88 +37,134 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 10,
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.33,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: const Color.fromARGB(255, 193, 187, 187),
-                  ),
-                  // color: Colors.white,
-                  child: ImagesSlider(images: widget.productDetails.images!),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 10,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                height: MediaQuery.of(context).size.height * 0.33,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: const Color.fromARGB(255, 193, 187, 187),
                 ),
-                // SizedBox(height: 10),
-                RichText(
-                  text: TextSpan(
-                    text: '${widget.productDetails.brand}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: ' ${widget.productDetails.title}',
-                        style: TextStyle(fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ),
-                // SizedBox(height: 10),
-                Row(
-                  spacing: 10,
+                // color: Colors.white,
+                child: ImagesSlider(images: widget.productDetails.images!),
+              ),
+              // SizedBox(height: 10),
+              Container(
+                height: 5,
+                color: Theme.of(context).colorScheme.secondary.withAlpha(50),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildStarRating(rating: widget.productDetails.rating),
                     RichText(
                       text: TextSpan(
-                        text: '${widget.productDetails.rating}',
+                        text: widget.productDetails.brand,
                         style: TextStyle(fontWeight: FontWeight.bold),
-                        children: [
+                        children: <TextSpan>[
                           TextSpan(
-                            text: ' Ratings by users',
-                            style: TextStyle(fontWeight: FontWeight.w300),
+                            text: ' ${widget.productDetails.title}',
+                            style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                         ],
                       ),
                     ),
+                    Row(
+                      spacing: 10,
+                      children: [
+                        buildStarRating(rating: widget.productDetails.rating),
+                        RichText(
+                          text: TextSpan(
+                            text: '${widget.productDetails.rating}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: ' Ratings by users',
+                                style: TextStyle(fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      spacing: 15,
+                      children: [
+                        Text(
+                          '\$${widget.productDetails.price}',
+                          style: TextStyle(
+                            color: Colors.cyan,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+
+                        Text(
+                          '\$${CommonUtils.discountedPrice(price: widget.productDetails.price, discount: widget.productDetails.discountPercent)}',
+                          style: TextStyle(
+                            color: Colors.cyanAccent,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          showDetailedDesc = !showDetailedDesc;
+                        });
+                      },
+                      child:
+                          showDetailedDesc
+                              ? Text(
+                                widget.productDetails.description,
+                                style: TextStyle(fontSize: 15),
+                              )
+                              : Text(
+                                widget.productDetails.description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                    ),
+                    SizedBox(height: 15),
+
+                    Row(
+                      spacing: 10,
+                      children: [
+                        Icon(Icons.local_shipping),
+                        Text(widget.productDetails.shippingInfo),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Text('Expected date of arrival - '),
                   ],
                 ),
+              ),
+              Container(
+                height: 5,
+                color: Theme.of(context).colorScheme.secondary.withAlpha(50),
+              ),
 
-                Text(
-                  '\$${widget.productDetails.price}',
-                  style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      showDetailedDesc = !showDetailedDesc;
-                    });
-                  },
-                  child:
-                      showDetailedDesc
-                          ? Text(
-                            widget.productDetails.description,
-                            style: TextStyle(fontSize: 15),
-                          )
-                          : Text(
-                            widget.productDetails.description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                ),
-                Text(
+              // SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
                   'Product Details',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),
-                Table(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Table(
                   border: TableBorder.all(color: Colors.grey),
                   columnWidths: const {
                     0: FlexColumnWidth(1),
@@ -144,12 +190,97 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              Container(
+                height: 5,
+                color: Theme.of(context).colorScheme.secondary.withAlpha(50),
+              ),
+              Center(
+                child: Text(
+                  // textAlign: TextAlign.center,
+                  widget.productDetails.warrentyInfo,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+              ),
+              Container(
+                height: 5,
+                color: Theme.of(context).colorScheme.secondary.withAlpha(50),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rating and Reviews',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    SizedBox(height: 15),
+
+                    ListView.separated(
+                      separatorBuilder:
+                          (context, index) => SizedBox(height: 15),
+                      shrinkWrap: true,
+                      itemCount: widget.productDetails.reviews!.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          spacing: 5,
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildStarRating(
+                              rating:
+                                  widget.productDetails.reviews![index].rating!
+                                      .toDouble(),
+                            ),
+                            Text(
+                              widget
+                                  .productDetails
+                                  .reviews![index]
+                                  .reviewerName!,
+                              style: TextStyle(
+                                fontSize: 18,
+                                // fontWeight: FontWeight.w400,
+                              ),
+                            ),
+
+                            Text(
+                              widget.productDetails.reviews![index].comment!,
+                              style: TextStyle(
+                                fontSize: 18,
+                                // fontWeight: FontWeight.w400,
+                              ),
+                            ),
+
+                            Text(
+                              'posted ${widget.productDetails.reviews![index].date!}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                // fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      bottomNavigationBar: bottomNavigator(),
+
+      bottomNavigationBar:
+          widget.productDetails.availabiltySts == 'In Stock'
+              ? bottomNavigator()
+              : SizedBox.shrink(),
     );
   }
 }
