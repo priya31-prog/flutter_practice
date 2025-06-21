@@ -1,17 +1,22 @@
 import 'dart:convert';
+import 'dart:developer';
 // import 'dart:developer';
 
-import 'package:basic_ecommerce_app/api%20files/gadgets_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_items_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/gadgets_model.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:http/http.dart' as http;
 
 class GadgetsApi {
   final String phonesUrl =
-      'https://dummyjson.com/products/category/smartphones';
+      'https://feature-cart-items-api.onrender.com/api/v1/cartItems';
   final String laptopsUrl = "https://dummyjson.com/products/search?q=laptop";
+  final String cartItemsUrl =
+      "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
 
   Future<GadgetsModel> fetchApiResponse() async {
     final phoneResponse = await http.get(Uri.parse(phonesUrl));
+    log('cart json api response ${json.decode(phoneResponse.body)}');
     final laptopResponse = await http.get(Uri.parse(laptopsUrl));
 
     if (phoneResponse.statusCode == 200 && laptopResponse.statusCode == 200) {
@@ -32,6 +37,27 @@ class GadgetsApi {
       return GadgetsModel(products: mergedList);
     } else {
       throw Exception('Exception status code -- ${phoneResponse.statusCode}');
+    }
+  }
+
+  Future<CartItemsModel> getCartItems() async {
+    final String url =
+        "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
+
+    final cartResponse = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (cartResponse.statusCode == 200) {
+      final values = CartItemsModel.fromJson(jsonDecode(cartResponse.body));
+      log('printing mapped model ${values.cartProducts![0].brand}');
+      return values;
+    } else {
+      throw Exception('Something went wrong');
     }
   }
 }
