@@ -13,12 +13,16 @@ class CartItemsModel {
   factory CartItemsModel.fromJson(Map<String, dynamic> json) {
     return CartItemsModel(
       status: json['status'],
-      statusCode: json['success_code'],
+      statusCode: json['status_code'],
       cartProducts:
           (json['data'] as List?)
               ?.map((item) => CartProducts.fromJson(item))
               .toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'status': status, 'status_code': statusCode, 'data': cartProducts};
   }
 }
 
