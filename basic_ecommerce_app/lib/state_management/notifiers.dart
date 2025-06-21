@@ -1,4 +1,4 @@
-import 'package:basic_ecommerce_app/api%20files/gadgets_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/gadgets_model.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
