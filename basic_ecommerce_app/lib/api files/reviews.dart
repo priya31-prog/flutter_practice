@@ -18,7 +18,7 @@ class Reviews {
     return Reviews(
       comment: json['comment'],
       date: json['date'] != null ? DateTime.parse(json['date']) : null,
-      rating: json['rating'] ?? '',
+      rating: json['rating'] ?? 0,
       reviewerMail: json['reviewerEmail'] ?? '',
       reviewerName: json['reviewerName'] ?? '',
     );
