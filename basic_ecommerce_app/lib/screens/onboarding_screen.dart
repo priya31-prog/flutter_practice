@@ -1,5 +1,6 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -45,22 +46,15 @@ class OnboardingScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: elevatedButtonWider(
+                        onTap: () {
                           Navigator.pushNamed(
                             context,
                             RouteNavigations.loginPage,
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.cyan,
-                          foregroundColor: Colors.black,
-                          padding: EdgeInsets.all(20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text('Next'),
+                        text: 'Next',
+                        textStyle: TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
