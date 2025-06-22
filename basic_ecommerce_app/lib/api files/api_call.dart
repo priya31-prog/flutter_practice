@@ -9,14 +9,14 @@ import 'package:http/http.dart' as http;
 
 class GadgetsApi {
   final String phonesUrl =
-      'https://feature-cart-items-api.onrender.com/api/v1/cartItems';
+      'https://dummyjson.com/products/category/smartphones';
   final String laptopsUrl = "https://dummyjson.com/products/search?q=laptop";
   final String cartItemsUrl =
       "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
 
   Future<GadgetsModel> fetchApiResponse() async {
     final phoneResponse = await http.get(Uri.parse(phonesUrl));
-    log('cart json api response ${json.decode(phoneResponse.body)}');
+    // log('cart json api response ${json.decode(phoneResponse.body)}');s
     final laptopResponse = await http.get(Uri.parse(laptopsUrl));
 
     if (phoneResponse.statusCode == 200 && laptopResponse.statusCode == 200) {
