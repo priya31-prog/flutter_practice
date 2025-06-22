@@ -10,6 +10,7 @@ class CartProducts {
   final DateTime? shippingInfo;
   final String? warrentyInfo;
   final bool? isAvailable;
+  final String? imageUrl;
 
   CartProducts({
     this.addedToCartAt,
@@ -23,6 +24,7 @@ class CartProducts {
     this.shippingInfo,
     this.stock,
     this.warrentyInfo,
+    this.imageUrl,
   });
 
   factory CartProducts.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,7 @@ class CartProducts {
               : null,
       warrentyInfo: json['warrenty_info'] ?? '',
       isAvailable: json['is_available'] ?? false,
+      imageUrl: json['image_url'] ?? '',
     );
   }
   Map<String, dynamic> toJson() {
@@ -58,6 +61,7 @@ class CartProducts {
       "shipping_info": shippingInfo,
       "warrenty_info": warrentyInfo,
       "is_available": isAvailable,
+      "image_url": imageUrl,
     };
   }
 }
