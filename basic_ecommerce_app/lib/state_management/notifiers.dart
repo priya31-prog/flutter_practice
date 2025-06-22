@@ -14,3 +14,6 @@ final productsList = StateProvider<List<Products>>((ref) => []);
 final isCredEntered = StateProvider<bool>((ref) => false);
 final email = StateProvider<String>((ref) => '');
 final phone = StateProvider<String>((ref) => '');
+
+//add to cart
+final isLoadingCartItems = StateProvider<bool>((ref) => true);

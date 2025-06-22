@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,6 @@ class AddToCart extends ConsumerStatefulWidget {
 
 class _AddToCartState extends ConsumerState<AddToCart> {
   List<CartProducts> items = [];
-  late bool isLoadingApi;
 
   @override
   void initState() {
@@ -25,21 +25,16 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   }
 
   void getCartData() async {
-    setState(() {
-      isLoadingApi = true;
-    });
-
     await GadgetsApi().getCartItems().then((final value) {
       items = value.cartProducts ?? [];
-      setState(() {
-        isLoadingApi = false;
-      });
+      ref.read(isLoadingCartItems.notifier).state = false;
     });
-    log('values from screen ${items.length}');
+    log('values from screen ${items[0].imageUrl}');
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -60,8 +55,33 @@ class _AddToCartState extends ConsumerState<AddToCart> {
           child:
               !isLoadingApi
                   ? items.isNotEmpty
-                      ? Column(children: [Text('Some item found')])
-                      : Text('No items found')
+                      ? ListView.separated(
+                        itemBuilder:
+                            (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 27,
+                                vertical: 10,
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: const Color.fromARGB(95, 82, 80, 80),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${items[index].name}'),
+                                    Text('\$${items[index].price}'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        separatorBuilder:
+                            (context, index) => SizedBox(height: 15),
+                        itemCount: items.length,
+                      )
+                      : Center(child: Text('No items found'))
                   : Center(child: CircularProgressIndicator()),
         ),
       ),
