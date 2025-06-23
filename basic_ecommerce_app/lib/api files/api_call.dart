@@ -3,8 +3,10 @@ import 'dart:developer';
 // import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/models/cart_items_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/models/gadgets_model.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/common_files/api_header.dart';
 import 'package:http/http.dart' as http;
 
 class GadgetsApi {
@@ -57,7 +59,39 @@ class GadgetsApi {
       log('printing mapped model ${values.cartProducts![0].brand}');
       return values;
     } else {
-      throw Exception('Something went wrong');
+      throw Exception('Something went wrong ${cartResponse.statusCode}');
+    }
+  }
+}
+
+class AddCartItem {
+  final addUrl = "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
+
+  Future<bool> addItem({required CartProducts product}) async {
+    final header = await getHeaders();
+    try {
+      log(
+        'printing request ${CartProducts(addedToCartAt: product.addedToCartAt, name: product.name, price: product.price, imageUrl: product.imageUrl, productId: product.productId, discountPercent: product.discountPercent, shippingInfo: product.shippingInfo, stock: product.stock, brand: product.brand, warrentyInfo: product.warrentyInfo, isAvailable: product.isAvailable).toJson()}',
+      );
+      final respone = await http.post(
+        Uri.parse(addUrl),
+        headers: header,
+        body: json.encode(product.toJson()),
+      );
+      if (respone.statusCode == 201) {
+        log('Product added successfully..');
+        return true;
+      } else {
+        log('response ${respone.statusCode}');
+        log('response ${respone.body}');
+        return true;
+      }
+
+      // return true;
+    } catch (e) {
+      Exception('Error in adding data ${e}');
+      log('exception ${e}');
+      return false;
     }
   }
 }
