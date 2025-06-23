@@ -53,15 +53,16 @@ class CartProducts {
     return {
       "id": id,
       "product_id": productId,
-      "product_name": name,
+      "product_name": name ?? '',
+      "product_price": price ?? '',
       "discount_percent": discountPercent,
       "stock": stock,
       "brand": brand,
-      "added_cart_at": addedToCartAt,
-      "shipping_info": shippingInfo,
+      "added_cart_at": addedToCartAt?.toIso8601String(),
+      "shipping_info": shippingInfo?.toIso8601String(),
       "warrenty_info": warrentyInfo,
-      "is_available": isAvailable,
-      "image_url": imageUrl,
+      "is_available": isAvailable ?? false,
+      "image_url": imageUrl ?? '',
     };
   }
 }

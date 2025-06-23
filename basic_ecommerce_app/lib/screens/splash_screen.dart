@@ -31,6 +31,7 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
       ref.read(gadgetsList.notifier).state = value;
       Future.delayed(Duration(seconds: 1), () {
         ref.read(isDataLoaded.notifier).state = false;
+        if (!mounted) return;
         Navigator.pushNamed(context, RouteNavigations.onBoardingScreen);
       });
 
