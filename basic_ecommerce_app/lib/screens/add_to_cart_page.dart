@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
@@ -24,12 +24,12 @@ class _AddToCartState extends ConsumerState<AddToCart> {
     getCartData();
   }
 
-  void getCartData() async {
-    await GadgetsApi().getCartItems().then((final value) {
+  Future<void> getCartData() async {
+    GadgetsApi().getCartItems().then((final value) {
       items = value.cartProducts ?? [];
       ref.read(isLoadingCartItems.notifier).state = false;
     });
-    log('values from screen ${items[0].imageUrl}');
+    // log('values from screen ${items[0].imageUrl}');
   }
 
   @override
