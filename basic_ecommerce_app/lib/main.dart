@@ -1,5 +1,6 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
 import 'package:basic_ecommerce_app/screens/home_screen.dart';
 import 'package:basic_ecommerce_app/screens/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       // themeMode: ThemeMode.dark,
       theme: darkTheme,
       onGenerateRoute: RouteNavigations.onGenerateRoute,
-      // home: HomeScreen(),
+      // home: AddToCart(),
     );
   }
 }

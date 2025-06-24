@@ -1,7 +1,14 @@
+import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+// import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 
-Widget bottomNavigator({required BuildContext context}) {
+Widget bottomNavigator({
+  required BuildContext context,
+  required Products products,
+}) {
   return SizedBox(
     height: 60,
     child: Row(
@@ -46,11 +53,36 @@ Widget bottomNavigator({required BuildContext context}) {
               padding: EdgeInsets.all(3),
               child: IconButton(
                 alignment: Alignment.center,
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouteNavigations.addToCartPageSkip,
-                  );
+                onPressed: () async {
+                  await AddCartItem()
+                      .addItem(
+                        product: CartProducts(
+                          addedToCartAt: DateTime.now(),
+                          shippingInfo: DateTime.now(),
+                          brand: products.brand,
+                          name: products.title,
+                          discountPercent: products.discountPercent,
+                          productId: products.id,
+                          isAvailable:
+                              products.availabiltySts == 'In Stock'
+                                  ? true
+                                  : false,
+                          price: products.price,
+                          stock: products.stock,
+                          warrentyInfo: products.warrentyInfo,
+                          imageUrl: products.thumbnail,
+                        ),
+                      )
+                      .then((final value) {
+                        // if success show a  toast msg of added to cart successfully
+                        //if buy now -> go to cart with the newly added item and the exisiting item
+                        // re
+                        if (!context.mounted) return;
+                        Navigator.pushNamed(
+                          context,
+                          RouteNavigations.addToCartPageSkip,
+                        );
+                      });
                 },
                 icon: Row(
                   spacing: 5,
