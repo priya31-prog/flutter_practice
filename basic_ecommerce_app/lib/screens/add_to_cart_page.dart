@@ -1,5 +1,7 @@
 // import 'dart:developer';
 
+import 'dart:developer';
+
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
@@ -25,11 +27,13 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   }
 
   Future<void> getCartData() async {
+    log('get data is being called..');
+    ref.read(isLoadingCartItems.notifier).state = true;
     GadgetsApi().getCartItems().then((final value) {
       items = value.cartProducts ?? [];
       ref.read(isLoadingCartItems.notifier).state = false;
     });
-    // log('values from screen ${items[0].imageUrl}');
+    log('values from screen ${items[0].imageUrl}');
   }
 
   @override
@@ -56,6 +60,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
               !isLoadingApi
                   ? items.isNotEmpty
                       ? ListView.separated(
+                        physics: BouncingScrollPhysics(),
                         itemBuilder:
                             (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
@@ -68,11 +73,40 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                   color: const Color.fromARGB(95, 82, 80, 80),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
                                   children: [
-                                    Text('${items[index].name}'),
-                                    Text('\$${items[index].price}'),
+                                    Row(
+                                      children: [
+                                        Image.network(
+                                          height: 100,
+                                          items[index].imageUrl!,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (
+                                            context,
+                                            child,
+                                            loadingProgress,
+                                          ) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return CircularProgressIndicator();
+                                          },
+                                          errorBuilder: (
+                                            context,
+                                            error,
+                                            stackTrace,
+                                          ) {
+                                            return Icon(Icons.error);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text('${items[index].name}'),
+                                        Text('\$${items[index].price}'),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
