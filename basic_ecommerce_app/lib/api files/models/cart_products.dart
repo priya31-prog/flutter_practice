@@ -2,8 +2,8 @@ class CartProducts {
   final int? id;
   final int? productId;
   final String? name;
-  final String? price;
-  final String? discountPercent;
+  final double? price;
+  final double? discountPercent;
   final int? stock;
   final String? brand;
   final DateTime? addedToCartAt;
@@ -32,8 +32,8 @@ class CartProducts {
       id: json['id'] ?? 0,
       productId: json['product_id'] ?? 0,
       name: json['product_name'] ?? '',
-      price: json['product_price'] ?? '',
-      discountPercent: json['discount_percent'] ?? '',
+      price: json['product_price'] ?? 0,
+      discountPercent: json['discount_percent'] ?? 0,
       stock: json['stock'] ?? 0,
       brand: json['brand'] ?? '',
       addedToCartAt:
