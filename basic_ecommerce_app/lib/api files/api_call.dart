@@ -71,7 +71,7 @@ class AddCartItem {
     final header = await getHeaders();
     try {
       log(
-        'printing request ${CartProducts(addedToCartAt: product.addedToCartAt, name: product.name, price: product.price, imageUrl: product.imageUrl, productId: product.productId, discountPercent: product.discountPercent, shippingInfo: product.shippingInfo, stock: product.stock, brand: product.brand, warrentyInfo: product.warrentyInfo, isAvailable: product.isAvailable).toJson()}',
+        'printing request ${CartProducts(addedToCartAt: product.addedToCartAt, name: product.name, price: product.price, imageUrl: product.imageUrl, productId: product.productId, discountPercent: product.discountPercent, shippingInfo: product.shippingInfo, stock: product.stock, brand: product.brand, warrentyInfo: product.warrentyInfo, isAvailable: product.isAvailable, quantity: product.quantity).toJson()}',
       );
       final respone = await http.post(
         Uri.parse(addUrl),

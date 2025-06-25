@@ -54,6 +54,8 @@ Widget bottomNavigator({
               child: IconButton(
                 alignment: Alignment.center,
                 onPressed: () async {
+                  final discount = products.discountPercent.toString();
+                  final price = products.price.toString();
                   await AddCartItem()
                       .addItem(
                         product: CartProducts(
@@ -61,16 +63,17 @@ Widget bottomNavigator({
                           shippingInfo: DateTime.now(),
                           brand: products.brand,
                           name: products.title,
-                          discountPercent: products.discountPercent,
+                          discountPercent: discount,
                           productId: products.id,
                           isAvailable:
                               products.availabiltySts == 'In Stock'
                                   ? true
                                   : false,
-                          price: products.price,
+                          price: price,
                           stock: products.stock,
                           warrentyInfo: products.warrentyInfo,
                           imageUrl: products.thumbnail,
+                          quantity: 1,
                         ),
                       )
                       .then((final value) {

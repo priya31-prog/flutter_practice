@@ -11,6 +11,7 @@ class CartProducts {
   final String? warrentyInfo;
   final bool? isAvailable;
   final String? imageUrl;
+  final int quantity;
 
   CartProducts({
     this.addedToCartAt,
@@ -25,6 +26,7 @@ class CartProducts {
     this.stock,
     this.warrentyInfo,
     this.imageUrl,
+    required this.quantity,
   });
 
   factory CartProducts.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class CartProducts {
       warrentyInfo: json['warrenty_info'] ?? '',
       isAvailable: json['is_available'] ?? false,
       imageUrl: json['image_url'] ?? '',
+      quantity: json['quantity'],
     );
   }
   Map<String, dynamic> toJson() {
@@ -63,6 +66,7 @@ class CartProducts {
       "warrenty_info": warrentyInfo,
       "is_available": isAvailable ?? false,
       "image_url": imageUrl ?? '',
+      "quantity": quantity,
     };
   }
 }
