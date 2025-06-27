@@ -73,7 +73,6 @@ Widget bottomNavigator({
                           stock: products.stock,
                           warrentyInfo: products.warrentyInfo,
                           imageUrl: products.thumbnail,
-                          quantity: 1,
                         ),
                       )
                       .then((final value) {

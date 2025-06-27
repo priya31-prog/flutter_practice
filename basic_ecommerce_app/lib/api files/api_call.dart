@@ -14,7 +14,7 @@ class GadgetsApi {
       'https://dummyjson.com/products/category/smartphones';
   final String laptopsUrl = "https://dummyjson.com/products/search?q=laptop";
   final String cartItemsUrl =
-      "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
+      "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
 
   Future<GadgetsModel> fetchApiResponse() async {
     final phoneResponse = await http.get(Uri.parse(phonesUrl));
@@ -44,7 +44,7 @@ class GadgetsApi {
 
   Future<CartItemsModel> getCartItems() async {
     final String url =
-        "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
+        "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
 
     final cartResponse = await http.get(
       Uri.parse(url),
@@ -56,7 +56,7 @@ class GadgetsApi {
 
     if (cartResponse.statusCode == 200) {
       final values = CartItemsModel.fromJson(jsonDecode(cartResponse.body));
-      log('printing mapped model ${values.cartProducts![0].brand}');
+      log('printing mapped model ${values.cartProducts![0].productId}');
       return values;
     } else {
       throw Exception('Something went wrong ${cartResponse.statusCode}');
@@ -65,14 +65,13 @@ class GadgetsApi {
 }
 
 class AddCartItem {
-  final addUrl = "https://feature-cart-items-api.onrender.com/api/v1/cartItems";
+  final addUrl =
+      "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
 
   Future<bool> addItem({required CartProducts product}) async {
     final header = await getHeaders();
     try {
-      log(
-        'printing request ${CartProducts(addedToCartAt: product.addedToCartAt, name: product.name, price: product.price, imageUrl: product.imageUrl, productId: product.productId, discountPercent: product.discountPercent, shippingInfo: product.shippingInfo, stock: product.stock, brand: product.brand, warrentyInfo: product.warrentyInfo, isAvailable: product.isAvailable, quantity: product.quantity).toJson()}',
-      );
+      log('printing request ${json.encode(product.toJson())}');
       final respone = await http.post(
         Uri.parse(addUrl),
         headers: header,
