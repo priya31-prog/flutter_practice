@@ -1,24 +1,57 @@
+import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/common_utils.dart';
 import 'package:basic_ecommerce_app/common_files/star_rating.dart';
 import 'package:basic_ecommerce_app/common_files/table_row_widget.dart';
 import 'package:basic_ecommerce_app/screens/images_slider.dart';
 import 'package:basic_ecommerce_app/screens/widgets/bottom_navigator.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   const ProductDetailScreen({super.key, required this.productDetails});
 
   final Products productDetails;
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() =>
+      _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
+  bool isApiLoaded = false;
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getCartData();
+    });
+  }
+
+  void _getCartData() {
+    GadgetsApi().getCartItems().then((final value) {
+      setState(() {
+        isApiLoaded = true;
+      });
+      ref.read(isAlreadyAddedToCart.notifier).state = value.cartProducts!.any((
+        final ele,
+      ) {
+        if (ele.productId == widget.productDetails.id &&
+            (ele.quantity ?? 0) >= 1) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    });
+  }
+
   bool showDetailedDesc = false;
   @override
   Widget build(BuildContext context) {
+    final isAlreadyAdded = ref.watch(isAlreadyAddedToCart);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -279,10 +312,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
       bottomNavigationBar:
           widget.productDetails.availabiltySts == 'In Stock'
-              ? bottomNavigator(
-                context: context,
-                products: widget.productDetails,
-              )
+              ? isApiLoaded
+                  ? bottomNavigator(
+                    context: context,
+                    products: widget.productDetails,
+                    isApiLoaded: isApiLoaded,
+                    addToCartOrGo: isAlreadyAdded,
+                  )
+                  : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.teal),
+                    ),
+                  )
               : SizedBox.shrink(),
     );
   }

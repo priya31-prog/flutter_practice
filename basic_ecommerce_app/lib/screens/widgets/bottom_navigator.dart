@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 Widget bottomNavigator({
   required BuildContext context,
   required Products products,
+  required bool isApiLoaded,
+  required bool addToCartOrGo,
 }) {
   return SizedBox(
     height: 60,
@@ -91,13 +93,21 @@ Widget bottomNavigator({
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.shopping_cart),
-                    Text(
-                      'Add to Cart',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                      ),
-                    ),
+                    addToCartOrGo
+                        ? Text(
+                          'Go to Cart',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                          ),
+                        )
+                        : Text(
+                          'Add to Cart',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                          ),
+                        ),
                   ],
                 ),
               ),
