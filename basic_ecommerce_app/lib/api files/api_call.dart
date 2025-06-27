@@ -56,7 +56,7 @@ class GadgetsApi {
 
     if (cartResponse.statusCode == 200) {
       final values = CartItemsModel.fromJson(jsonDecode(cartResponse.body));
-      log('printing mapped model ${values.cartProducts![0].productId}');
+      log('printing mapped model ${cartResponse.body}');
       return values;
     } else {
       throw Exception('Something went wrong ${cartResponse.statusCode}');
