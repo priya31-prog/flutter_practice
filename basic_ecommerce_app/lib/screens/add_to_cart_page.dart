@@ -2,8 +2,8 @@
 
 import 'dart:developer';
 
-import 'package:basic_ecommerce_app/api%20files/api_call.dart';
-import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+// import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+// import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +66,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                         itemBuilder:
                             (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 27,
+                                horizontal: 20,
                                 vertical: 10,
                               ),
                               child: Container(
@@ -105,9 +105,43 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                     ),
                                     Column(
                                       children: [
-                                        Text('${items[index].name}'),
+                                        Text(
+                                          '${items[index].name}',
+                                          maxLines: 3,
+                                          overflow: TextOverflow.visible,
+                                        ),
                                         Text('\$${items[index].price}'),
                                       ],
+                                    ),
+                                    Spacer(),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                          230,
+                                          89,
+                                          88,
+                                          88,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+
+                                      child: Row(
+                                        spacing: 4,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.add),
+                                          ),
+
+                                          Text('${items[index].quantity}'),
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.minimize_outlined),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
