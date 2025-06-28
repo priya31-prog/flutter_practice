@@ -1,4 +1,5 @@
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/common_utils.dart';
 import 'package:basic_ecommerce_app/common_files/star_rating.dart';
@@ -32,12 +33,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   void _getCartData() {
     GadgetsApi().getCartItems().then((final value) {
+      ref.read(allProducts.notifier).state = value.cartProducts!;
       setState(() {
         isApiLoaded = true;
       });
       ref.read(isAlreadyAddedToCart.notifier).state = value.cartProducts!.any((
         final ele,
       ) {
+        final price = double.parse(ele.price ?? '0');
+        ref.read(totalCartValue.notifier).state += price;
         if (ele.productId == widget.productDetails.id &&
             (ele.quantity ?? 0) >= 1) {
           return true;
@@ -52,6 +56,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final isAlreadyAdded = ref.watch(isAlreadyAddedToCart);
+    final cartProduct = ref.watch(allProducts);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -312,19 +317,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
       bottomNavigationBar:
           widget.productDetails.availabiltySts == 'In Stock'
-              ? isApiLoaded
-                  ? bottomNavigator(
-                    context: context,
-                    products: widget.productDetails,
-                    isApiLoaded: isApiLoaded,
-                    addToCartOrGo: isAlreadyAdded,
-                  )
-                  : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: CircularProgressIndicator(color: Colors.teal),
-                    ),
-                  )
+              ? bottomNavigator(
+                context: context,
+                products: widget.productDetails,
+                isApiLoaded: isApiLoaded,
+                goToCart: isAlreadyAdded,
+              )
               : SizedBox.shrink(),
     );
   }
