@@ -140,6 +140,8 @@ Future<void> addToCartFn({
           Navigator.pushNamed(context, RouteNavigations.addToCartPageSkip);
         });
   } else {
-    print('printing inside the go to cart page..');
+    // print('printing inside the go to cart page..');
+    if (!context.mounted) return;
+    Navigator.pushNamed(context, RouteNavigations.addToCartPageSkip);
   }
 }
