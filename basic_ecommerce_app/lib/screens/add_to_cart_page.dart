@@ -17,27 +17,29 @@ class AddToCart extends ConsumerStatefulWidget {
 }
 
 class _AddToCartState extends ConsumerState<AddToCart> {
-  List<CartProducts> items = [];
+  // List<CartProducts> items = [];
 
   @override
   void initState() {
     super.initState();
-
     getCartData();
   }
 
   Future<void> getCartData() async {
-    log('get data is being called..');
-    ref.read(isLoadingCartItems.notifier).state = true;
-    GadgetsApi().getCartItems().then((final value) {
-      items = value.cartProducts ?? [];
-      ref.read(isLoadingCartItems.notifier).state = false;
-    });
-    log('values from screen ${items[0].imageUrl}');
+    // log('get data is being called..');
+    // ref.read(isLoadingCartItems.notifier).state = true;
+    // GadgetsApi().getCartItems().then((final value) {
+    // items = widget.allProducts;
+    ref.read(isLoadingCartItems.notifier).state = false;
+    // });
+    // log('values from screen ${items[0].imageUrl}');
   }
 
   @override
   Widget build(BuildContext context) {
+    final items = ref.watch(allProducts);
+    final totalCart = ref.watch(totalCartValue);
+    log('cart items -- ${items[0].addedToCartAt}');
     final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
       appBar: AppBar(
@@ -136,7 +138,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
 
                           children: <TextSpan>[
                             TextSpan(
-                              text: '\$19.45',
+                              text: '\$$totalCart',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],

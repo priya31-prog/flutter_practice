@@ -1,3 +1,4 @@
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/models/gadgets_model.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,8 @@ final phone = StateProvider<String>((ref) => '');
 
 //product details screen
 final isAlreadyAddedToCart = StateProvider<bool>((ref) => false);
+final allProducts = StateProvider<List<CartProducts>>((ref) => []);
 
 //add to cart
 final isLoadingCartItems = StateProvider<bool>((ref) => true);
+final totalCartValue = StateProvider<double>((ref) => 0.0);
