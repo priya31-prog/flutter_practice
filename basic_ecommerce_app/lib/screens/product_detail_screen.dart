@@ -1,5 +1,4 @@
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
-import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/common_utils.dart';
 import 'package:basic_ecommerce_app/common_files/star_rating.dart';
@@ -56,7 +55,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final isAlreadyAdded = ref.watch(isAlreadyAddedToCart);
-    final cartProduct = ref.watch(allProducts);
+    // final cartProduct = ref.watch(allProducts);
     return Scaffold(
       appBar: AppBar(
         title: Text(
