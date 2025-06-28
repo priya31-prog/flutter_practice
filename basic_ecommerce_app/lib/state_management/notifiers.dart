@@ -15,5 +15,8 @@ final isCredEntered = StateProvider<bool>((ref) => false);
 final email = StateProvider<String>((ref) => '');
 final phone = StateProvider<String>((ref) => '');
 
+//product details screen
+final isAlreadyAddedToCart = StateProvider<bool>((ref) => false);
+
 //add to cart
 final isLoadingCartItems = StateProvider<bool>((ref) => true);
