@@ -39,6 +39,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   Widget build(BuildContext context) {
     final items = ref.watch(allProducts);
     final totalCart = ref.watch(totalCartValue);
+    final noOfItems = ref.watch(itemQuantity);
     log('cart items -- ${items[0].addedToCartAt}');
     final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
@@ -62,7 +63,8 @@ class _AddToCartState extends ConsumerState<AddToCart> {
               !isLoadingApi
                   ? items.isNotEmpty
                       ? ListView.separated(
-                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        // physics: BouncingScrollPhysics(),
                         itemBuilder:
                             (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
@@ -98,25 +100,38 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                             error,
                                             stackTrace,
                                           ) {
-                                            return Icon(Icons.error);
+                                            return Padding(
+                                              padding: const EdgeInsets.all(
+                                                25.0,
+                                              ),
+                                              child: Icon(Icons.error),
+                                            );
                                           },
                                         ),
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          '${items[index].name}',
-                                          maxLines: 3,
-                                          overflow: TextOverflow.visible,
-                                        ),
-                                        Text('\$${items[index].price}'),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${items[index].name}',
+                                            maxLines: 1,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text('\$${items[index].price}'),
+                                        ],
+                                      ),
                                     ),
-                                    Spacer(),
+
                                     Container(
                                       alignment: Alignment.center,
-                                      padding: EdgeInsets.all(1),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 4,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                           230,
@@ -126,19 +141,32 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-
                                       child: Row(
-                                        spacing: 4,
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
+                                            icon: Icon(Icons.remove, size: 16),
                                             onPressed: () {},
-                                            icon: Icon(Icons.add),
+                                            padding: EdgeInsets.zero,
+                                            constraints: BoxConstraints(),
                                           ),
-
-                                          Text('${items[index].quantity}'),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 4,
+                                            ),
+                                            child: Text(
+                                              '${items[index].quantity}',
+                                            ),
+                                          ),
                                           IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.minimize_outlined),
+                                            icon: Icon(Icons.add, size: 16),
+                                            onPressed: () {
+                                              ref
+                                                  .read(itemQuantity.notifier)
+                                                  .state += 1;
+                                            },
+                                            padding: EdgeInsets.zero,
+                                            constraints: BoxConstraints(),
                                           ),
                                         ],
                                       ),
