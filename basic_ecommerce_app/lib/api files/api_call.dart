@@ -68,7 +68,7 @@ class AddCartItem {
   final addUrl =
       "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
 
-  Future<bool> addItem({required CartProducts product}) async {
+  Future<CartProducts> addItem({required CartProducts product}) async {
     final header = await getHeaders();
     try {
       log('printing request ${json.encode(product.toJson())}');
@@ -79,18 +79,16 @@ class AddCartItem {
       );
       if (respone.statusCode == 201) {
         log('Product added successfully..');
-        return true;
+        return CartProducts.fromJson(jsonDecode(respone.body));
       } else {
-        log('response ${respone.statusCode}');
-        log('response ${respone.body}');
-        return true;
+        throw Exception('Thrown exception..');
       }
 
       // return true;
     } catch (e) {
-      Exception('Error in adding data ${e}');
-      log('exception ${e}');
-      return false;
+      throw Exception('Error in adding data ${e}');
+      // log('exception ${e}');
+      // return false;
     }
   }
 }
