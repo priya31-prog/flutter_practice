@@ -4,7 +4,9 @@ import 'dart:developer';
 
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
+// import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +41,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   Widget build(BuildContext context) {
     final items = ref.watch(allProducts);
     final totalCart = ref.watch(totalCartValue);
-    final noOfItems = ref.watch(itemQuantity);
+    // final noOfItems = ref.watch(itemQuantity);
     log('cart items -- ${items[0].addedToCartAt}');
     final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
@@ -161,9 +163,13 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                           IconButton(
                                             icon: Icon(Icons.add, size: 16),
                                             onPressed: () {
-                                              ref
-                                                  .read(itemQuantity.notifier)
-                                                  .state += 1;
+                                              AddCartItem()
+                                                  .addItem(
+                                                    product: items[index],
+                                                  )
+                                                  .then((final value) {
+                                                    log('cart value added ---');
+                                                  });
                                             },
                                             padding: EdgeInsets.zero,
                                             constraints: BoxConstraints(),
