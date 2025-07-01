@@ -30,3 +30,7 @@ product list -> filtering and sorting
 # make add to cart item page with option to delete item from the list and add extra items
 
 #In api make already added item as a description only unique item should be added
+
+#make cart products with quantity that can be removed / added (+1 / -1)
+
+# replace this addOrDecrement with the loading animation remove circular progress indicator
