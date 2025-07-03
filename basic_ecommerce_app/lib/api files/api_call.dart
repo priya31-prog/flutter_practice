@@ -68,20 +68,27 @@ class AddCartItem {
   final addUrl =
       "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
 
-  Future<CartProducts> addItem({required CartProducts product}) async {
+  Future<CartProducts> addItem({
+    required CartProducts product,
+    required String action,
+  }) async {
     final header = await getHeaders();
+    final requestBody = {...product.toJson(), 'action': action};
     try {
-      log('printing request ${json.encode(product.toJson())}');
+      log('printing request ${requestBody}');
       final respone = await http.post(
         Uri.parse(addUrl),
         headers: header,
-        body: json.encode(product.toJson()),
+        body: json.encode(requestBody),
       );
-      if (respone.statusCode == 201) {
-        log('Product added successfully..');
+      if (respone.statusCode == 201 || respone.statusCode == 200) {
+        log('Product added successfully..${respone.body}');
+        return CartProducts.fromJson(jsonDecode(respone.body));
+      } else if (respone.statusCode == 202) {
+        log('Product removed successfully..${respone.body}');
         return CartProducts.fromJson(jsonDecode(respone.body));
       } else {
-        throw Exception('Thrown exception..');
+        throw Exception('Thrown exception..${respone.body}');
       }
 
       // return true;
