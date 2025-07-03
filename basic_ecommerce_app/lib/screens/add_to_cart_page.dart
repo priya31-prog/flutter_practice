@@ -5,6 +5,8 @@ import 'dart:developer';
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 // import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
@@ -24,6 +26,18 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   @override
   void initState() {
     super.initState();
+
+    //debug
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(cartProvider.notifier).loadCartItems();
+      // ref.listen<List<CartProducts>>(cartProvider, (prev, next) {
+      //   print("🛒 Cart updated:");
+      //   for (final item in next) {
+      //     print(" - ${item.productId} → qty: ${item.quantity}");
+      //   }
+      // });
+    });
     getCartData();
   }
 
@@ -39,10 +53,12 @@ class _AddToCartState extends ConsumerState<AddToCart> {
 
   @override
   Widget build(BuildContext context) {
-    final items = ref.watch(allProducts);
+    // final items = ref.watch(allProducts);
+    final cartItems = ref.watch(cartProvider);
     final totalCart = ref.watch(totalCartValue);
+    final addOrDecrement = ref.watch(isIncrementing);
     // final noOfItems = ref.watch(itemQuantity);
-    log('cart items -- ${items[0].addedToCartAt}');
+    // log('cart items -- ${cartItems[0].addedToCartAt}');
     final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
       appBar: AppBar(
@@ -63,12 +79,16 @@ class _AddToCartState extends ConsumerState<AddToCart> {
           padding: EdgeInsets.all(8),
           child:
               !isLoadingApi
-                  ? items.isNotEmpty
-                      ? ListView.separated(
-                        shrinkWrap: true,
-                        // physics: BouncingScrollPhysics(),
-                        itemBuilder:
-                            (context, index) => Padding(
+                  ? cartItems.when(
+                    loading: () => Center(child: CircularProgressIndicator()),
+                    error: (e, st) => Text('Error: $e'),
+                    data:
+                        (cartItems) => ListView.separated(
+                          shrinkWrap: true,
+                          // physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final item = cartItems[index];
+                            return Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 10,
@@ -85,7 +105,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                       children: [
                                         Image.network(
                                           height: 100,
-                                          items[index].imageUrl!,
+                                          item.imageUrl!,
                                           fit: BoxFit.cover,
                                           loadingBuilder: (
                                             context,
@@ -118,12 +138,12 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '${items[index].name}',
+                                            '${item.name}',
                                             maxLines: 1,
                                             softWrap: true,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          Text('\$${items[index].price}'),
+                                          Text('\$${item.price}'),
                                         ],
                                       ),
                                     ),
@@ -143,54 +163,127 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.remove, size: 16),
-                                            onPressed: () {},
-                                            padding: EdgeInsets.zero,
-                                            constraints: BoxConstraints(),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 4,
-                                            ),
-                                            child: Text(
-                                              '${items[index].quantity}',
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.add, size: 16),
-                                            onPressed: () {
-                                              AddCartItem()
-                                                  .addItem(
-                                                    product: items[index],
-                                                  )
-                                                  .then((final value) {
-                                                    log('cart value added ---');
-                                                  });
-                                            },
-                                            padding: EdgeInsets.zero,
-                                            constraints: BoxConstraints(),
-                                          ),
-                                        ],
-                                      ),
+                                      child:
+                                          addOrDecrement
+                                              ? Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                              : Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      size: 16,
+                                                    ),
+                                                    onPressed: () {
+                                                      ref
+                                                          .read(
+                                                            isIncrementing
+                                                                .notifier,
+                                                          )
+                                                          .state = true;
+
+                                                      Future.delayed(
+                                                        Duration(seconds: 3),
+                                                        () {
+                                                          ref
+                                                              .read(
+                                                                isIncrementing
+                                                                    .notifier,
+                                                              )
+                                                              .state = false;
+                                                        },
+                                                      );
+
+                                                      // ref
+                                                      //     .read(
+                                                      //       cartProvider
+                                                      //           .notifier,
+                                                      //     )
+                                                      //     .decrementItem(
+                                                      //       cartItems[index],
+                                                      //     )
+                                                      //     .then(
+                                                      //       (final val) =>
+
+                                                      // );
+                                                    },
+                                                    padding: EdgeInsets.zero,
+                                                    constraints:
+                                                        BoxConstraints(),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 4,
+                                                        ),
+                                                    child: Text(
+                                                      '${item.quantity}',
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      size: 16,
+                                                    ),
+                                                    onPressed: () {
+                                                      ref
+                                                          .read(
+                                                            isIncrementing
+                                                                .notifier,
+                                                          )
+                                                          .state = true;
+                                                      // AddCartItem()
+                                                      //     .addItem(
+                                                      //       product: cartItems[index],
+                                                      //     )
+                                                      //     .then((final value) {
+
+                                                      ref
+                                                          .read(
+                                                            cartProvider
+                                                                .notifier,
+                                                          )
+                                                          .incrementItem(
+                                                            cartItems[index],
+                                                          )
+                                                          .then(
+                                                            (final val) =>
+                                                                ref
+                                                                    .read(
+                                                                      isIncrementing
+                                                                          .notifier,
+                                                                    )
+                                                                    .state = false,
+                                                          );
+
+                                                      //   setState(() {});
+                                                      // });
+                                                    },
+                                                    padding: EdgeInsets.zero,
+                                                    constraints:
+                                                        BoxConstraints(),
+                                                  ),
+                                                ],
+                                              ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                        separatorBuilder:
-                            (context, index) => SizedBox(height: 15),
-                        itemCount: items.length,
-                      )
-                      : Center(child: Text('No items found'))
+                            );
+                          },
+                          separatorBuilder:
+                              (context, index) => SizedBox(height: 15),
+                          itemCount: cartItems.length,
+                        ),
+                  )
                   : Center(child: CircularProgressIndicator()),
         ),
       ),
       bottomNavigationBar:
-          !isLoadingApi && items.isNotEmpty
+          !isLoadingApi
               ? SizedBox(
                 height: MediaQuery.of(context).size.height * 0.18,
                 child: Padding(
