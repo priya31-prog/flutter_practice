@@ -25,6 +25,7 @@ class Products {
   final MetaData meta;
   final List<String>? images;
   final String thumbnail;
+  final String? quantity;
 
   Products({
     required this.brand,
@@ -53,6 +54,7 @@ class Products {
     required this.returnPolicy,
     required this.thumbnail,
     this.images,
+    this.quantity,
   });
 
   factory Products.fromJson(Map<String, dynamic> json) {
