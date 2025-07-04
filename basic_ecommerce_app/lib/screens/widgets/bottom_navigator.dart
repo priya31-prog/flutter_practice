@@ -131,6 +131,7 @@ Future<void> addToCartFn({
             warrentyInfo: products.warrentyInfo,
             imageUrl: products.thumbnail,
           ),
+          action: 'increment',
         )
         .then((final value) {
           // if success show a  toast msg of added to cart successfully
