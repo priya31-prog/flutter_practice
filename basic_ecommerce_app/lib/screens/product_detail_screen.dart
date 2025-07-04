@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/common_utils.dart';
@@ -33,20 +35,27 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void _getCartData() {
     GadgetsApi().getCartItems().then((final value) {
       ref.read(allProducts.notifier).state = value.cartProducts!;
+      ref.read(totalCartValue.notifier).state = 0;
       setState(() {
         isApiLoaded = true;
       });
       ref.read(isAlreadyAddedToCart.notifier).state = value.cartProducts!.any((
         final ele,
       ) {
-        final price = double.parse(ele.price ?? '0');
-        ref.read(totalCartValue.notifier).state += price;
         if (ele.productId == widget.productDetails.id &&
             (ele.quantity ?? 0) >= 1) {
           return true;
         } else {
           return false;
         }
+      });
+
+      value.cartProducts!.map((final ele) {
+        final price = double.parse(ele.price ?? '0');
+        final totalProduct = (ele.quantity ?? 0) * price;
+        log('parsed double value ${totalProduct}');
+        ref.read(totalCartValue.notifier).state += totalProduct;
+        // return true;
       });
     });
   }
@@ -80,7 +89,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             children: [
               Container(
                 padding: EdgeInsets.all(8),
-                height: MediaQuery.of(context).size.height * 0.33,
+                height: MediaQuery.of(context).size.height * 0.36,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: const Color.fromARGB(255, 193, 187, 187),
@@ -264,6 +273,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       separatorBuilder:
                           (context, index) => SizedBox(height: 15),
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.productDetails.reviews!.length,
                       itemBuilder: (context, index) {
                         return Column(
