@@ -1,14 +1,6 @@
-// import 'dart:developer';
-
-import 'dart:developer';
-
-// import 'package:basic_ecommerce_app/api%20files/api_call.dart';
-// import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
-import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
-// import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,8 +13,6 @@ class AddToCart extends ConsumerStatefulWidget {
 }
 
 class _AddToCartState extends ConsumerState<AddToCart> {
-  // List<CartProducts> items = [];
-
   @override
   void initState() {
     super.initState();
@@ -31,34 +21,18 @@ class _AddToCartState extends ConsumerState<AddToCart> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(cartProvider.notifier).loadCartItems();
-      // ref.listen<List<CartProducts>>(cartProvider, (prev, next) {
-      //   print("🛒 Cart updated:");
-      //   for (final item in next) {
-      //     print(" - ${item.productId} → qty: ${item.quantity}");
-      //   }
-      // });
     });
     getCartData();
   }
 
   Future<void> getCartData() async {
-    // log('get data is being called..');
-    // ref.read(isLoadingCartItems.notifier).state = true;
-    // GadgetsApi().getCartItems().then((final value) {
-    // items = widget.allProducts;
     ref.read(isLoadingCartItems.notifier).state = false;
-    // });
-    // log('values from screen ${items[0].imageUrl}');
   }
 
   @override
   Widget build(BuildContext context) {
-    // final items = ref.watch(allProducts);
     final cartItems = ref.watch(cartProvider);
     final totalCart = ref.watch(totalCartValue);
-    final addOrDecrement = ref.watch(isIncrementing);
-    // final noOfItems = ref.watch(itemQuantity);
-    // log('cart items -- ${cartItems[0].addedToCartAt}');
     final isLoadingApi = ref.watch(isLoadingCartItems);
     return Scaffold(
       appBar: AppBar(
@@ -88,6 +62,9 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                           // physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             final item = cartItems[index];
+                            final productID = item.productId!;
+                            final doesLoads =
+                                ref.watch(loaderToOperate)[productID] ?? false;
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 20,
@@ -164,10 +141,22 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child:
-                                          addOrDecrement
+                                          doesLoads
                                               ? Center(
-                                                child:
-                                                    CircularProgressIndicator(),
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        MediaQuery.of(
+                                                          context,
+                                                        ).size.width *
+                                                        0.09,
+                                                    vertical: 4,
+                                                  ),
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                      ),
+                                                ),
                                               )
                                               : Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -178,37 +167,14 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                                       size: 16,
                                                     ),
                                                     onPressed: () {
-                                                      ref
-                                                          .read(
-                                                            isIncrementing
-                                                                .notifier,
-                                                          )
-                                                          .state = true;
-
-                                                      Future.delayed(
-                                                        Duration(seconds: 3),
-                                                        () {
-                                                          ref
-                                                              .read(
-                                                                isIncrementing
-                                                                    .notifier,
-                                                              )
-                                                              .state = false;
-                                                        },
+                                                      onRemoveAddActions(
+                                                        action: 'decrement',
+                                                        productID:
+                                                            item.productId!,
+                                                        index: index,
+                                                        cartItems: cartItems,
+                                                        ref: ref,
                                                       );
-
-                                                      // ref
-                                                      //     .read(
-                                                      //       cartProvider
-                                                      //           .notifier,
-                                                      //     )
-                                                      //     .decrementItem(
-                                                      //       cartItems[index],
-                                                      //     )
-                                                      //     .then(
-                                                      //       (final val) =>
-
-                                                      // );
                                                     },
                                                     padding: EdgeInsets.zero,
                                                     constraints:
@@ -229,38 +195,14 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                                       size: 16,
                                                     ),
                                                     onPressed: () {
-                                                      ref
-                                                          .read(
-                                                            isIncrementing
-                                                                .notifier,
-                                                          )
-                                                          .state = true;
-                                                      // AddCartItem()
-                                                      //     .addItem(
-                                                      //       product: cartItems[index],
-                                                      //     )
-                                                      //     .then((final value) {
-
-                                                      ref
-                                                          .read(
-                                                            cartProvider
-                                                                .notifier,
-                                                          )
-                                                          .incrementItem(
-                                                            cartItems[index],
-                                                          )
-                                                          .then(
-                                                            (final val) =>
-                                                                ref
-                                                                    .read(
-                                                                      isIncrementing
-                                                                          .notifier,
-                                                                    )
-                                                                    .state = false,
-                                                          );
-
-                                                      //   setState(() {});
-                                                      // });
+                                                      onRemoveAddActions(
+                                                        action: 'increment',
+                                                        productID:
+                                                            item.productId!,
+                                                        index: index,
+                                                        cartItems: cartItems,
+                                                        ref: ref,
+                                                      );
                                                     },
                                                     padding: EdgeInsets.zero,
                                                     constraints:
@@ -299,7 +241,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
 
                           children: <TextSpan>[
                             TextSpan(
-                              text: '\$$totalCart',
+                              text: '\$${totalCart.toStringAsFixed(2)}',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -331,5 +273,47 @@ class _AddToCartState extends ConsumerState<AddToCart> {
               )
               : SizedBox.shrink(),
     );
+  }
+}
+
+void onRemoveAddActions({
+  required String action,
+  required int productID,
+  required int index,
+  required List<CartProducts> cartItems,
+  required WidgetRef ref,
+}) {
+  ref
+      .read(loaderToOperate.notifier)
+      .update((state) => {...state, productID: true});
+
+  final price = double.parse((cartItems[index].price) ?? '0');
+
+  if (action == 'increment') {
+    ref
+        .read(cartProvider.notifier)
+        .incrementItem(cartItems[index])
+        .then(
+          (final value) => {
+            ref
+                .read(loaderToOperate.notifier)
+                .update((state) => {...state, productID: false}),
+
+            ref.read(totalCartValue.notifier).state += price,
+          },
+        );
+  } else {
+    ref
+        .read(cartProvider.notifier)
+        .decrementItem(cartItems[index])
+        .then(
+          (final val) => {
+            ref
+                .read(loaderToOperate.notifier)
+                .update((state) => {...state, productID: false}),
+
+            ref.read(totalCartValue.notifier).state -= price,
+          },
+        );
   }
 }
