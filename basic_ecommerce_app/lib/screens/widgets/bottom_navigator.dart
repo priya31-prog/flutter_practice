@@ -1,15 +1,18 @@
-import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+// import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Widget bottomNavigator({
   required BuildContext context,
   required Products products,
   required bool isApiLoaded,
   required bool goToCart,
+  required WidgetRef ref,
 }) {
   return SizedBox(
     height: 60,
@@ -35,6 +38,7 @@ Widget bottomNavigator({
                             context: context,
                             products: products,
                             goToCart: goToCart,
+                            ref: ref,
                           );
                         },
                         icon: Row(
@@ -68,6 +72,7 @@ Widget bottomNavigator({
                             context: context,
                             products: products,
                             goToCart: goToCart,
+                            ref: ref,
                           );
                         },
                         icon: Row(
@@ -111,35 +116,34 @@ Future<void> addToCartFn({
   required Products products,
   required BuildContext context,
   required bool goToCart,
+  required WidgetRef ref,
 }) async {
   final discount = products.discountPercent.toString();
   final price = products.price.toString();
 
   if (!goToCart) {
-    await AddCartItem()
-        .addItem(
-          product: CartProducts(
-            addedToCartAt: DateTime.now(),
-            shippingInfo: DateTime.now(),
-            brand: products.brand,
-            name: products.title,
-            discountPercent: discount,
-            productId: products.id,
-            isAvailable: products.availabiltySts == 'In Stock' ? true : false,
-            price: price,
-            stock: products.stock,
-            warrentyInfo: products.warrentyInfo,
-            imageUrl: products.thumbnail,
-          ),
-          action: 'increment',
-        )
-        .then((final value) {
-          // if success show a  toast msg of added to cart successfully
-          //if buy now -> go to cart with the newly added item and the exisiting item
-          // re
-          if (!context.mounted) return;
-          Navigator.pushNamed(context, RouteNavigations.addToCartPageSkip);
-        });
+    onRemoveAddActions(
+      action: 'increment',
+      productID: products.id,
+      products: CartProducts(
+        addedToCartAt: DateTime.now(),
+        shippingInfo: DateTime.now(),
+        brand: products.brand,
+        name: products.title,
+        discountPercent: discount,
+        productId: products.id,
+        isAvailable: products.availabiltySts == 'In Stock' ? true : false,
+        price: price,
+        stock: products.stock,
+        warrentyInfo: products.warrentyInfo,
+        imageUrl: products.thumbnail,
+      ),
+      ref: ref,
+      productsCallBack: () {
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, RouteNavigations.addToCartPageSkip);
+      },
+    );
   } else {
     // print('printing inside the go to cart page..');
     if (!context.mounted) return;
