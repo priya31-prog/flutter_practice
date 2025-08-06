@@ -331,6 +331,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 products: widget.productDetails,
                 isApiLoaded: isApiLoaded,
                 goToCart: isAlreadyAdded,
+                ref: ref,
               )
               : SizedBox.shrink(),
     );
