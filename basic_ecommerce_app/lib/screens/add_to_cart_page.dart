@@ -1,5 +1,9 @@
+import 'dart:developer';
+// import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+// import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +38,9 @@ class _AddToCartState extends ConsumerState<AddToCart> {
     final cartItems = ref.watch(cartProvider);
     final totalCart = ref.watch(totalCartValue);
     final isLoadingApi = ref.watch(isLoadingCartItems);
+    final isCartListEmpty = ref
+        .watch(cartProvider)
+        .maybeWhen(data: (cartList) => cartList.isEmpty, orElse: () => false);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -57,169 +64,196 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                     loading: () => Center(child: CircularProgressIndicator()),
                     error: (e, st) => Text('Error: $e'),
                     data:
-                        (cartItems) => ListView.separated(
-                          shrinkWrap: true,
-                          // physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final item = cartItems[index];
-                            final productID = item.productId!;
-                            final doesLoads =
-                                ref.watch(loaderToOperate)[productID] ?? false;
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(95, 82, 80, 80),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.network(
-                                          height: 100,
-                                          item.imageUrl!,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (
-                                            context,
-                                            child,
-                                            loadingProgress,
-                                          ) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return CircularProgressIndicator();
-                                          },
-                                          errorBuilder: (
-                                            context,
-                                            error,
-                                            stackTrace,
-                                          ) {
-                                            return Padding(
-                                              padding: const EdgeInsets.all(
-                                                25.0,
-                                              ),
-                                              child: Icon(Icons.error),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${item.name}',
-                                            maxLines: 1,
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text('\$${item.price}'),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Container(
-                                      alignment: Alignment.center,
+                        (cartItems) =>
+                            isCartListEmpty
+                                ? Center(
+                                  child: Text(
+                                    'No Items found in the cart. Please add to proceed.',
+                                  ),
+                                )
+                                : ListView.separated(
+                                  shrinkWrap: true,
+                                  // physics: BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    final item = cartItems[index];
+                                    final productID = item.productId!;
+                                    final doesLoads =
+                                        ref.watch(loaderToOperate)[productID] ??
+                                        false;
+                                    return Padding(
                                       padding: EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                        vertical: 4,
+                                        horizontal: 20,
+                                        vertical: 10,
                                       ),
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                          230,
-                                          89,
-                                          88,
-                                          88,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                            95,
+                                            82,
+                                            80,
+                                            80,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
                                         ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child:
-                                          doesLoads
-                                              ? Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal:
-                                                        MediaQuery.of(
-                                                          context,
-                                                        ).size.width *
-                                                        0.09,
-                                                    vertical: 4,
-                                                  ),
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                      ),
+                                        child: Row(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Image.network(
+                                                  height: 100,
+                                                  item.imageUrl!,
+                                                  fit: BoxFit.cover,
+                                                  loadingBuilder: (
+                                                    context,
+                                                    child,
+                                                    loadingProgress,
+                                                  ) {
+                                                    if (loadingProgress ==
+                                                        null) {
+                                                      return child;
+                                                    }
+                                                    return CircularProgressIndicator();
+                                                  },
+                                                  errorBuilder: (
+                                                    context,
+                                                    error,
+                                                    stackTrace,
+                                                  ) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            25.0,
+                                                          ),
+                                                      child: Icon(Icons.error),
+                                                    );
+                                                  },
                                                 ),
-                                              )
-                                              : Row(
-                                                mainAxisSize: MainAxisSize.min,
+                                              ],
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.remove,
-                                                      size: 16,
-                                                    ),
-                                                    onPressed: () {
-                                                      onRemoveAddActions(
-                                                        action: 'decrement',
-                                                        productID:
-                                                            item.productId!,
-                                                        index: index,
-                                                        cartItems: cartItems,
-                                                        ref: ref,
-                                                      );
-                                                    },
-                                                    padding: EdgeInsets.zero,
-                                                    constraints:
-                                                        BoxConstraints(),
+                                                  Text(
+                                                    '${item.name}',
+                                                    maxLines: 1,
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 4,
-                                                        ),
-                                                    child: Text(
-                                                      '${item.quantity}',
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      size: 16,
-                                                    ),
-                                                    onPressed: () {
-                                                      onRemoveAddActions(
-                                                        action: 'increment',
-                                                        productID:
-                                                            item.productId!,
-                                                        index: index,
-                                                        cartItems: cartItems,
-                                                        ref: ref,
-                                                      );
-                                                    },
-                                                    padding: EdgeInsets.zero,
-                                                    constraints:
-                                                        BoxConstraints(),
-                                                  ),
+                                                  Text('\$${item.price}'),
                                                 ],
                                               ),
-                                    ),
-                                  ],
+                                            ),
+
+                                            Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 4,
+                                                vertical: 4,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(
+                                                  230,
+                                                  89,
+                                                  88,
+                                                  88,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child:
+                                                  doesLoads
+                                                      ? Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal:
+                                                                    MediaQuery.of(
+                                                                      context,
+                                                                    ).size.width *
+                                                                    0.09,
+                                                                vertical: 4,
+                                                              ),
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                                strokeWidth: 2,
+                                                              ),
+                                                        ),
+                                                      )
+                                                      : Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.remove,
+                                                              size: 16,
+                                                            ),
+                                                            onPressed: () {
+                                                              onRemoveAddActions(
+                                                                action:
+                                                                    'decrement',
+                                                                productID:
+                                                                    item.productId!,
+                                                                index: index,
+                                                                cartItems:
+                                                                    cartItems,
+                                                                ref: ref,
+                                                              );
+                                                            },
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            constraints:
+                                                                BoxConstraints(),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets.symmetric(
+                                                                  horizontal: 4,
+                                                                ),
+                                                            child: Text(
+                                                              '${item.quantity}',
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                            icon: Icon(
+                                                              Icons.add,
+                                                              size: 16,
+                                                            ),
+                                                            onPressed: () {
+                                                              onRemoveAddActions(
+                                                                action:
+                                                                    'increment',
+                                                                productID:
+                                                                    item.productId!,
+                                                                index: index,
+                                                                cartItems:
+                                                                    cartItems,
+                                                                ref: ref,
+                                                              );
+                                                            },
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            constraints:
+                                                                BoxConstraints(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (context, index) => SizedBox(height: 15),
+                                  itemCount: cartItems.length,
                                 ),
-                              ),
-                            );
-                          },
-                          separatorBuilder:
-                              (context, index) => SizedBox(height: 15),
-                          itemCount: cartItems.length,
-                        ),
                   )
                   : Center(child: CircularProgressIndicator()),
         ),
@@ -279,41 +313,70 @@ class _AddToCartState extends ConsumerState<AddToCart> {
 void onRemoveAddActions({
   required String action,
   required int productID,
-  required int index,
-  required List<CartProducts> cartItems,
+  final int? index,
+  final List<CartProducts>? cartItems,
   required WidgetRef ref,
+  final CartProducts? products,
+  final VoidCallback? productsCallBack,
 }) {
   ref
       .read(loaderToOperate.notifier)
       .update((state) => {...state, productID: true});
 
-  final price = double.parse((cartItems[index].price) ?? '0');
+  if (index != null) {
+    final price = double.parse((cartItems![index].price) ?? '0');
 
-  if (action == 'increment') {
-    ref
-        .read(cartProvider.notifier)
-        .incrementItem(cartItems[index])
-        .then(
-          (final value) => {
-            ref
-                .read(loaderToOperate.notifier)
-                .update((state) => {...state, productID: false}),
+    log('price of a single product ${price}');
 
-            ref.read(totalCartValue.notifier).state += price,
-          },
-        );
+    if (action == 'increment') {
+      ref
+          .read(cartProvider.notifier)
+          .incrementItem(cartItems![index])
+          .then(
+            (final value) => {
+              ref
+                  .read(loaderToOperate.notifier)
+                  .update((state) => {...state, productID: false}),
+
+              ref.read(totalCartValue.notifier).state += price,
+              log('price after increment ${ref.watch(totalCartValue)}'),
+            },
+          );
+    } else {
+      ref
+          .read(cartProvider.notifier)
+          .decrementItem(cartItems[index])
+          .then(
+            (final val) => {
+              ref
+                  .read(loaderToOperate.notifier)
+                  .update((state) => {...state, productID: false}),
+
+              ref.read(totalCartValue.notifier).state -= price,
+              log('price after decrement ${ref.watch(totalCartValue)}'),
+            },
+          );
+    }
   } else {
-    ref
-        .read(cartProvider.notifier)
-        .decrementItem(cartItems[index])
-        .then(
-          (final val) => {
-            ref
-                .read(loaderToOperate.notifier)
-                .update((state) => {...state, productID: false}),
+    final price = double.parse((products!.price) ?? '0');
 
-            ref.read(totalCartValue.notifier).state -= price,
-          },
-        );
+    log('price of a single product ${price}');
+
+    if (action == 'increment') {
+      ref
+          .read(cartProvider.notifier)
+          .incrementItem(products)
+          .then(
+            (final value) => {
+              ref
+                  .read(loaderToOperate.notifier)
+                  .update((state) => {...state, productID: false}),
+
+              ref.read(totalCartValue.notifier).state += price,
+              log('price after increment ${ref.watch(totalCartValue)}'),
+              productsCallBack?.call(),
+            },
+          );
+    }
   }
 }
