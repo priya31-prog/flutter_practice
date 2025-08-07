@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../state_management/notifiers.dart';
 
 class CartNotifier extends StateNotifier<AsyncValue<List<CartProducts>>> {
   CartNotifier() : super(const AsyncValue.loading()) {
