@@ -296,6 +296,7 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                 onTap: () {},
                                 text: 'CHECKOUT',
                                 textStyle: TextStyle(color: Colors.black),
+                                isDisabled: isCartListEmpty,
                               ),
                             ),
                           ),
@@ -331,7 +332,7 @@ void onRemoveAddActions({
     if (action == 'increment') {
       ref
           .read(cartProvider.notifier)
-          .incrementItem(cartItems![index])
+          .incrementItem(cartItems[index])
           .then(
             (final value) => {
               ref
@@ -340,6 +341,7 @@ void onRemoveAddActions({
 
               ref.read(totalCartValue.notifier).state += price,
               log('price after increment ${ref.watch(totalCartValue)}'),
+              log('price after increment ${ref.watch(cartProvider)}'),
             },
           );
     } else {
@@ -379,4 +381,8 @@ void onRemoveAddActions({
           );
     }
   }
+  final isItemPresent = ref
+      .watch(cartProvider)
+      .maybeWhen(data: (cartList) => cartList.isEmpty, orElse: () => false);
+  ref.read(isAlreadyAddedToCart.notifier).state = isItemPresent;
 }
