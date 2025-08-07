@@ -2,7 +2,7 @@ class CartProducts {
   final int? id;
   final int? productId;
   final String? name;
-  final String? price;
+  String? price;
   final String? discountPercent;
   final int? stock;
   final String? brand;

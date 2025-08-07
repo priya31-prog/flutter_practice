@@ -200,6 +200,8 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                                                 cartItems:
                                                                     cartItems,
                                                                 ref: ref,
+                                                                cartValue:
+                                                                    totalCart,
                                                               );
                                                             },
                                                             padding:
@@ -231,6 +233,8 @@ class _AddToCartState extends ConsumerState<AddToCart> {
                                                                 cartItems:
                                                                     cartItems,
                                                                 ref: ref,
+                                                                cartValue:
+                                                                    totalCart,
                                                               );
                                                             },
                                                             padding:

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+import 'package:basic_ecommerce_app/common_files/common_utils.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,15 +15,27 @@ void onRemoveAddActions({
   required WidgetRef ref,
   final CartProducts? products,
   final VoidCallback? productsCallBack,
+  required double cartValue,
 }) {
   ref
       .read(loaderToOperate.notifier)
       .update((state) => {...state, productID: true});
 
   if (index != null) {
-    final price = double.parse((cartItems![index].price) ?? '0');
+    // final originalPrice = double.parse(cartItems![index].price ?? '');
+    // final discount = double.parse(cartItems[index].discountPercent ?? '');
+
+    final price = double.parse(cartItems![index].price ?? '');
+    // double.parse(
+    //   CommonUtils.discountedPrice(price: originalPrice, discount: discount),
+    // );
 
     log('price of a single product ${price}');
+
+    // final item = cartItems[index];
+    // item.price = price.toStringAsFixed(2);
+
+    log('Logging the price updated cart item ${cartItems}');
 
     if (action == 'increment') {
       ref
@@ -55,7 +68,18 @@ void onRemoveAddActions({
           );
     }
   } else {
-    final price = double.parse((products!.price) ?? '0');
+    final originalPrice = double.parse(products!.price ?? '');
+    final discountPrice = double.parse(products.discountPercent ?? '');
+
+    final price = double.parse(
+      CommonUtils.discountedPrice(
+        price: originalPrice,
+        discount: discountPrice,
+      ),
+    );
+
+    final item = products;
+    item.price = price.toStringAsFixed(2);
 
     log('price of a single product ${price}');
 
@@ -69,8 +93,10 @@ void onRemoveAddActions({
                   .read(loaderToOperate.notifier)
                   .update((state) => {...state, productID: false}),
 
-              ref.read(totalCartValue.notifier).state += price,
+              ref.read(totalCartValue.notifier).state = price + cartValue,
               log('price after increment ${ref.watch(totalCartValue)}'),
+              log('price after increment ${cartValue}'),
+              log('price after increment ${price}'),
               productsCallBack?.call(),
             },
           );

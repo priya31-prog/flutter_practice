@@ -121,6 +121,7 @@ Future<void> addToCartFn({
 }) async {
   final discount = products.discountPercent.toString();
   final price = products.price.toString();
+  final value = ref.watch(totalCartValue);
 
   if (!goToCart) {
     onRemoveAddActions(
@@ -140,6 +141,7 @@ Future<void> addToCartFn({
         imageUrl: products.thumbnail,
       ),
       ref: ref,
+      cartValue: value,
       productsCallBack: () {
         ref.read(isAlreadyAddedToCart.notifier).state = true;
         if (!context.mounted) return;
