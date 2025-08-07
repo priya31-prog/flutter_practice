@@ -1,4 +1,5 @@
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
@@ -121,7 +122,7 @@ Future<void> addToCartFn({
 }) async {
   final discount = products.discountPercent.toString();
   final price = products.price.toString();
-  final value = ref.watch(totalCartValue);
+  final value = ref.watch(totalCartValueProvider);
 
   if (!goToCart) {
     onRemoveAddActions(

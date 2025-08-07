@@ -22,20 +22,16 @@ void onRemoveAddActions({
       .update((state) => {...state, productID: true});
 
   if (index != null) {
-    // final originalPrice = double.parse(cartItems![index].price ?? '');
-    // final discount = double.parse(cartItems[index].discountPercent ?? '');
+    final originalPrice = double.parse(cartItems![index].price ?? '');
+    final discount = double.parse(cartItems[index].discountPercent ?? '');
 
-    final price = double.parse(cartItems![index].price ?? '');
-    // double.parse(
-    //   CommonUtils.discountedPrice(price: originalPrice, discount: discount),
-    // );
+    final price = double.parse(cartItems[index].price ?? '');
+    double.parse(
+      CommonUtils.discountedPrice(price: originalPrice, discount: discount),
+    );
 
-    log('price of a single product ${price}');
-
-    // final item = cartItems[index];
-    // item.price = price.toStringAsFixed(2);
-
-    log('Logging the price updated cart item ${cartItems}');
+    final item = cartItems[index];
+    item.price = price.toStringAsFixed(2);
 
     if (action == 'increment') {
       ref
@@ -46,10 +42,6 @@ void onRemoveAddActions({
               ref
                   .read(loaderToOperate.notifier)
                   .update((state) => {...state, productID: false}),
-
-              ref.read(totalCartValue.notifier).state += price,
-              log('price after increment ${ref.watch(totalCartValue)}'),
-              log('price after increment ${ref.watch(cartProvider)}'),
             },
           );
     } else {
@@ -61,9 +53,6 @@ void onRemoveAddActions({
               ref
                   .read(loaderToOperate.notifier)
                   .update((state) => {...state, productID: false}),
-
-              ref.read(totalCartValue.notifier).state -= price,
-              log('price after decrement ${ref.watch(totalCartValue)}'),
             },
           );
     }
@@ -93,10 +82,6 @@ void onRemoveAddActions({
                   .read(loaderToOperate.notifier)
                   .update((state) => {...state, productID: false}),
 
-              ref.read(totalCartValue.notifier).state = price + cartValue,
-              log('price after increment ${ref.watch(totalCartValue)}'),
-              log('price after increment ${cartValue}'),
-              log('price after increment ${price}'),
               productsCallBack?.call(),
             },
           );

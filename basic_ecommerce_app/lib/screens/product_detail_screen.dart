@@ -35,7 +35,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   void _getCartData() {
     GadgetsApi().getCartItems().then((final value) {
       ref.read(allProducts.notifier).state = value.cartProducts!;
-      ref.read(totalCartValue.notifier).state = 0;
       setState(() {
         isApiLoaded = true;
       });
@@ -50,13 +49,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         }
       });
 
-      value.cartProducts!.map((final ele) {
-        final price = double.parse(ele.price ?? '0');
-        final totalProduct = (ele.quantity ?? 0) * price;
-        log('parsed double value ${totalProduct}');
-        ref.read(totalCartValue.notifier).state += totalProduct;
-        // return true;
-      });
+      // value.cartProducts!.map((final ele) {
+      //   final price = double.parse(ele.price ?? '0');
+      //   final totalProduct = (ele.quantity ?? 0) * price;
+      //   log('parsed double value ${totalProduct}');
+      //   ref.read(totalCartValue.notifier).state += totalProduct;
+      //   // return true;
+      // }
+
+      // );
     });
   }
 

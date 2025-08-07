@@ -22,6 +22,6 @@ final allProducts = StateProvider<List<CartProducts>>((ref) => []);
 
 //add to cart
 final isLoadingCartItems = StateProvider<bool>((ref) => true);
-final totalCartValue = StateProvider<double>((ref) => 0.0);
+// final totalCartValue = StateProvider<double>((ref) => 0.0);
 final itemQuantity = StateProvider<int>((ref) => 0);
 final loaderToOperate = StateProvider<Map<int, bool>>((ref) => {});
