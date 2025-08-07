@@ -2,8 +2,8 @@
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/common_files/add_remove_item_notifier.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
