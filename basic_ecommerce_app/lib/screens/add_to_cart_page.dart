@@ -1,6 +1,6 @@
 import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/common_files/add_remove_item_notifier.dart';
-import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
+import 'package:basic_ecommerce_app/screens/widgets/bottom_checkout_navigator.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -256,51 +256,10 @@ class _AddToCartState extends ConsumerState<AddToCart> {
       ),
       bottomNavigationBar:
           !isLoadingApi
-              ? SizedBox(
-                height: MediaQuery.of(context).size.height * 0.18,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 35),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 10,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: 'Total cart items ',
-                          style: TextStyle(color: Colors.white, fontSize: 17),
-
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '\$${totalCart.toStringAsFixed(2)}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-
-                        // child:
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 0,
-                              ),
-                              child: elevatedButtonWider(
-                                onTap: () {},
-                                text: 'CHECKOUT',
-                                textStyle: TextStyle(color: Colors.black),
-                                isDisabled: isCartListEmpty,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              ? bottomCheckOutNavigator(
+                context: context,
+                totalCart: totalCart,
+                isCartListEmpty: isCartListEmpty,
               )
               : SizedBox.shrink(),
     );
