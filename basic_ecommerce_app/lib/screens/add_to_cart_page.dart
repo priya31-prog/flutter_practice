@@ -32,7 +32,13 @@ class _AddToCartState extends ConsumerState<AddToCart> {
   @override
   Widget build(BuildContext context) {
     final cartItems = ref.watch(cartProvider);
-    final totalCart = ref.watch(totalCartValue);
+    final totalCart = ref.watch(
+      cartProvider.select((cartState) {
+        return cartState.valueOrNull == null
+            ? 0.0
+            : ref.read(cartProvider.notifier).totalCartValue;
+      }),
+    );
     final isLoadingApi = ref.watch(isLoadingCartItems);
     final isCartListEmpty = ref
         .watch(cartProvider)
