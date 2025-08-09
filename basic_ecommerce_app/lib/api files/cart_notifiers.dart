@@ -7,11 +7,15 @@ class CartNotifier extends StateNotifier<AsyncValue<List<CartProducts>>> {
     loadCartItems();
   }
 
+  double? _lastTotal;
+  List<CartProducts>? _lastCachedProducts;
+
   // API 1: Load all cart products
   Future<void> loadCartItems() async {
     try {
       final items = await GadgetsApi().getCartItems();
       state = AsyncValue.data(items.cartProducts!);
+      invalidateCache();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
@@ -37,13 +41,28 @@ class CartNotifier extends StateNotifier<AsyncValue<List<CartProducts>>> {
     }
   }
 
+  void invalidateCache() {
+    _lastCachedProducts = null;
+    _lastTotal = null;
+  }
+
+  //Optional getters
   double get totalCartValue {
     final cart = state.valueOrNull ?? [];
-    return cart.fold(0.0, (sum, item) {
+
+    //memoize approach (storing cached data and updating only when the state changes)
+    if (identical(cart, _lastCachedProducts) && _lastTotal != null) {
+      return _lastTotal ?? 0.0;
+    }
+    final total = cart.fold(0.0, (sum, item) {
       final itemPrice = double.tryParse(item.price ?? '') ?? 0.0;
       final price = itemPrice * (item.quantity ?? 1);
       return sum + price;
     });
+
+    _lastTotal = total;
+    _lastCachedProducts = cart;
+    return total;
   }
 }
 
@@ -52,18 +71,18 @@ final cartProvider =
       (ref) => CartNotifier(),
     );
 
-final totalCartValueProvider = Provider<double>((ref) {
-  final cartState = ref.watch(cartProvider);
+// final totalCartValueProvider = Provider<double>((ref) {
+//   final cartState = ref.watch(cartProvider);
 
-  return cartState.when(
-    data: (items) {
-      return items.fold(0.0, (sum, item) {
-        final itemPrice = double.tryParse(item.price ?? '') ?? 0.0;
-        final price = itemPrice * (item.quantity ?? 1);
-        return sum + price;
-      });
-    },
-    error: (_, __) => 0.0,
-    loading: () => 0.0,
-  );
-});
+//   return cartState.when(
+//     data: (items) {
+//       return items.fold(0.0, (sum, item) {
+//         final itemPrice = double.tryParse(item.price ?? '') ?? 0.0;
+//         final price = itemPrice * (item.quantity ?? 1);
+//         return sum + price;
+//       });
+//     },
+//     error: (_, __) => 0.0,
+//     loading: () => 0.0,
+//   );
+// });
