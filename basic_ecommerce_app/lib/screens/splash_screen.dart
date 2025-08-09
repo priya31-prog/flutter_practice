@@ -34,11 +34,6 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
         if (!mounted) return;
         Navigator.pushNamed(context, RouteNavigations.onBoardingScreen);
       });
-
-      // log('printing set state ${isLoading}');
-
-      // var datas = ref.watch(gadgetsList);
-      // log('ref watch data ${datas.status}');
     });
   }
 
