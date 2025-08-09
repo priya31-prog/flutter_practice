@@ -75,7 +75,7 @@ class AddCartItem {
     final header = await getHeaders();
     final requestBody = {...product.toJson(), 'action': action};
     try {
-      log('printing request ${requestBody}');
+      log('printing request ${json.encode(requestBody)}');
       final respone = await http.post(
         Uri.parse(addUrl),
         headers: header,

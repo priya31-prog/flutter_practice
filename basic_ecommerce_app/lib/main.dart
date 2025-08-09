@@ -1,10 +1,11 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
-import 'package:basic_ecommerce_app/screens/home_screen.dart';
-import 'package:basic_ecommerce_app/screens/login_screen.dart';
-import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
-import 'package:basic_ecommerce_app/screens/sign_up_screen.dart';
+// import 'package:basic_ecommerce_app/method_channel/channel.dart';
+// import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
+// import 'package:basic_ecommerce_app/screens/home_screen.dart';
+// import 'package:basic_ecommerce_app/screens/login_screen.dart';
+// import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
+// import 'package:basic_ecommerce_app/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       // themeMode: ThemeMode.dark,
       theme: darkTheme,
       onGenerateRoute: RouteNavigations.onGenerateRoute,
-      // home: AddToCart(),
+      // home: Channel(),
     );
   }
 }
