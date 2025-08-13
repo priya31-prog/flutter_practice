@@ -1,3 +1,5 @@
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+import 'package:basic_ecommerce_app/screens/dialogs/confirmation_dialog.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +7,7 @@ Widget bottomCheckOutNavigator({
   required BuildContext context,
   required double totalCart,
   required bool isCartListEmpty,
+  required List<CartProducts> cartItems,
 }) {
   return SizedBox(
     height: MediaQuery.of(context).size.height * 0.18,
@@ -36,7 +39,13 @@ Widget bottomCheckOutNavigator({
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                   child: elevatedButtonWider(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => OrderDialog(cartItems: cartItems),
+                      );
+                      // OrderDialog();
+                    },
                     text: 'CHECKOUT',
                     textStyle: TextStyle(color: Colors.black),
                     isDisabled: isCartListEmpty,
