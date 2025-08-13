@@ -1,15 +1,23 @@
 // import 'package:basic_ecommerce_app/common_files/route_navigations.dart';a
+import 'dart:developer';
+
+// import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
+import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrderDialog extends StatefulWidget {
-  const OrderDialog({super.key});
+class OrderDialog extends ConsumerStatefulWidget {
+  const OrderDialog({super.key, required this.cartItems});
+  final List<CartProducts> cartItems;
 
   @override
-  State<OrderDialog> createState() => _OrderDialogState();
+  ConsumerState<OrderDialog> createState() => _OrderDialogState();
 }
 
-class _OrderDialogState extends State<OrderDialog> {
+class _OrderDialogState extends ConsumerState<OrderDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -55,6 +63,54 @@ class _OrderDialogState extends State<OrderDialog> {
                 Expanded(
                   child: InkWell(
                     onTap: () async {
+                      try {
+                        final docRef = FirebaseFirestore.instance
+                            .collection('sold_products')
+                            .doc('dndaRtwFqKPg8yxm2guJ');
+
+                        final snapShot = await docRef.get();
+
+                        final List<dynamic> currentData =
+                            snapShot.data()?['data'] ?? [];
+
+                        currentData.addAll(
+                          widget.cartItems.map((products) {
+                            final json = products.toJson();
+                            if (products.quantity == null) {
+                              json['quantity'] = 1;
+                            }
+
+                            json['quantity'] = products.quantity!;
+                            // json['quantity'] = 1;
+                            return json;
+                          }).toList(),
+                        );
+
+                        await docRef.update({'data': currentData});
+
+                        // await AddCartItem().deleteItem(action: 'delete');
+                        ref
+                            .read(cartProvider.notifier)
+                            .deleteItem()
+                            .then((value) {});
+
+                        log('populated data success');
+                      } catch (e) {
+                        log('errir in updtaing ${e}');
+                      }
+
+                      final doc =
+                          await FirebaseFirestore.instance
+                              .collection('sold_products')
+                              .doc('dndaRtwFqKPg8yxm2guJ')
+                              .get();
+
+                      if (doc.exists) {
+                        log("Document data: ${doc.data()}");
+                      } else {
+                        log("No document found");
+                      }
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                       Navigator.pushNamed(
                         context,
