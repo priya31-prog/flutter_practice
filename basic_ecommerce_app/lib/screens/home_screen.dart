@@ -17,6 +17,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final _searchController;
   late List<Products> products;
   List<String> brand = [];
@@ -49,6 +50,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     brand = ref.watch(brandsList);
     products = ref.watch(productsList);
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: Drawer(
+        // backgroundColor: Colors.white,
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 100,
+              child: DrawerHeader(
+                padding: EdgeInsetsGeometry.all(25),
+                margin: EdgeInsets.only(bottom: 2),
+                decoration: BoxDecoration(color: Colors.cyan),
+                child: Text('User Name', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            ListTile(
+              title: Text('Order history'),
+              leading: Icon(Icons.shopping_cart_sharp),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('View Profile'),
+              leading: Icon(Icons.manage_accounts_sharp),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -88,15 +116,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     SizedBox(width: 10),
 
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(50),
+                    InkWell(
+                      onTap: () {
+                        log("tapping inside profile..");
+                        _scaffoldKey.currentState?.openDrawer();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondary.withAlpha(50),
+                        ),
+                        child: Icon(Icons.person_2_outlined),
                       ),
-                      child: Icon(Icons.person_2_outlined),
                     ),
                   ],
                 ),
