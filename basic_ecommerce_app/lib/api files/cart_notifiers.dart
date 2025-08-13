@@ -31,6 +31,20 @@ class CartNotifier extends StateNotifier<AsyncValue<List<CartProducts>>> {
     }
   }
 
+  Future<void> deleteItem() async {
+    final response = await AddCartItem().deleteItem(action: 'delete');
+
+    if (response == true) {
+      await loadCartItems();
+    }
+  }
+
+  // Future<void> deleteAllItems() async {
+  //   final response = await AddCartItem().deleteItem(action: 'delete');
+  //   if (response == true) {}
+  //   await loadCartItems();
+  // }
+
   Future<void> decrementItem(CartProducts products) async {
     final response = await AddCartItem().addItem(
       product: products,

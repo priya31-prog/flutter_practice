@@ -98,4 +98,31 @@ class AddCartItem {
       // return false;
     }
   }
+
+  Future<bool> deleteItem({required String action}) async {
+    final deleteUrl =
+        "https://feature-cart-items-api.onrender.com/api/v1/cartItems/";
+    final header = await getHeaders();
+    final requestBody = {'action': action};
+
+    try {
+      final response = await http.post(
+        Uri.parse(deleteUrl),
+        headers: header,
+        body: json.encode(requestBody),
+      );
+
+      if (response.statusCode == 205) {
+        log('Products removed..');
+        return true;
+      } else {
+        log(
+          'Products unable to remove ${response.statusCode} ${response.body}',
+        );
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error in deleting items ${e}');
+    }
+  }
 }
