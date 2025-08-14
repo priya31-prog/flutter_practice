@@ -3,15 +3,15 @@ import 'dart:developer';
 
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
-import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
+import 'package:basic_ecommerce_app/api%20files/models/order_history_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class OrderDialog extends ConsumerStatefulWidget {
-  const OrderDialog({super.key, required this.cartItems});
-  final List<CartProducts> cartItems;
+  const OrderDialog({super.key, required this.orderedItems});
+  final List<OrderHistoryModel> orderedItems;
 
   @override
   ConsumerState<OrderDialog> createState() => _OrderDialogState();
@@ -74,11 +74,12 @@ class _OrderDialogState extends ConsumerState<OrderDialog> {
                             snapShot.data()?['data'] ?? [];
 
                         currentData.addAll(
-                          widget.cartItems.map((products) {
+                          widget.orderedItems.map((products) {
                             final json = products.toJson();
                             if (products.quantity == null) {
                               json['quantity'] = 1;
                             }
+                            json['orderDate'] = DateTime.now();
 
                             json['quantity'] = products.quantity!;
                             // json['quantity'] = 1;
