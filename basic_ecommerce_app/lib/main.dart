@@ -1,5 +1,7 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/dialogs/local_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:basic_ecommerce_app/method_channel/channel.dart';
 // import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
 // import 'package:basic_ecommerce_app/screens/home_screen.dart';
@@ -9,7 +11,10 @@ import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await initNotifications();
   runApp(ProviderScope(child: MyApp()));
 }
 
