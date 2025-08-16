@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:basic_ecommerce_app/api%20files/models/cart_items_model.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/models/gadgets_model.dart';
-import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/api_header.dart';
 import 'package:http/http.dart' as http;
 

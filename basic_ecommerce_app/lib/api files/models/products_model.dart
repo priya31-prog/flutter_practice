@@ -1,6 +1,6 @@
 import 'package:basic_ecommerce_app/api%20files/models/dimensions.dart';
 import 'package:basic_ecommerce_app/api%20files/models/meta_data.dart';
-import 'package:basic_ecommerce_app/api%20files/reviews.dart';
+import 'package:basic_ecommerce_app/api%20files/models/reviews.dart';
 
 class Products {
   final int id;

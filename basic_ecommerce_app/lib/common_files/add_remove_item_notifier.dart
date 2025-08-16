@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
+import 'package:basic_ecommerce_app/state_management/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/common_files/common_utils.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';

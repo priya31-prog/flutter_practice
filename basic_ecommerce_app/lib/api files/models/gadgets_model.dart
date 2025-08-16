@@ -1,4 +1,4 @@
-import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 
 class GadgetsModel {
   // final String status;
