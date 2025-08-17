@@ -44,4 +44,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-google-service.json
+
+# in .gitignore
+google-services.json
