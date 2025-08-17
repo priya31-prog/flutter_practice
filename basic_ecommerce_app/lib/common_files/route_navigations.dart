@@ -1,10 +1,12 @@
-import 'package:basic_ecommerce_app/api%20files/products_model.dart';
-import 'package:basic_ecommerce_app/screens/add_to_cart_page.dart';
+import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
+import 'package:basic_ecommerce_app/screens/orders/order_history.dart';
+import 'package:basic_ecommerce_app/screens/product_details/add_to_cart_page.dart';
 import 'package:basic_ecommerce_app/screens/home_screen.dart';
-import 'package:basic_ecommerce_app/screens/login_screen.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
-import 'package:basic_ecommerce_app/screens/product_detail_screen.dart';
-import 'package:basic_ecommerce_app/screens/sign_up_screen.dart';
+import 'package:basic_ecommerce_app/screens/orders/order_placed_success.dart';
+import 'package:basic_ecommerce_app/screens/product_details/product_detail_screen.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/sign_up_screen.dart';
 import 'package:basic_ecommerce_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +28,9 @@ class RouteNavigations {
       '/onboarding/login/signup/homeScreen/productPageSkip';
   static const String addToCartPageSkip =
       '/onboarding/login/signup/homeScreen/productPageSkip/addToCartPageSkip';
+  static const String productAdded = 'addToCartPage/productAdded';
+  static const String orderHistory =
+      'homeScreenSkip/orderHistory'; //this should be disabled after login implementation is done , user should checkout / see the order history only after login
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -45,6 +50,8 @@ class RouteNavigations {
         return MaterialPageRoute(builder: (_) => AddToCart());
       case addToCartPageSkip:
         return MaterialPageRoute(builder: (_) => AddToCart());
+      case productAdded:
+        return MaterialPageRoute(builder: (_) => OrderPlacedSuccess());
       case productDetailPage:
         return MaterialPageRoute(
           builder:
@@ -59,6 +66,8 @@ class RouteNavigations {
                 productDetails: settings.arguments as Products,
               ),
         );
+      case orderHistory:
+        return MaterialPageRoute(builder: (_) => OrderHistory());
       default:
         return MaterialPageRoute(builder: (_) => SplashScreen());
     }
