@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-import 'package:basic_ecommerce_app/screens/promo_card.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/profile_drawer.dart';
+import 'package:basic_ecommerce_app/screens/product_details/promo_card.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -53,29 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       key: _scaffoldKey,
       drawer: Drawer(
         // backgroundColor: Colors.white,
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 100,
-              child: DrawerHeader(
-                padding: EdgeInsetsGeometry.all(25),
-                margin: EdgeInsets.only(bottom: 2),
-                decoration: BoxDecoration(color: Colors.cyan),
-                child: Text('User Name', style: TextStyle(color: Colors.white)),
-              ),
-            ),
-            ListTile(
-              title: Text('Order history'),
-              leading: Icon(Icons.shopping_cart_sharp),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('View Profile'),
-              leading: Icon(Icons.manage_accounts_sharp),
-              onTap: () {},
-            ),
-          ],
-        ),
+        child: profileDrawer(context: context),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
