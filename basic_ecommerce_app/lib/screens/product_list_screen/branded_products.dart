@@ -31,7 +31,12 @@ class BrandedProducts extends StatelessWidget {
                       brandedProductsArgs.brandedProducts[0].brand,
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    Icon(Icons.close, weight: 1),
+                    InkWell(
+                      child: Icon(Icons.close, weight: 1),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ],
                 ),
               ),
