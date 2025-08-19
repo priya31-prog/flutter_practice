@@ -9,10 +9,16 @@ final gadgetsList = StateProvider<GadgetsModel>(
   (ref) => GadgetsModel(products: []),
 );
 
+//splash screen
+final isUserLoggedIn = StateProvider<bool>((ref) => false);
+
 //home screen
 final brandsList = StateProvider<List<String>>((ref) => []);
 final productsList = StateProvider<List<Products>>((ref) => []);
 final searchedProducts = StateProvider<List<Products>>((ref) => []);
+final searchBasedOnBrand = StateProvider<AsyncValue<List<Products>?>>(
+  (ref) => const AsyncValue.data([]),
+);
 
 final isCredEntered = StateProvider<bool>((ref) => false);
 final email = StateProvider<String>((ref) => '');

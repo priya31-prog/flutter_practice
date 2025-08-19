@@ -22,8 +22,8 @@ class OrderHistoryNotifier extends AsyncNotifier<List<OrderHistoryModel>> {
   Future<List<OrderHistoryModel>> fetchOrders() async {
     final snapShot =
         await FirebaseFirestore.instance
-            .collection('sold_products')
-            .doc('dndaRtwFqKPg8yxm2guJ')
+            .collection('order_products')
+            .doc('15267')
             .get();
 
     if (!snapShot.exists) {
