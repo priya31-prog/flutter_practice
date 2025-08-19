@@ -30,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Timer? _debounce;
   final FocusNode _searchFocusNode = FocusNode();
   final ValueNotifier<bool> isSearchFocused = ValueNotifier(false);
+  bool? userLoggedInState;
   // List<Products> brandedProduct = [];
 
   @override
@@ -83,6 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     brand = ref.watch(brandsList);
     products = ref.watch(productsList);
     searchProducts = ref.watch(searchedProducts);
+    userLoggedInState = ref.watch(isUserLoggedIn);
     // final items = ref.watch(brandFilterNotifier);
 
     ref.listen<List<Products>>(brandFilterNotifier, (prev, next) {
@@ -110,7 +112,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             key: _scaffoldKey,
             drawer: Drawer(
               // backgroundColor: Colors.white,
-              child: profileDrawer(context: context),
+              child: profileDrawer(
+                context: context,
+                isUserLoggedIn: userLoggedInState ?? false,
+              ),
             ),
             body: SafeArea(
               child: Padding(

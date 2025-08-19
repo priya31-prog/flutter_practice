@@ -1,10 +1,7 @@
-// import 'dart:developer';
-
-// import 'dart:developer';
-
 import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +14,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<SplashScreen> {
+  // bool? userLoggedIn;
   @override
   void initState() {
     super.initState();
@@ -31,10 +29,17 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
       ref.read(gadgetsList.notifier).state = value;
       Future.delayed(Duration(seconds: 1), () {
         ref.read(isDataLoaded.notifier).state = false;
+        setUserLoggedInState();
         if (!mounted) return;
         Navigator.pushNamed(context, RouteNavigations.onBoardingScreen);
       });
     });
+  }
+
+  void setUserLoggedInState() {
+    // userLoggedIn =
+    ref.read(isUserLoggedIn.notifier).state =
+        CacheData.instance.getUserLoggedIn('isUserLoggedIn') ?? false;
   }
 
   // bool isLoading = true;
