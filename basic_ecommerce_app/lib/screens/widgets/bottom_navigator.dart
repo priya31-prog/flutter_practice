@@ -1,8 +1,8 @@
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
-import 'package:basic_ecommerce_app/api%20files/cart_notifiers.dart';
+import 'package:basic_ecommerce_app/state_management/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
-import 'package:basic_ecommerce_app/api%20files/products_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/add_remove_item_notifier.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
@@ -36,9 +36,15 @@ Widget bottomNavigator({
                       child: IconButton(
                         alignment: Alignment.center,
                         onPressed: () {
+                          products.shippingInfo =
+                              DateTime.now()
+                                  .add(Duration(days: 2))
+                                  .toIso8601String();
+                          final newProduct = products;
+
                           addToCartFn(
                             context: context,
-                            products: products,
+                            products: newProduct,
                             goToCart: goToCart,
                             ref: ref,
                           );
@@ -122,7 +128,13 @@ Future<void> addToCartFn({
 }) async {
   final discount = products.discountPercent.toString();
   final price = products.price.toString();
-  final value = ref.watch(totalCartValueProvider);
+  final value = ref.watch(
+    cartProvider.select((cartState) {
+      return cartState.valueOrNull == null
+          ? 0.0
+          : ref.read(cartProvider.notifier).totalCartValue;
+    }),
+  );
 
   if (!goToCart) {
     onRemoveAddActions(
@@ -130,7 +142,7 @@ Future<void> addToCartFn({
       productID: products.id,
       products: CartProducts(
         addedToCartAt: DateTime.now(),
-        shippingInfo: DateTime.now(),
+        shippingInfo: DateTime.now().add(Duration(days: 2)),
         brand: products.brand,
         name: products.title,
         discountPercent: discount,

@@ -1,6 +1,6 @@
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 import 'package:basic_ecommerce_app/api%20files/models/order_history_model.dart';
-import 'package:basic_ecommerce_app/screens/dialogs/confirmation_dialog.dart';
+import 'package:basic_ecommerce_app/screens/orders/confirmation_dialog.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 
