@@ -1,7 +1,8 @@
 import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 import 'package:basic_ecommerce_app/screens/orders/order_history.dart';
 import 'package:basic_ecommerce_app/screens/product_details/add_to_cart_page.dart';
-import 'package:basic_ecommerce_app/screens/home_screen.dart';
+import 'package:basic_ecommerce_app/screens/product_list_screen/branded_products.dart';
+import 'package:basic_ecommerce_app/screens/product_list_screen/home_screen.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
 import 'package:basic_ecommerce_app/screens/orders/order_placed_success.dart';
@@ -32,6 +33,8 @@ class RouteNavigations {
   static const String orderHistory =
       'homeScreenSkip/orderHistory'; //this should be disabled after login implementation is done , user should checkout / see the order history only after login
 
+  static const String brandedProductPage = "/homeScreenSkip/brandedProductPage";
+
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splashScreen:
@@ -52,6 +55,13 @@ class RouteNavigations {
         return MaterialPageRoute(builder: (_) => AddToCart());
       case productAdded:
         return MaterialPageRoute(builder: (_) => OrderPlacedSuccess());
+      case brandedProductPage:
+        return MaterialPageRoute(
+          builder:
+              (_) => BrandedProducts(
+                brandedProductsArgs: settings.arguments as BrandedProductsArgs,
+              ),
+        );
       case productDetailPage:
         return MaterialPageRoute(
           builder:

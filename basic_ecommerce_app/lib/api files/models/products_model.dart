@@ -16,7 +16,7 @@ class Products {
   final int weight;
   final Dimensions dimension;
   final String warrentyInfo;
-  final String shippingInfo;
+  String shippingInfo;
   final String availabiltySts;
   final List<Reviews>? reviews;
   final String brand;
