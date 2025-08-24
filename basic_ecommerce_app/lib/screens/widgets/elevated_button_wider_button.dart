@@ -12,7 +12,7 @@ Widget elevatedButtonWider({
     onTap: () {
       if (isDisabled ?? false) {
       } else {
-        onTap;
+        onTap();
       }
     },
     child: Opacity(
