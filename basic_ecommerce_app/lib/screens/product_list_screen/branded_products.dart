@@ -35,6 +35,7 @@ class BrandedProducts extends StatelessWidget {
                       child: Icon(Icons.close, weight: 1),
                       onTap: () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                     ),
                   ],
