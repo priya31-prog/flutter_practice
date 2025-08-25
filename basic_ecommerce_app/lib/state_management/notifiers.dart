@@ -33,3 +33,5 @@ final isLoadingCartItems = StateProvider<bool>((ref) => true);
 // final totalCartValue = StateProvider<double>((ref) => 0.0);
 final itemQuantity = StateProvider<int>((ref) => 0);
 final loaderToOperate = StateProvider<Map<int, bool>>((ref) => {});
+
+final userId = StateProvider<String>((ref) => '');

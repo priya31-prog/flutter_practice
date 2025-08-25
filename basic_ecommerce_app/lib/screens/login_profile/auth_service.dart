@@ -1,8 +1,12 @@
 import 'dart:developer';
 
+// import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,9 +26,10 @@ class AuthService {
     }
   }
 
-  Future<UserInfoModel?> signingInUser({
+  Future<void> signingInUser({
     required UserInfoModel user,
     required String password,
+    required WidgetRef ref,
   }) async {
     try {
       final UserCredential userCred = await _auth
@@ -35,6 +40,7 @@ class AuthService {
 
       user.userId = userCred.user?.uid;
       if (userCred.user != null) {
+        ref.read(userId.notifier).state = userCred.user?.uid ?? '';
         final docRef = FirebaseFirestore.instance
             .collection('user_information')
             .doc(user.userId);
@@ -45,14 +51,9 @@ class AuthService {
         //   "users": FieldValue.arrayUnion([user.toJson()]),
         // });
 
-        final snapshot = await docRef.get();
-
-        final data = snapshot.data() ?? {};
-
-        // Convert to userModel model
-        log('user info modified.. ${userCred.user}');
-        final allUsers = UserInfoModel.fromJson(data);
-        return allUsers;
+        ref
+            .read(profileProvider.notifier)
+            .fetchUser(userId: userCred.user!.uid);
       }
     } catch (e) {
       log('print error in users ${e}');
