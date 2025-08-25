@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +24,7 @@ class ProfileNotifier extends AsyncNotifier<UserInfoModel> {
     log('user data json from profile notifier -- ${userDataJson}');
 
     final userJson = UserInfoModel.fromJson(userDataJson ?? {});
-    CacheData.instance.setUserLoggedIn('isUserLoggedIn', true);
+    // CacheData.instance.setUserLoggedIn('isUserLoggedIn', true);
     state = AsyncData(userJson);
     return userJson;
   }

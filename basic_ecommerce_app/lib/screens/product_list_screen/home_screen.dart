@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/profile_drawer.dart';
 import 'package:basic_ecommerce_app/screens/product_details/promo_card.dart';
 import 'package:basic_ecommerce_app/screens/product_list_screen/branded_products.dart';
@@ -136,8 +137,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             onChanged: (final text) {
                               // Timer? _debounce;
 
-                              if (_debounce?.isActive ?? false)
+                              if (_debounce?.isActive ?? false) {
                                 _debounce!.cancel();
+                              }
                               _debounce = Timer(
                                 Duration(milliseconds: 300),
                                 () {
@@ -175,10 +177,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         InkWell(
                           onTap: () {
                             log(
-                              "tapping inside profile.. ${userLoggedInState}",
+                              "tapping inside profile.. ${CacheData.instance.getUserLoggedIn()}",
                             );
 
-                            if (userLoggedInState == true) {
+                            if (CacheData.instance.getUserLoggedIn() == true) {
                               _scaffoldKey.currentState?.openDrawer();
                             } else {
                               Navigator.pushNamed(

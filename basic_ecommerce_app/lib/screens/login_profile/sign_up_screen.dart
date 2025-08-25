@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
 import 'package:flutter/material.dart';
@@ -213,7 +214,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   ref: ref,
                                 )
                                 .then((final val) {
-                                  log('Saved in firebase and logged in..');
+                                  CacheData.instance.setUserLoggedIn(true);
                                   if (!context.mounted) return;
                                   Navigator.pushNamed(
                                     context,

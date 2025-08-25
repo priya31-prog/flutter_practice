@@ -40,7 +40,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    CacheData.instance.setUserLoggedIn('isUserLoggedIn', false);
+    CacheData.instance.setUserLoggedIn(false);
   }
 
   @override
@@ -135,8 +135,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: () async {
                   await AuthService()
                       .loginWithEmail(
-                        _emailController.text,
-                        _passwordController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        ref: ref,
                       )
                       .then((final value) {
                         log('user $value');

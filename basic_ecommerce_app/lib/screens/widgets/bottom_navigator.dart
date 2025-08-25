@@ -37,10 +37,7 @@ Widget bottomNavigator({
                       child: IconButton(
                         alignment: Alignment.center,
                         onPressed: () {
-                          if (CacheData.instance.getUserLoggedIn(
-                                'isUserLoggedIn',
-                              ) ==
-                              true) {
+                          if (CacheData.instance.getUserLoggedIn() == true) {
                             products.shippingInfo =
                                 DateTime.now()
                                     .add(Duration(days: 2))
@@ -87,10 +84,7 @@ Widget bottomNavigator({
                       child: IconButton(
                         alignment: Alignment.center,
                         onPressed: () async {
-                          if (CacheData.instance.getUserLoggedIn(
-                                'isUserLoggedIn',
-                              ) ==
-                              true) {
+                          if (CacheData.instance.getUserLoggedIn() == true) {
                             addToCartFn(
                               context: context,
                               products: products,

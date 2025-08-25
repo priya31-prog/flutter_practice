@@ -15,12 +15,12 @@ class CacheData {
     pref = await SharedPreferences.getInstance();
   }
 
-  Future<void> setUserLoggedIn(String key, bool value) async {
+  Future<void> setUserLoggedIn(bool value) async {
     await pref?.setBool('isUserLoggedIn', value);
   }
 
-  bool? getUserLoggedIn(String key) {
-    return pref?.getBool(key);
+  bool? getUserLoggedIn() {
+    return pref?.getBool('isUserLoggedIn');
   }
 
   // CacheData() {

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 // import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
@@ -11,13 +12,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> loginWithEmail(String email, String password) async {
+  Future<User?> loginWithEmail({
+    required String email,
+    required String password,
+    required WidgetRef ref,
+  }) async {
     try {
       log('logging inside auth');
       final UserCredential userCredential = await _auth
           .signInWithEmailAndPassword(email: email, password: password);
 
-      log('piegon -- ${userCredential.user}');
+      if (userCredential.user?.uid != null) {
+        CacheData.instance.setUserLoggedIn(true);
+        ref
+            .read(profileProvider.notifier)
+            .fetchUser(userId: userCredential.user!.uid);
+        log('piegon -- ${userCredential.user}');
+      }
 
       return userCredential.user;
     } catch (e) {

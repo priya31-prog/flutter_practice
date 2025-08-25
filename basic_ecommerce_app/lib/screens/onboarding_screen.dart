@@ -72,7 +72,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   //on click of skip navigate to welcome page which loads all the gadgets
-                  CacheData.instance.setUserLoggedIn('isUserLoggedIn', false);
+                  CacheData.instance.setUserLoggedIn(false);
                   Navigator.popAndPushNamed(
                     context,
                     RouteNavigations.homeScreenSkip,

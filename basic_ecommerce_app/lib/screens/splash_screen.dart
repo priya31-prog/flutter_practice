@@ -39,7 +39,7 @@ class _MyHomePageState extends ConsumerState<SplashScreen> {
   void setUserLoggedInState() {
     // userLoggedIn =
     ref.read(isUserLoggedIn.notifier).state =
-        CacheData.instance.getUserLoggedIn('isUserLoggedIn') ?? false;
+        CacheData.instance.getUserLoggedIn() ?? false;
   }
 
   // bool isLoading = true;
