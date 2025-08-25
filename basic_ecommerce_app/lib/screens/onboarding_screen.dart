@@ -1,5 +1,6 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 
@@ -71,6 +72,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   //on click of skip navigate to welcome page which loads all the gadgets
+                  CacheData.instance.setUserLoggedIn('isUserLoggedIn', false);
                   Navigator.popAndPushNamed(
                     context,
                     RouteNavigations.homeScreenSkip,
