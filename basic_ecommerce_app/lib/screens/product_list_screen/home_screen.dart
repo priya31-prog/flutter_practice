@@ -115,6 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: profileDrawer(
                 context: context,
                 isUserLoggedIn: userLoggedInState ?? false,
+                ref: ref,
               ),
             ),
             body: SafeArea(
@@ -173,8 +174,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                         InkWell(
                           onTap: () {
-                            log("tapping inside profile..");
-                            _scaffoldKey.currentState?.openDrawer();
+                            log(
+                              "tapping inside profile.. ${userLoggedInState}",
+                            );
+
+                            if (userLoggedInState == true) {
+                              _scaffoldKey.currentState?.openDrawer();
+                            } else {
+                              Navigator.pushNamed(
+                                context,
+                                RouteNavigations.loginPage,
+                              );
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.all(12),

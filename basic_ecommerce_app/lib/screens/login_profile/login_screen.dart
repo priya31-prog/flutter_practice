@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +21,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
 
+  final auth = AuthService();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -33,13 +39,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+    CacheData.instance.setUserLoggedIn('isUserLoggedIn', false);
   }
 
   @override
   Widget build(BuildContext context) {
     final mail = ref.watch(email);
     final mobile = ref.watch(phone);
-    final isEditingCompleted = ref.watch(isCredEntered);
+    // final isEditingCompleted = ref.watch(isCredEntered);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -122,9 +131,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onTap: () {},
               ),
 
-              isEditingCompleted
-                  ? ElevatedButton(onPressed: () {}, child: Text('Submit'))
-                  : SizedBox.shrink(),
+              ElevatedButton(
+                onPressed: () async {
+                  await AuthService()
+                      .loginWithEmail(
+                        _emailController.text,
+                        _passwordController.text,
+                      )
+                      .then((final value) {
+                        log('user $value');
+                        if (value?.uid != null) {
+                          if (!context.mounted) return;
+                          Navigator.pushNamed(
+                            context,
+                            RouteNavigations.homeScreenSkip,
+                          );
+                        } else {
+                          log('Authentication failed..');
+                        }
+                      });
+                  // onError((e)){};
+                },
+                child: Text('Submit'),
+              ),
             ],
           ),
         ),

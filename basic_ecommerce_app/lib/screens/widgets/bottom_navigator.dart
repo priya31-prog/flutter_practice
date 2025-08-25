@@ -1,4 +1,5 @@
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/state_management/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
 // import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
@@ -36,18 +37,28 @@ Widget bottomNavigator({
                       child: IconButton(
                         alignment: Alignment.center,
                         onPressed: () {
-                          products.shippingInfo =
-                              DateTime.now()
-                                  .add(Duration(days: 2))
-                                  .toIso8601String();
-                          final newProduct = products;
+                          if (CacheData.instance.getUserLoggedIn(
+                                'isUserLoggedIn',
+                              ) ==
+                              true) {
+                            products.shippingInfo =
+                                DateTime.now()
+                                    .add(Duration(days: 2))
+                                    .toIso8601String();
+                            final newProduct = products;
 
-                          addToCartFn(
-                            context: context,
-                            products: newProduct,
-                            goToCart: goToCart,
-                            ref: ref,
-                          );
+                            addToCartFn(
+                              context: context,
+                              products: newProduct,
+                              goToCart: goToCart,
+                              ref: ref,
+                            );
+                          } else {
+                            Navigator.pushNamed(
+                              context,
+                              RouteNavigations.loginPage,
+                            );
+                          }
                         },
                         icon: Row(
                           spacing: 5,
@@ -76,12 +87,22 @@ Widget bottomNavigator({
                       child: IconButton(
                         alignment: Alignment.center,
                         onPressed: () async {
-                          addToCartFn(
-                            context: context,
-                            products: products,
-                            goToCart: goToCart,
-                            ref: ref,
-                          );
+                          if (CacheData.instance.getUserLoggedIn(
+                                'isUserLoggedIn',
+                              ) ==
+                              true) {
+                            addToCartFn(
+                              context: context,
+                              products: products,
+                              goToCart: goToCart,
+                              ref: ref,
+                            );
+                          } else {
+                            Navigator.pushNamed(
+                              context,
+                              RouteNavigations.loginPage,
+                            );
+                          }
                         },
                         icon: Row(
                           spacing: 5,
