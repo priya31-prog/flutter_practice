@@ -93,7 +93,7 @@ class _OrderPlacedSuccessState extends State<OrderPlacedSuccess> {
                       onTap: () {
                         Navigator.pushNamed(
                           context,
-                          RouteNavigations.productDetailPage,
+                          RouteNavigations.homeScreenSkip,
                         );
                       },
                       text: 'Done',
