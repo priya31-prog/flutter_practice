@@ -1,10 +1,11 @@
 // import 'package:basic_ecommerce_app/common_files/route_navigations.dart';a
 import 'dart:developer';
 
-// import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/api%20files/api_call.dart';
 import 'package:basic_ecommerce_app/state_management/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/order_history_model.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,50 +65,41 @@ class _OrderDialogState extends ConsumerState<OrderDialog> {
                   child: InkWell(
                     onTap: () async {
                       try {
+                        final user = ref.watch(userId);
+
                         final docRef = FirebaseFirestore.instance
-                            .collection('order_products')
-                            .doc('15267');
+                            .collection('order_history')
+                            .doc(user);
+                        final data =
+                            widget.orderedItems.map((products) {
+                              final json = products.toJson();
+                              if (products.quantity == null) {
+                                json['quantity'] = 1;
+                              }
+                              json['orderDate'] =
+                                  DateTime.now().toIso8601String();
 
-                        final snapShot = await docRef.get();
+                              json['quantity'] = products.quantity ?? 1;
+                              // json['quantity'] = 1;
+                              return json;
+                            }).toList();
 
-                        final List<dynamic> currentData =
-                            snapShot.data()?['data'] ?? [];
+                        await docRef.set({
+                          'items': data,
+                          'ordered_at': FieldValue.serverTimestamp(),
+                        });
 
-                        currentData.addAll(
-                          widget.orderedItems.map((products) {
-                            final json = products.toJson();
-                            if (products.quantity == null) {
-                              json['quantity'] = 1;
-                            }
-                            json['orderDate'] =
-                                DateTime.now().toIso8601String();
-
-                            json['quantity'] = products.quantity ?? 1;
-                            // json['quantity'] = 1;
-                            return json;
-                          }).toList(),
-                        );
-
-                        await docRef.update({'data': currentData});
-
-                        // await AddCartItem().deleteItem(action: 'delete');
+                        await AddCartItem().deleteItem(action: 'delete');
                         ref
                             .read(cartProvider.notifier)
                             .deleteItem()
                             .then((value) {});
 
-                        log('populated data success');
+                        // log('populated data success');
                       } catch (e) {
                         log('errir in updtaing ${e}');
                       }
 
-                      // final snapShot =
-                      //     await FirebaseFirestore.instance
-                      //         .collection('sold_products')
-                      //         .doc('dndaRtwFqKPg8yxm2guJ')
-                      //         .get();
-
-                      // log('logging snapshot ${snapShot.data()}');
                       if (!context.mounted) return;
                       Navigator.pop(context);
                       Navigator.pushNamed(
