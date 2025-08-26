@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/models/order_history_model.dart';
+import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,17 +21,22 @@ class OrderHistoryNotifier extends AsyncNotifier<List<OrderHistoryModel>> {
   }
 
   Future<List<OrderHistoryModel>> fetchOrders() async {
+    final user = ref.watch(userId);
     final snapShot =
         await FirebaseFirestore.instance
-            .collection('order_products')
-            .doc('15267')
+            .collection('order_history')
+            .doc(user)
             .get();
 
+    log('user id from fetch orders $user');
+
     if (!snapShot.exists) {
+      log('printing inside snapShot');
       return [];
     }
     final Map<String, dynamic>? soldProducts = snapShot.data();
-    final List<dynamic> dataList = soldProducts!['data'] ?? [];
+    log('snap shot data ${snapShot.data()}');
+    final List<dynamic> dataList = soldProducts!['items'] ?? [];
 
     final List<OrderHistoryModel> allOrders =
         dataList

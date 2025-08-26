@@ -23,6 +23,7 @@ class AuthService {
           .signInWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user?.uid != null) {
+        ref.read(userId.notifier).state = userCredential.user?.uid ?? '';
         CacheData.instance.setUserLoggedIn(true);
         ref
             .read(profileProvider.notifier)
