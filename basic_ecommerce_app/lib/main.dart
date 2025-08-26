@@ -1,5 +1,7 @@
 import 'package:basic_ecommerce_app/common_files/gradient_theme.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+import 'package:basic_ecommerce_app/firebase_options.dart';
 import 'package:basic_ecommerce_app/screens/dialogs/local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:basic_ecommerce_app/method_channel/channel.dart';
@@ -13,8 +15,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initNotifications();
+  await CacheData.instance.init();
   runApp(ProviderScope(child: MyApp()));
 }
 
