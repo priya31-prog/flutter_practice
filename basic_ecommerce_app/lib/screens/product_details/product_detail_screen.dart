@@ -228,7 +228,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ),
                     tableRowWidget(
                       titleText: 'Weight',
-                      nextRowText: '${widget.productDetails.weight} kg',
+                      nextRowText: '${widget.productDetails.weight}00 gm',
                     ),
                     tableRowWidget(
                       titleText: 'Dimensions',

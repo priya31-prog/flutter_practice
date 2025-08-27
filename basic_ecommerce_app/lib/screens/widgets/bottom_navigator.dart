@@ -1,4 +1,5 @@
 // import 'package:basic_ecommerce_app/api%20files/api_call.dart';
+import 'package:basic_ecommerce_app/common_files/loader.dart';
 import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/state_management/cart_notifiers.dart';
 import 'package:basic_ecommerce_app/api%20files/models/cart_products.dart';
@@ -43,13 +44,16 @@ Widget bottomNavigator({
                                     .add(Duration(days: 2))
                                     .toIso8601String();
                             final newProduct = products;
-
+                            // loader(context);
                             addToCartFn(
                               context: context,
                               products: newProduct,
                               goToCart: goToCart,
                               ref: ref,
-                            );
+                            ).then((final value) {
+                              // if (!context.mounted) return;
+                              // Navigator.pop(context);
+                            });
                           } else {
                             Navigator.pushNamed(
                               context,
@@ -85,12 +89,16 @@ Widget bottomNavigator({
                         alignment: Alignment.center,
                         onPressed: () async {
                           if (CacheData.instance.getUserLoggedIn() == true) {
+                            // loader(context);
                             addToCartFn(
                               context: context,
                               products: products,
                               goToCart: goToCart,
                               ref: ref,
-                            );
+                            ).then((final value) {
+                              // );if (!context.mounted) return;
+                              // Navigator.pop(context
+                            });
                           } else {
                             Navigator.pushNamed(
                               context,
@@ -152,6 +160,7 @@ Future<void> addToCartFn({
   );
 
   if (!goToCart) {
+    loader(context);
     onRemoveAddActions(
       action: 'increment',
       productID: products.id,
@@ -173,6 +182,7 @@ Future<void> addToCartFn({
       productsCallBack: () {
         ref.read(isAlreadyAddedToCart.notifier).state = true;
         if (!context.mounted) return;
+        Navigator.pop(context);
         Navigator.pushNamed(context, RouteNavigations.addToCartPageSkip);
       },
     );
