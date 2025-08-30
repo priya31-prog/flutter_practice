@@ -1,14 +1,45 @@
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserAddress extends StatefulWidget {
-  const UserAddress({super.key});
+  const UserAddress({super.key, required this.userAddressParams});
 
+  final UserAddressParams userAddressParams;
   @override
   State<UserAddress> createState() => _UserAddress();
 }
 
 class _UserAddress extends State<UserAddress> {
   final _formKey = GlobalKey<FormState>();
+  final _addressLine1 = TextEditingController();
+  final _addressLine2 = TextEditingController();
+  final _city = TextEditingController();
+  final _state = TextEditingController();
+  final _pincode = TextEditingController();
+  final _phoneNumber = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _addressLine1.dispose();
+    _addressLine2.dispose();
+    _city.dispose();
+    _phoneNumber.dispose();
+    _state.dispose();
+    _pincode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +83,8 @@ class _UserAddress extends State<UserAddress> {
                 SizedBox(height: 5),
                 TextFormField(
                   maxLength: 200,
+                  controller: _addressLine1,
+                  onChanged: (value) {},
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   cursorColor: Colors.cyan,
@@ -76,6 +109,36 @@ class _UserAddress extends State<UserAddress> {
                     ),
                   ),
                 ),
+
+                SizedBox(height: 10),
+                Expanded(
+                  child: Row(
+                    children: [
+                      elevatedButtonWider(
+                        onTap: () async {
+                          await AuthService()
+                              .signingInUser(
+                                user: UserInfoModel(
+                                  mailId: widget.userAddressParams.email,
+                                  userName: widget.userAddressParams.userName,
+                                ),
+                                password: widget.userAddressParams.password,
+                                ref: widget.userAddressParams.ref,
+                              )
+                              .then((final val) {
+                                CacheData.instance.setUserLoggedIn(true);
+                                if (!context.mounted) return;
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNavigations.homeScreenWithoutSkip,
+                                );
+                              });
+                        },
+                        text: 'Submit',
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -83,4 +146,18 @@ class _UserAddress extends State<UserAddress> {
       ),
     );
   }
+}
+
+class UserAddressParams {
+  final String email;
+  final String password;
+  final WidgetRef ref;
+  final String userName;
+
+  UserAddressParams({
+    required this.email,
+    required this.password,
+    required this.ref,
+    required this.userName,
+  });
 }

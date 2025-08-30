@@ -48,7 +48,12 @@ class RouteNavigations {
       case signUpScreen:
         return MaterialPageRoute(builder: (_) => SignUpScreen());
       case userAddressPage:
-        return MaterialPageRoute(builder: (_) => UserAddress());
+        return MaterialPageRoute(
+          builder:
+              (_) => UserAddress(
+                userAddressParams: settings.arguments as UserAddressParams,
+              ),
+        );
       case homeScreenSkip:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case homeScreenWithoutSkip:

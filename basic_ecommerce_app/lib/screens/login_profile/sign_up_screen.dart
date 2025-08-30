@@ -3,6 +3,7 @@
 // import 'dart:developer';
 
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/user_address.dart';
 // import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 // import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
 // import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
@@ -208,6 +209,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             Navigator.pushNamed(
                               context,
                               RouteNavigations.userAddressPage,
+                              arguments: UserAddressParams(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                ref: ref,
+                                userName: _nameController.text,
+                              ),
                             );
                             // log('current state validated');
                             // await AuthService()
