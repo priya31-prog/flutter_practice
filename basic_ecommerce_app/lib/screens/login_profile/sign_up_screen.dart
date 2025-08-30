@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+// import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+// import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
+// import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -62,7 +62,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     color: Theme.of(
                       context,
                     ).colorScheme.secondary.withAlpha(150),
+                    size: 35,
                   ),
+
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -203,24 +205,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            log('current state validated');
-                            await AuthService()
-                                .signingInUser(
-                                  user: UserInfoModel(
-                                    mailId: _emailController.text,
-                                    userName: _nameController.text,
-                                  ),
-                                  password: _passwordController.text,
-                                  ref: ref,
-                                )
-                                .then((final val) {
-                                  CacheData.instance.setUserLoggedIn(true);
-                                  if (!context.mounted) return;
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteNavigations.homeScreenWithoutSkip,
-                                  );
-                                });
+                            Navigator.pushNamed(
+                              context,
+                              RouteNavigations.userAddressPage,
+                            );
+                            // log('current state validated');
+                            // await AuthService()
+                            //     .signingInUser(
+                            //       user: UserInfoModel(
+                            //         mailId: _emailController.text,
+                            //         userName: _nameController.text,
+                            //       ),
+                            //       password: _passwordController.text,
+                            //       ref: ref,
+                            //     )
+                            //     .then((final val) {
+                            //       CacheData.instance.setUserLoggedIn(true);
+                            //       if (!context.mounted) return;
+                            //       Navigator.pushNamed(
+                            //         context,
+                            //         RouteNavigations.homeScreenWithoutSkip,
+                            //       );
+                            //     });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Failed to save')),
@@ -235,7 +241,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text('Submit'),
+                        child: Text('Next'),
                       ),
                     ),
                   ],
