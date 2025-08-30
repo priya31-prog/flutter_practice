@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:basic_ecommerce_app/common_files/loader.dart';
 import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
 import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
@@ -133,6 +134,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               ElevatedButton(
                 onPressed: () async {
+                  loader(context);
                   await AuthService()
                       .loginWithEmail(
                         email: _emailController.text,
@@ -143,6 +145,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         log('user $value');
                         if (value?.uid != null) {
                           if (!context.mounted) return;
+                          Navigator.pop(context);
                           Navigator.pushNamed(
                             context,
                             RouteNavigations.homeScreenSkip,
