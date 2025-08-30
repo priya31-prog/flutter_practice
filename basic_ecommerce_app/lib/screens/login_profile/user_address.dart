@@ -1,7 +1,7 @@
-import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+// import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+// import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+// import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
+// import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -110,34 +110,55 @@ class _UserAddress extends State<UserAddress> {
                   ),
                 ),
 
+                TextFormField(
+                  controller: _addressLine2,
+                  cursorColor: Colors.cyan,
+                  maxLines: null,
+                  maxLength: 200,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                    label: Text('Address Line 2'),
+                    floatingLabelStyle: TextStyle(color: Colors.cyan),
+                    fillColor: Theme.of(
+                      context,
+                    ).colorScheme.secondary.withAlpha(50),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+
                 SizedBox(height: 10),
-                Expanded(
-                  child: Row(
-                    children: [
-                      elevatedButtonWider(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: elevatedButtonWider(
                         onTap: () async {
-                          await AuthService()
-                              .signingInUser(
-                                user: UserInfoModel(
-                                  mailId: widget.userAddressParams.email,
-                                  userName: widget.userAddressParams.userName,
-                                ),
-                                password: widget.userAddressParams.password,
-                                ref: widget.userAddressParams.ref,
-                              )
-                              .then((final val) {
-                                CacheData.instance.setUserLoggedIn(true);
-                                if (!context.mounted) return;
-                                Navigator.pushNamed(
-                                  context,
-                                  RouteNavigations.homeScreenWithoutSkip,
-                                );
-                              });
+                          // await AuthService()
+                          //     .signingInUser(
+                          //       user: UserInfoModel(
+                          //         mailId: widget.userAddressParams.email,
+                          //         userName: widget.userAddressParams.userName,
+                          //       ),
+                          //       password: widget.userAddressParams.password,
+                          //       ref: widget.userAddressParams.ref,
+                          //     )
+                          //     .then((final val) {
+                          //       CacheData.instance.setUserLoggedIn(true);
+                          //       if (!context.mounted) return;
+                          //       Navigator.pushNamed(
+                          //         context,
+                          //         RouteNavigations.homeScreenWithoutSkip,
+                          //       );
+                          //     });
                         },
                         text: 'Submit',
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
