@@ -51,209 +51,211 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       body: Form(
         key: _formKey,
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(35.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 20,
-              children: [
-                InkWell(
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(150),
-                    size: 35,
-                  ),
-
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-
-                Text("Sign Up", style: TextStyle(fontSize: 35)),
-
-                TextFormField(
-                  controller: _nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Name',
-
-                    hintStyle: TextStyle(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(35.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 20,
+                children: [
+                  InkWell(
+                    child: Icon(
+                      Icons.arrow_back,
                       color: Theme.of(
                         context,
-                      ).colorScheme.secondary.withAlpha(200),
+                      ).colorScheme.secondary.withAlpha(150),
+                      size: 35,
                     ),
 
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter your email to proceed';
-                    } else {
-                      final emailRegex = RegExp(
-                        r'^[\w-\.]+@([\w-]+\.+[\w-]{2,4}$)',
-                      );
 
-                      if (!emailRegex.hasMatch(value)) {
-                        return 'Enter valid mail';
+                  Text("Sign Up", style: TextStyle(fontSize: 35)),
+
+                  TextFormField(
+                    controller: _nameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
                       }
-                    }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Name',
 
-                    return null;
-                  },
+                      hintStyle: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(200),
+                      ),
 
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    hintStyle: TextStyle(
-                      color: Theme.of(
+                      fillColor: Theme.of(
                         context,
-                      ).colorScheme.secondary.withAlpha(200),
-                    ),
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password cannot be empty';
-                    } else {
-                      final pswdRegEx = RegExp(
-                        r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{3,}$',
-                      );
+                  TextFormField(
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter your email to proceed';
+                      } else {
+                        final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.+[\w-]{2,4}$)',
+                        );
 
-                      if (!pswdRegEx.hasMatch(value)) {
-                        return 'Enter valid password';
-                      }
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    hintStyle: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withAlpha(200),
-                    ),
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  controller: _cnfpswdController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter confirm password';
-                    } else {
-                      if (value != _passwordController.text) {
-                        return 'Mismatch in password and Confirm password';
+                        if (!emailRegex.hasMatch(value)) {
+                          return 'Enter valid mail';
+                        }
                       }
 
                       return null;
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Confirm Password',
-                    hintStyle: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withAlpha(200),
-                    ),
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+                    },
 
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.pushNamed(
-                              context,
-                              RouteNavigations.userAddressPage,
-                              arguments: UserAddressParams(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                ref: ref,
-                                userName: _nameController.text,
-                              ),
-                            );
-                            // log('current state validated');
-                            // await AuthService()
-                            //     .signingInUser(
-                            //       user: UserInfoModel(
-                            //         mailId: _emailController.text,
-                            //         userName: _nameController.text,
-                            //       ),
-                            //       password: _passwordController.text,
-                            //       ref: ref,
-                            //     )
-                            //     .then((final val) {
-                            //       CacheData.instance.setUserLoggedIn(true);
-                            //       if (!context.mounted) return;
-                            //       Navigator.pushNamed(
-                            //         context,
-                            //         RouteNavigations.homeScreenWithoutSkip,
-                            //       );
-                            //     });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Failed to save')),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.cyan,
-                          foregroundColor: Colors.black,
-                          padding: EdgeInsets.all(20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text('Next'),
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      hintStyle: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(200),
+                      ),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Password cannot be empty';
+                      } else {
+                        final pswdRegEx = RegExp(
+                          r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{3,}$',
+                        );
+
+                        if (!pswdRegEx.hasMatch(value)) {
+                          return 'Enter valid password';
+                        }
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      hintStyle: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(200),
+                      ),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _cnfpswdController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter confirm password';
+                      } else {
+                        if (value != _passwordController.text) {
+                          return 'Mismatch in password and Confirm password';
+                        }
+
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Confirm Password',
+                      hintStyle: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(200),
+                      ),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.pushNamed(
+                                context,
+                                RouteNavigations.userAddressPage,
+                                arguments: UserAddressParams(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  ref: ref,
+                                  userName: _nameController.text,
+                                ),
+                              );
+                              // log('current state validated');
+                              // await AuthService()
+                              //     .signingInUser(
+                              //       user: UserInfoModel(
+                              //         mailId: _emailController.text,
+                              //         userName: _nameController.text,
+                              //       ),
+                              //       password: _passwordController.text,
+                              //       ref: ref,
+                              //     )
+                              //     .then((final val) {
+                              //       CacheData.instance.setUserLoggedIn(true);
+                              //       if (!context.mounted) return;
+                              //       Navigator.pushNamed(
+                              //         context,
+                              //         RouteNavigations.homeScreenWithoutSkip,
+                              //       );
+                              //     });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Failed to save')),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.cyan,
+                            foregroundColor: Colors.black,
+                            padding: EdgeInsets.all(20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text('Next'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
