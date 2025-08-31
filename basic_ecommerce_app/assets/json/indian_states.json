@@ -1,0 +1,157 @@
+[
+    {
+        "name": "Jammu and Kashmir",
+        "code": "JK",
+        "pincode_range": "180-194"
+    },
+    {
+        "name": "Himachal Pradesh",
+        "code": "HP",
+        "pincode_range": "171-177"
+    },
+    {
+        "name": "Punjab",
+        "code": "PB",
+        "pincode_range": "140-160"
+    },
+    {
+        "name": "Chandigarh",
+        "code": "CH",
+        "pincode_range": "160-160"
+    },
+    {
+        "name": "Uttarakhand",
+        "code": "UK",
+        "pincode_range": "246-249"
+    },
+    {
+        "name": "Uttar Pradesh",
+        "code": "UP",
+        "pincode_range": "201-285"
+    },
+    {
+        "name": "Delhi",
+        "code": "DL",
+        "pincode_range": "110-110"
+    },
+    {
+        "name": "Haryana",
+        "code": "HR",
+        "pincode_range": "121-136"
+    },
+    {
+        "name": "Rajasthan",
+        "code": "RJ",
+        "pincode_range": "301-345"
+    },
+    {
+        "name": "Bihar",
+        "code": "BR",
+        "pincode_range": "800-855"
+    },
+    {
+        "name": "Jharkhand",
+        "code": "JH",
+        "pincode_range": "814-835"
+    },
+    {
+        "name": "West Bengal",
+        "code": "WB",
+        "pincode_range": "700-744"
+    },
+    {
+        "name": "Odisha",
+        "code": "OD",
+        "pincode_range": "751-770"
+    },
+    {
+        "name": "Chhattisgarh",
+        "code": "CG",
+        "pincode_range": "490-497"
+    },
+    {
+        "name": "Madhya Pradesh",
+        "code": "MP",
+        "pincode_range": "450-489"
+    },
+    {
+        "name": "Gujarat",
+        "code": "GJ",
+        "pincode_range": "360-396"
+    },
+    {
+        "name": "Maharashtra",
+        "code": "MH",
+        "pincode_range": "400-445"
+    },
+    {
+        "name": "Karnataka",
+        "code": "KA",
+        "pincode_range": "560-591"
+    },
+    {
+        "name": "Goa",
+        "code": "GA",
+        "pincode_range": "403-403"
+    },
+    {
+        "name": "Kerala",
+        "code": "KL",
+        "pincode_range": "670-695"
+    },
+    {
+        "name": "Tamil Nadu",
+        "code": "TN",
+        "pincode_range": "600-643"
+    },
+    {
+        "name": "Andhra Pradesh",
+        "code": "AP",
+        "pincode_range": "500-535"
+    },
+    {
+        "name": "Telangana",
+        "code": "TS",
+        "pincode_range": "500-509"
+    },
+    {
+        "name": "Arunachal Pradesh",
+        "code": "AR",
+        "pincode_range": "791-792"
+    },
+    {
+        "name": "Assam",
+        "code": "AS",
+        "pincode_range": "781-788"
+    },
+    {
+        "name": "Meghalaya",
+        "code": "ML",
+        "pincode_range": "793-793"
+    },
+    {
+        "name": "Tripura",
+        "code": "TR",
+        "pincode_range": "799-799"
+    },
+    {
+        "name": "Mizoram",
+        "code": "MZ",
+        "pincode_range": "796-796"
+    },
+    {
+        "name": "Manipur",
+        "code": "MN",
+        "pincode_range": "795-795"
+    },
+    {
+        "name": "Nagaland",
+        "code": "NL",
+        "pincode_range": "797-797"
+    },
+    {
+        "name": "Sikkim",
+        "code": "SK",
+        "pincode_range": "737-737"
+    }
+]
