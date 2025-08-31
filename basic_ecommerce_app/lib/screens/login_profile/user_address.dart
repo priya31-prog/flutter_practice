@@ -2,6 +2,11 @@
 // import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 // import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
 // import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+
+import 'dart:developer';
+
+import 'package:basic_ecommerce_app/api%20files/get_indian_state.dart';
+import 'package:basic_ecommerce_app/api%20files/models/state_model.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,13 +24,20 @@ class _UserAddress extends State<UserAddress> {
   final _addressLine1 = TextEditingController();
   final _addressLine2 = TextEditingController();
   final _city = TextEditingController();
-  final _state = TextEditingController();
+  // final _state = TextEditingController();
   final _pincode = TextEditingController();
   final _phoneNumber = TextEditingController();
+  List<StateModel> listOfStates = [];
+  late String selectedState;
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      listOfStates = await fetchStates();
+      setState(() {});
+    });
   }
 
   @override
@@ -36,7 +48,7 @@ class _UserAddress extends State<UserAddress> {
     _addressLine2.dispose();
     _city.dispose();
     _phoneNumber.dispose();
-    _state.dispose();
+    // _state.dispose();
     _pincode.dispose();
   }
 
@@ -48,119 +60,206 @@ class _UserAddress extends State<UserAddress> {
           key: _formKey,
           child: Padding(
             padding: EdgeInsetsGeometry.symmetric(vertical: 30, horizontal: 20),
-            child: Column(
-              spacing: 20,
-              mainAxisSize: MainAxisSize.min,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  spacing: 30,
-                  children: [
-                    InkWell(
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(190),
-                        size: 35,
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-
-                    Text(
-                      'Location Details',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                TextFormField(
-                  maxLength: 200,
-                  controller: _addressLine1,
-                  onChanged: (value) {},
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  cursorColor: Colors.cyan,
-                  // enableSuggestions: true,
-                  decoration: InputDecoration(
-                    // hintText: 'Address Line 1',
-
-                    //alternate for hint text without label floating but disappears once tapped on the field
-                    label: Text(
-                      'Address Line 1',
-                      // style: TextStyle(color: Colors.cyan),
-                    ),
-                    floatingLabelStyle: TextStyle(color: Colors.cyan),
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-
-                TextFormField(
-                  controller: _addressLine2,
-                  cursorColor: Colors.cyan,
-                  maxLines: null,
-                  maxLength: 200,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    label: Text('Address Line 2'),
-                    floatingLabelStyle: TextStyle(color: Colors.cyan),
-                    fillColor: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withAlpha(50),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: elevatedButtonWider(
-                        onTap: () async {
-                          // await AuthService()
-                          //     .signingInUser(
-                          //       user: UserInfoModel(
-                          //         mailId: widget.userAddressParams.email,
-                          //         userName: widget.userAddressParams.userName,
-                          //       ),
-                          //       password: widget.userAddressParams.password,
-                          //       ref: widget.userAddressParams.ref,
-                          //     )
-                          //     .then((final val) {
-                          //       CacheData.instance.setUserLoggedIn(true);
-                          //       if (!context.mounted) return;
-                          //       Navigator.pushNamed(
-                          //         context,
-                          //         RouteNavigations.homeScreenWithoutSkip,
-                          //       );
-                          //     });
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 20,
+                mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    spacing: 30,
+                    children: [
+                      InkWell(
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondary.withAlpha(190),
+                          size: 35,
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
                         },
-                        text: 'Submit',
+                      ),
+
+                      Text(
+                        'Location Details',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  TextFormField(
+                    maxLength: 200,
+                    controller: _addressLine1,
+                    onChanged: (value) {},
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    cursorColor: Colors.cyan,
+                    // enableSuggestions: true,
+                    decoration: InputDecoration(
+                      // hintText: 'Address Line 1',
+
+                      //alternate for hint text without label floating but disappears once tapped on the field
+                      label: Text(
+                        'Address Line 1',
+                        // style: TextStyle(color: Colors.cyan),
+                      ),
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+
+                  TextFormField(
+                    controller: _addressLine2,
+                    cursorColor: Colors.cyan,
+                    maxLines: null,
+                    maxLength: 200,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      label: Text('Address Line 2'),
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _city,
+                    cursorColor: Colors.cyan,
+
+                    // onChanged: (),
+                    decoration: InputDecoration(
+                      label: Text('City'),
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                    hint: Text('Select your state'),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items:
+                        listOfStates.map((final value) {
+                          return DropdownMenuItem(
+                            value: value.name,
+                            child: Text(value.name),
+                            onTap: () {
+                              setState(() {
+                                selectedState = value.name;
+                              });
+                              log('message selected state $selectedState');
+                            },
+                          );
+                        }).toList(),
+
+                    onChanged: (value) {},
+                  ),
+                  TextFormField(
+                    controller: _pincode,
+                    cursorColor: Colors.cyan,
+                    maxLines: null,
+                    maxLength: 200,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      label: Text('Address Line 2'),
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _phoneNumber,
+                    cursorColor: Colors.cyan,
+                    maxLines: null,
+                    maxLength: 200,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      label: Text('Address Line 2'),
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: elevatedButtonWider(
+                          onTap: () async {
+                            // await AuthService()
+                            //     .signingInUser(
+                            //       user: UserInfoModel(
+                            //         mailId: widget.userAddressParams.email,
+                            //         userName: widget.userAddressParams.userName,
+                            //       ),
+                            //       password: widget.userAddressParams.password,
+                            //       ref: widget.userAddressParams.ref,
+                            //     )
+                            //     .then((final val) {
+                            //       CacheData.instance.setUserLoggedIn(true);
+                            //       if (!context.mounted) return;
+                            //       Navigator.pushNamed(
+                            //         context,
+                            //         RouteNavigations.homeScreenWithoutSkip,
+                            //       );
+                            //     });
+                          },
+                          text: 'Submit',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
