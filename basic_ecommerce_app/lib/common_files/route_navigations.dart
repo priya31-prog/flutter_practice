@@ -1,5 +1,6 @@
 import 'package:basic_ecommerce_app/api%20files/models/products_model.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/user_address.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/profile_details.dart';
+import 'package:basic_ecommerce_app/screens/sign_up.dart/user_address.dart';
 import 'package:basic_ecommerce_app/screens/orders/order_history.dart';
 import 'package:basic_ecommerce_app/screens/product_details/add_to_cart_page.dart';
 import 'package:basic_ecommerce_app/screens/product_list_screen/branded_products.dart';
@@ -8,7 +9,7 @@ import 'package:basic_ecommerce_app/screens/login_profile/login_screen.dart';
 import 'package:basic_ecommerce_app/screens/onboarding_screen.dart';
 import 'package:basic_ecommerce_app/screens/orders/order_placed_success.dart';
 import 'package:basic_ecommerce_app/screens/product_details/product_detail_screen.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/sign_up_screen.dart';
+import 'package:basic_ecommerce_app/screens/sign_up.dart/sign_up_screen.dart';
 import 'package:basic_ecommerce_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,7 @@ class RouteNavigations {
   static const String addToCartPage =
       '/onboarding/login/signup/homeScreen/productPage/addToCartPage';
   static const String userAddressPage = '/userAddressPage';
+  static const String profileDetailsPage = '/profileDetailsPage';
 
   static const String loginPageWithoutOnboard = '/login';
   static const String homeScreenSkip = '/onboarding/homeScreenSkip';
@@ -54,6 +56,9 @@ class RouteNavigations {
                 userAddressParams: settings.arguments as UserAddressParams,
               ),
         );
+
+      case profileDetailsPage:
+        return MaterialPageRoute(builder: (_) => ProfileDetails());
       case homeScreenSkip:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case homeScreenWithoutSkip:

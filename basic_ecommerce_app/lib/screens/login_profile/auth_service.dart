@@ -3,7 +3,7 @@ import 'dart:developer';
 // import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
 import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
 import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
-import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/user_info_model.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

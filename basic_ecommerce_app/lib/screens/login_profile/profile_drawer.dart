@@ -40,6 +40,8 @@ Widget profileDrawer({
         onTap: () {
           if (!isUserLoggedIn) {
             Navigator.pushNamed(context, RouteNavigations.loginPage);
+          } else {
+            Navigator.pushNamed(context, RouteNavigations.profileDetailsPage);
           }
         },
       ),

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+import 'package:basic_ecommerce_app/api%20files/models/user_info_model.dart';
 import 'package:basic_ecommerce_app/state_management/notifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
