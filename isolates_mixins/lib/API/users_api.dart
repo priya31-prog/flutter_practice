@@ -10,7 +10,6 @@ class UserApi {
     final response = await http.get(Uri.parse(url));
     // log('response from api ...${json.decode(response.body)}');
 
-    //sample
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return data.map((ele) => UsersModel.fromJson(ele)).toList();
