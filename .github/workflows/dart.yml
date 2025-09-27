@@ -56,6 +56,9 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Build Apk
         run: flutter build apk --release
+      - name: Debug build outputs
+        run: ls -R build/app/outputs
+
       - name: upload build
         uses: actions/upload-artifact@v3
         with:
