@@ -57,7 +57,7 @@ jobs:
       - name: Build Apk
         run: flutter build apk --release
       - name: upload build
-        uses: action/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: isolates-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: isolates_mixins/build/app/outputs/flutter-apk/app-release.apk
