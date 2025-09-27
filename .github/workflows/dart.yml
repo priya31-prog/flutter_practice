@@ -7,8 +7,8 @@ name: isolates builds
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
     paths:
       - 'isolates_mixins/**'
     
@@ -64,3 +64,5 @@ jobs:
         with:
           name: isolates-apk
           path: isolates_mixins/build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
