@@ -1,15 +1,17 @@
-// import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
-// import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
-// import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
-// import 'package:basic_ecommerce_app/screens/login_profile/user_info_model.dart';
+import 'package:basic_ecommerce_app/common_files/route_navigations.dart';
+import 'package:basic_ecommerce_app/common_files/shared_preference/shared_preferences_call.dart';
+import 'package:basic_ecommerce_app/screens/login_profile/auth_service.dart';
+import 'package:basic_ecommerce_app/api%20files/models/user_info_model.dart';
 
 import 'dart:developer';
 
 import 'package:basic_ecommerce_app/api%20files/get_indian_state.dart';
 import 'package:basic_ecommerce_app/api%20files/models/state_model.dart';
 import 'package:basic_ecommerce_app/screens/widgets/elevated_button_wider_button.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserAddress extends StatefulWidget {
   const UserAddress({super.key, required this.userAddressParams});
@@ -27,6 +29,7 @@ class _UserAddress extends State<UserAddress> {
   // final _state = TextEditingController();
   final _pincode = TextEditingController();
   final _phoneNumber = TextEditingController();
+  final _landMark = TextEditingController();
   List<StateModel> listOfStates = [];
   late String selectedState;
 
@@ -50,6 +53,7 @@ class _UserAddress extends State<UserAddress> {
     _phoneNumber.dispose();
     // _state.dispose();
     _pincode.dispose();
+    _landMark.dispose();
   }
 
   @override
@@ -96,6 +100,12 @@ class _UserAddress extends State<UserAddress> {
                   SizedBox(height: 5),
                   TextFormField(
                     maxLength: 200,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'address 1';
+                      }
+                      return '';
+                    },
                     controller: _addressLine1,
                     onChanged: (value) {},
                     maxLines: null,
@@ -145,7 +155,12 @@ class _UserAddress extends State<UserAddress> {
                   TextFormField(
                     controller: _city,
                     cursorColor: Colors.cyan,
-
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'enter city';
+                      }
+                      return null;
+                    },
                     // onChanged: (),
                     decoration: InputDecoration(
                       label: Text('City'),
@@ -162,6 +177,12 @@ class _UserAddress extends State<UserAddress> {
                   ),
                   DropdownButtonFormField(
                     hint: Text('Select your state'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Select state';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Theme.of(
@@ -191,12 +212,17 @@ class _UserAddress extends State<UserAddress> {
                   ),
                   TextFormField(
                     controller: _pincode,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'enter pincode';
+                      }
+                      return null;
+                    },
+
                     cursorColor: Colors.cyan,
-                    maxLines: null,
-                    maxLength: 200,
-                    keyboardType: TextInputType.multiline,
+                    keyboardType: TextInputType.numberWithOptions(),
                     decoration: InputDecoration(
-                      label: Text('Address Line 2'),
+                      label: Text('Pincode'),
                       floatingLabelStyle: TextStyle(color: Colors.cyan),
                       fillColor: Theme.of(
                         context,
@@ -210,12 +236,56 @@ class _UserAddress extends State<UserAddress> {
                   ),
                   TextFormField(
                     controller: _phoneNumber,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        final exp = RegExp(
+                          r'^\+?[0-9]{1,3}[-.\s]?(\(?[0-9]{1,4}\)?[-.\s]?)?[0-9]{3,4}[-.\s]?[0-9]{4}$',
+                        );
+
+                        if (!exp.hasMatch(value)) {
+                          return 'Number is incorrect';
+                        }
+                      } else if (value == null || value.isEmpty) {
+                        return 'proper phone';
+                      }
+                      return null;
+                    },
+                    cursorColor: Colors.cyan,
+
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                      prefix: Container(
+                        margin: EdgeInsets.all(3),
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color.fromARGB(255, 81, 74, 74),
+                        ),
+
+                        child: Text('+91'),
+                      ),
+                      label: Text('Phone number'),
+
+                      floatingLabelStyle: TextStyle(color: Colors.cyan),
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondary.withAlpha(50),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  TextFormField(
+                    controller: _landMark,
                     cursorColor: Colors.cyan,
                     maxLines: null,
                     maxLength: 200,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                      label: Text('Address Line 2'),
+                      label: Text('Land Mark'),
                       floatingLabelStyle: TextStyle(color: Colors.cyan),
                       fillColor: Theme.of(
                         context,
@@ -235,28 +305,76 @@ class _UserAddress extends State<UserAddress> {
                       Expanded(
                         child: elevatedButtonWider(
                           onTap: () async {
-                            // await AuthService()
-                            //     .signingInUser(
-                            //       user: UserInfoModel(
-                            //         mailId: widget.userAddressParams.email,
-                            //         userName: widget.userAddressParams.userName,
-                            //       ),
-                            //       password: widget.userAddressParams.password,
-                            //       ref: widget.userAddressParams.ref,
-                            //     )
-                            //     .then((final val) {
-                            //       CacheData.instance.setUserLoggedIn(true);
-                            //       if (!context.mounted) return;
-                            //       Navigator.pushNamed(
-                            //         context,
-                            //         RouteNavigations.homeScreenWithoutSkip,
-                            //       );
-                            //     });
+                            if (_formKey.currentState!.validate()) {
+                              await AuthService()
+                                  .signingInUser(
+                                    user: UserInfoModel(
+                                      mailId: widget.userAddressParams.email,
+                                      userName:
+                                          widget.userAddressParams.userName,
+                                      address: Address(
+                                        addressLine1: _addressLine1.text,
+                                        addressLine2: _addressLine2.text,
+                                        phnNo: _phoneNumber.text,
+                                        landMark: _landMark.text,
+                                        pincode: _pincode.text,
+                                        state: selectedState,
+                                      ),
+                                    ),
+                                    password: widget.userAddressParams.password,
+                                    ref: widget.userAddressParams.ref,
+                                  )
+                                  .then((final val) {
+                                    CacheData.instance.setUserLoggedIn(true);
+                                    if (!context.mounted) return;
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteNavigations.homeScreenWithoutSkip,
+                                    );
+                                  });
+                            } else {
+                              Fluttertoast.showToast(
+                                msg:
+                                    'Please fill all the field or Do click on Skip to proceed',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 3,
+                              );
+                            }
                           },
                           text: 'Submit',
                         ),
                       ),
                     ],
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await AuthService()
+                          .signingInUser(
+                            user: UserInfoModel(
+                              mailId: widget.userAddressParams.email,
+                              userName: widget.userAddressParams.userName,
+                            ),
+                            password: widget.userAddressParams.password,
+                            ref: widget.userAddressParams.ref,
+                          )
+                          .then((final val) {
+                            CacheData.instance.setUserLoggedIn(true);
+                            if (!context.mounted) return;
+                            Navigator.pushNamed(
+                              context,
+                              RouteNavigations.homeScreenWithoutSkip,
+                            );
+                          });
+                    },
                   ),
                 ],
               ),
