@@ -151,6 +151,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             RouteNavigations.homeScreenSkip,
                           );
                         } else {
+                          if (!context.mounted) return;
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Incorrect credentials entered'),
+                            ),
+                          );
                           log('Authentication failed..');
                         }
                       });
