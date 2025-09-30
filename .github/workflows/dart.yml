@@ -9,8 +9,6 @@ on:
   push:
     tags:
       - 'v*'
-    paths:
-      - 'isolates_mixins/**'
     
   pull_request:
     
