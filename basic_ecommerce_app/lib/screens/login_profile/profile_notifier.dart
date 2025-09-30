@@ -21,7 +21,7 @@ class ProfileNotifier extends AsyncNotifier<UserInfoModel> {
 
     final userDataJson = snapShot.data();
 
-    log('user data json from profile notifier -- ${userDataJson}');
+    log('user data json from profile notifier -- $userDataJson');
 
     final userJson = UserInfoModel.fromJson(userDataJson ?? {});
     // CacheData.instance.setUserLoggedIn('isUserLoggedIn', true);

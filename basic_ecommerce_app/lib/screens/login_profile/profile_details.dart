@@ -3,7 +3,7 @@
 import 'dart:developer';
 
 import 'package:basic_ecommerce_app/screens/login_profile/profile_notifier.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

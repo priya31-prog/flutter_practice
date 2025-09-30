@@ -93,7 +93,7 @@ class AddCartItem {
 
       // return true;
     } catch (e) {
-      throw Exception('Error in adding data ${e}');
+      throw Exception('Error in adding data $e');
       // log('exception ${e}');
       // return false;
     }
@@ -122,7 +122,7 @@ class AddCartItem {
         return false;
       }
     } catch (e) {
-      throw Exception('Error in deleting items ${e}');
+      throw Exception('Error in deleting items $e');
     }
   }
 }

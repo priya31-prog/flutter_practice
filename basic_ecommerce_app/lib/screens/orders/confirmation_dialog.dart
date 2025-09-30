@@ -97,7 +97,7 @@ class _OrderDialogState extends ConsumerState<OrderDialog> {
 
                         // log('populated data success');
                       } catch (e) {
-                        log('errir in updtaing ${e}');
+                        log('errir in updtaing $e');
                       }
 
                       if (!context.mounted) return;

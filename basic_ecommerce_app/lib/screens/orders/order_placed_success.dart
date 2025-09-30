@@ -39,12 +39,12 @@ class _OrderPlacedSuccessState extends State<OrderPlacedSuccess> {
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 1),
                 duration: Duration(milliseconds: 800),
-                builder: (BuildContext context, double _val, Widget? child) {
+                builder: (BuildContext context, double val, Widget? child) {
                   return Opacity(
-                    opacity: _val,
+                    opacity: val,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: _val * (MediaQuery.of(context).size.width * 0.18),
+                        left: val * (MediaQuery.of(context).size.width * 0.18),
                       ),
                       child: child,
                     ),

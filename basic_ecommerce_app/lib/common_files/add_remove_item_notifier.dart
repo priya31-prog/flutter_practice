@@ -70,7 +70,7 @@ void onRemoveAddActions({
     final item = products;
     item.price = price.toStringAsFixed(2);
 
-    log('price of a single product ${price}');
+    log('price of a single product $price');
 
     if (action == 'increment') {
       ref

@@ -33,7 +33,7 @@ class AuthService {
 
       return userCredential.user;
     } catch (e) {
-      log('Exception from auth service ${e}');
+      log('Exception from auth service $e');
       return null;
     }
   }
@@ -68,8 +68,8 @@ class AuthService {
             .fetchUser(userId: userCred.user!.uid);
       }
     } catch (e) {
-      log('print error in users ${e}');
+      log('print error in users $e');
     }
-    return null;
+    return;
   }
 }
